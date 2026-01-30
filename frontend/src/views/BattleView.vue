@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { battleApi, type RollDiceResponse, type EnemyTurnResult } from '@/api/battle'
 import { useDiceScene } from '@/composables/useDiceScene'
 
 const { t } = useI18n()
 const router = useRouter()
-const route = useRoute()
 
 // 3D Dice Scene
 const diceContainer = ref<HTMLElement | null>(null)
-const { roll: roll3DDice, isRolling: is3DRolling } = useDiceScene(diceContainer)
+const { rollTo: rollTo3D } = useDiceScene(diceContainer)
 
 // Battle state
 const battleId = ref<number | null>(null)
@@ -92,23 +91,34 @@ async function rollDice() {
   enemyDice.value = []
 
   try {
-    // Start 3D dice animation (visual effect)
-    const dice3DPromise = roll3DDice?.()
-
     let response: RollDiceResponse
 
     if (battleId.value === -1) {
       // Offline mode for testing
-      // Wait for 3D dice to finish rolling
-      if (dice3DPromise) {
-        await dice3DPromise
-      }
       response = simulateRoll()
+
+      // Start 3D dice animation with target result (synchronize with server)
+      if (rollTo3D) {
+        await rollTo3D({
+          die1: response.dice[0],
+          die2: response.dice[1],
+          die3: response.dice[2]
+        })
+      }
     } else {
-      // Call server API - dice generated SERVER-SIDE!
+      // Call server API first - dice generated SERVER-SIDE!
       response = await battleApi.rollDice(battleId.value, {
         playerId: playerId.value
       })
+
+      // Start 3D dice animation with server result (synchronize)
+      if (rollTo3D) {
+        await rollTo3D({
+          die1: response.dice[0],
+          die2: response.dice[1],
+          die3: response.dice[2]
+        })
+      }
     }
 
     // Update player dice with animation delay

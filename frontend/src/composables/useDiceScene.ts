@@ -36,10 +36,28 @@ export function useDiceScene(containerRef: Ref<HTMLElement | null>) {
     })
   }
 
+  const rollTo = (targetValues: DiceResult): Promise<DiceResult> => {
+    return new Promise((resolve) => {
+      if (!diceScene.value || isRolling.value) {
+        // 이미 굴리는 중이면 무시
+        return
+      }
+
+      isRolling.value = true
+
+      diceScene.value.rollTo(targetValues, (result) => {
+        isRolling.value = false
+        lastResult.value = result
+        resolve(result)
+      })
+    })
+  }
+
   return {
     diceScene,
     isRolling,
     lastResult,
-    roll
+    roll,
+    rollTo
   }
 }
