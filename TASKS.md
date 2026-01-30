@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-01-30
+> 최종 업데이트: 2026-01-31
 
 ---
 
@@ -55,21 +55,7 @@
 - [x] `battle.ts` store - evaluateHand() System A 통합
 - [x] `BattleView.vue` - evaluateHand() System A 통합
 
----
-
-## 🔄 진행 중 (In Progress)
-
-_현재 진행 중인 작업 없음_
-
-### Phase 4: 3D 주사위 시스템 - 완료
-- [x] Three.js 씬 설정
-- [x] 3D 주사위 모델 생성 (BoxGeometry)
-- [x] Cannon-es 물리 엔진 연동
-- [x] 주사위 굴림 애니메이션
-- [x] BattleView.vue에 3D 씬 통합
-- [x] 주사위 결과 감지 로직 (서버 결과와 동기화는 추후 작업)
-
-### Phase 3.6: 밸런스 조정 (Balance Update) - 완료
+### Phase 3.6: 밸런스 조정 (Balance Update)
 - [x] 족보 데미지 ~75% 수준으로 하향 (게임 길이 6-8턴 목표)
   - Ace: 60 → 45
   - Triple: 10+(X×5) → 8+(X×4) = 16-32
@@ -84,16 +70,23 @@ _현재 진행 중인 작업 없음_
 - [x] 모든 문서 업데이트 (PROJECTPLAN, CLAUDE, README, TASKS, dbinit)
 - [x] i18n 4개 언어 파일 업데이트
 
+### Phase 4: 3D 주사위 시스템
+- [x] Three.js 씬 설정
+- [x] 3D 주사위 모델 생성 (BoxGeometry)
+- [x] Cannon-es 물리 엔진 연동
+- [x] 주사위 굴림 애니메이션
+- [x] BattleView.vue에 3D 씬 통합
+- [x] 주사위 결과 감지 로직 (서버 결과와 동기화는 추후 작업)
+
+---
+
+## 🔄 진행 중 (In Progress)
+
+_현재 진행 중인 작업 없음_
+
 ---
 
 ## 📋 예정된 작업 (Planned)
-
-### Phase 4: 3D 주사위 시스템
-- [ ] Three.js 씬 설정
-- [ ] 3D 주사위 모델 생성
-- [ ] Cannon-es 물리 엔진 연동
-- [ ] 주사위 굴림 애니메이션
-- [ ] 주사위 결과 감지 로직
 
 ### Phase 5: 스킬 시스템
 - [ ] 스킬 효과 엔진 구현 (백엔드)
