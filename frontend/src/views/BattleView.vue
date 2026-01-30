@@ -3,10 +3,15 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
 import { battleApi, type RollDiceResponse, type EnemyTurnResult } from '@/api/battle'
+import { useDiceScene } from '@/composables/useDiceScene'
 
 const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
+
+// 3D Dice Scene
+const diceContainer = ref<HTMLElement | null>(null)
+const { roll: roll3DDice, isRolling: is3DRolling } = useDiceScene(diceContainer)
 
 // Battle state
 const battleId = ref<number | null>(null)
@@ -87,10 +92,17 @@ async function rollDice() {
   enemyDice.value = []
 
   try {
+    // Start 3D dice animation (visual effect)
+    const dice3DPromise = roll3DDice?.()
+
     let response: RollDiceResponse
 
     if (battleId.value === -1) {
       // Offline mode for testing
+      // Wait for 3D dice to finish rolling
+      if (dice3DPromise) {
+        await dice3DPromise
+      }
       response = simulateRoll()
     } else {
       // Call server API - dice generated SERVER-SIDE!
@@ -335,6 +347,11 @@ function goHome() {
         <div v-if="playerHand" class="hand-result player-hand">
           {{ playerHand.rankKR }} ({{ playerHand.power }})
         </div>
+
+        <!-- 3D Dice Scene -->
+        <div ref="diceContainer" class="dice-3d-container"></div>
+
+        <!-- 2D Dice (fallback / result display) -->
         <div class="dice-area">
           <template v-if="playerDice.length">
             <span v-for="(d, i) in playerDice" :key="'p'+i" class="die player-die" :class="{ rolling: isRolling }">
@@ -347,6 +364,7 @@ function goHome() {
             <span class="die player-die">?</span>
           </template>
         </div>
+
         <div class="hp-bar">
           <div class="hp-fill player" :style="{ width: `${playerHP}%` }"></div>
           <span class="hp-text">{{ t('battle.playerHP') }}: {{ playerHP }}/100</span>
@@ -481,6 +499,16 @@ function goHome() {
   color: var(--color-cream);
   text-shadow: 0 0 4px rgba(0,0,0,0.8);
   z-index: 1;
+}
+
+/* 3D Dice Container */
+.dice-3d-container {
+  width: 100%;
+  height: 300px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin: 0.5rem 0;
+  border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 /* Dice Area */
