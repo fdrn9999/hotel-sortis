@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 /**
- * Evaluates dice hands according to Chinchiro rules (System A - PROJECTPLAN.md).
+ * Evaluates dice hands according to Chinchiro rules (Balanced System - PROJECTPLAN.md).
  * Hand Rankings (highest to lowest):
- * 1. Ace [1-1-1]: 60 power
- * 2. Triple [X-X-X]: 10 + (X * 5) power (20-40)
- * 3. Straight [4-5-6]: 50 power
- * 4. Strike [3-4-5]: 40 power
- * 5. Slash [2-3-4]: 30 power
- * 6. Storm [1-2-3]: 20 power
+ * 1. Ace [1-1-1]: 45 power
+ * 2. Triple [X-X-X]: 8 + (X * 4) power (16-32)
+ * 3. Straight [4-5-6]: 38 power
+ * 4. Strike [3-4-5]: 30 power
+ * 5. Slash [2-3-4]: 24 power
+ * 6. Storm [1-2-3]: 16 power
  * 7. Pair [X-X-Y]: 5 + (X * 2) power (7-17)
  * 8. No Hand: sum of dice (3-16)
  */
@@ -67,34 +67,34 @@ public class HandEvaluator {
         int b = sorted[1];
         int c = sorted[2];
 
-        // 1. Ace: [1-1-1] → 60
+        // 1. Ace: [1-1-1] → 45
         if (a == 1 && b == 1 && c == 1) {
-            return new HandResult(HandRank.ACE, "에이스", 60);
+            return new HandResult(HandRank.ACE, "에이스", 45);
         }
 
-        // 2. Triple: Same 3 [2-6] → 10 + (N*5)
+        // 2. Triple: Same 3 [2-6] → 8 + (N*4)
         if (a == b && b == c && a >= 2) {
-            return new HandResult(HandRank.TRIPLE, "트리플", 10 + (a * 5));
+            return new HandResult(HandRank.TRIPLE, "트리플", 8 + (a * 4));
         }
 
-        // 3. Straight: [4-5-6] → 50
+        // 3. Straight: [4-5-6] → 38
         if (a == 4 && b == 5 && c == 6) {
-            return new HandResult(HandRank.STRAIGHT, "스트레이트", 50);
+            return new HandResult(HandRank.STRAIGHT, "스트레이트", 38);
         }
 
-        // 4. Strike: [3-4-5] → 40
+        // 4. Strike: [3-4-5] → 30
         if (a == 3 && b == 4 && c == 5) {
-            return new HandResult(HandRank.STRIKE, "스트라이크", 40);
+            return new HandResult(HandRank.STRIKE, "스트라이크", 30);
         }
 
-        // 5. Slash: [2-3-4] → 30
+        // 5. Slash: [2-3-4] → 24
         if (a == 2 && b == 3 && c == 4) {
-            return new HandResult(HandRank.SLASH, "슬래시", 30);
+            return new HandResult(HandRank.SLASH, "슬래시", 24);
         }
 
-        // 6. Storm: [1-2-3] → 20
+        // 6. Storm: [1-2-3] → 16
         if (a == 1 && b == 2 && c == 3) {
-            return new HandResult(HandRank.STORM, "스톰", 20);
+            return new HandResult(HandRank.STORM, "스톰", 16);
         }
 
         // 7. Pair: Same 2 → 5 + (N*2)

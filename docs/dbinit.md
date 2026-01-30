@@ -67,7 +67,7 @@ SHOW DATABASES;
 ```
 docs/
 ├── create.sql   # 테이블 생성 (DDL)
-├── insert.sql   # 초기 데이터 삽입 (DML) - 스킬 35개, 층 15개, 보스 3개
+├── insert.sql   # 초기 데이터 삽입 (DML) - 스킬 60개, 층 15개, 보스 3개
 └── script.sql   # 전체 실행 (create + insert)
 ```
 
@@ -96,7 +96,7 @@ mysql -u hotelsortis -p hotel_sortis < script.sql
 
 | 항목 | 개수 | 설명 |
 |------|------|------|
-| **스킬** | 35개 | Common 5, Rare 10, Epic 10, Legendary 10 |
+| **스킬** | 60개 | Common 10, Rare 15, Epic 20, Legendary 15 |
 | **층** | 15개 | 일반 8, 엘리트 4, 보스 3 |
 | **보스** | 3개 | Mammon(5층), Eligor(10층), Lucifuge(15층) |
 | **시즌** | 1개 | Season 1 (2026 Q1) |

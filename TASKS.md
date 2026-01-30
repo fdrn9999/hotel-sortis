@@ -61,6 +61,21 @@
 
 _현재 진행 중인 작업 없음_
 
+### Phase 3.6: 밸런스 조정 (Balance Update) - 완료
+- [x] 족보 데미지 ~75% 수준으로 하향 (게임 길이 6-8턴 목표)
+  - Ace: 60 → 45
+  - Triple: 10+(X×5) → 8+(X×4) = 16-32
+  - Straight: 50 → 38
+  - Strike: 40 → 30
+  - Slash: 30 → 24
+  - Storm: 20 → 16
+- [x] 스킬 보너스 수치 하향 조정 (~60-70%)
+- [x] 누락된 스킬 3개 추가 (calm_focus, lucky_streak, strike_master)
+- [x] 백엔드 HandEvaluator.java 업데이트
+- [x] 프론트엔드 battle.ts 업데이트
+- [x] 모든 문서 업데이트 (PROJECTPLAN, CLAUDE, README, TASKS, dbinit)
+- [x] i18n 4개 언어 파일 업데이트
+
 ---
 
 ## 📋 예정된 작업 (Planned)
@@ -129,20 +144,20 @@ _현재 진행 중인 작업 없음_
 
 | 순위 | 족보 | 조건 | 공격력 |
 |------|------|------|--------|
-| 1 | Ace (에이스) | [1-1-1] | 60 |
-| 2 | Triple (트리플) | [X-X-X] (2-6) | 10 + X×5 (20-40) |
-| 3 | Straight (스트레이트) | [4-5-6] | 50 |
-| 4 | Strike (스트라이크) | [3-4-5] | 40 |
-| 5 | Slash (슬래시) | [2-3-4] | 30 |
-| 6 | Storm (스톰) | [1-2-3] | 20 |
+| 1 | Ace (에이스) | [1-1-1] | 45 |
+| 2 | Triple (트리플) | [X-X-X] (2-6) | 8 + X×4 (16-32) |
+| 3 | Straight (스트레이트) | [4-5-6] | 38 |
+| 4 | Strike (스트라이크) | [3-4-5] | 30 |
+| 5 | Slash (슬래시) | [2-3-4] | 24 |
+| 6 | Storm (스톰) | [1-2-3] | 16 |
 | 7 | Pair (페어) | [X-X-Y] | 5 + X×2 (7-17) |
 | 8 | NoHand (노 핸드) | 없음 | 합계 (3-16) |
 
-### 스킬 밸런스 스케일 (System A)
-- Common: +2~5 범위
-- Rare: +5~10 범위
-- Epic: +10~20 범위
-- Legendary: +15~30 범위
+### 스킬 밸런스 스케일 (Balanced)
+- Common: +1~3 범위
+- Rare: +3~7 범위
+- Epic: +6~12 범위
+- Legendary: +10~18 범위
 
 ### 기술 스택
 - **Frontend**: Vue 3.4+, Vite 5+, Pinia, Vue Router 4, Vue I18n 9+, Three.js, Cannon-es
