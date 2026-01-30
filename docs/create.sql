@@ -56,7 +56,7 @@ CREATE TABLE skills (
     description_ko TEXT NOT NULL,
     description_ja TEXT NOT NULL,
     description_zh TEXT NOT NULL,
-    trigger_type ENUM('BATTLE_START', 'TURN_START', 'DICE_ROLL', 'BEFORE_DAMAGE', 'AFTER_DAMAGE', 'PASSIVE') NOT NULL,
+    trigger_type ENUM('BATTLE_START', 'TURN_START', 'TURN_END', 'DICE_ROLL', 'BEFORE_DAMAGE', 'AFTER_DAMAGE', 'PASSIVE') NOT NULL,
     effect_json JSON NOT NULL COMMENT '스킬 효과 정의',
     icon_url VARCHAR(255),
     unlock_floor INT DEFAULT NULL COMMENT '해금되는 층 (NULL이면 기본 제공)',
@@ -118,7 +118,9 @@ CREATE TABLE battle_logs (
     actor ENUM('PLAYER', 'ENEMY') NOT NULL,
     dice_result JSON NOT NULL COMMENT '주사위 결과 [d1, d2, d3]',
     hand_rank VARCHAR(20) NOT NULL COMMENT '족보 영문명',
-    hand_rank_kr VARCHAR(20) NOT NULL COMMENT '족보 한글명',
+    hand_rank_ko VARCHAR(20) NOT NULL COMMENT '족보 한글명',
+    hand_rank_ja VARCHAR(20) NOT NULL COMMENT '족보 일본어명',
+    hand_rank_zh VARCHAR(20) NOT NULL COMMENT '족보 중국어명',
     hand_power INT NOT NULL COMMENT '족보 공격력',
     damage_dealt INT NOT NULL COMMENT '실제 데미지',
     skills_activated JSON COMMENT '발동된 스킬 ID 배열',
@@ -176,7 +178,9 @@ CREATE TABLE floors (
     enemy_skill_count INT NOT NULL DEFAULT 0 COMMENT '적 스킬 개수',
     skill_reward_rarity ENUM('Common', 'Rare', 'Epic', 'Legendary') COMMENT '보상 스킬 등급',
     description_ko VARCHAR(255),
-    description_en VARCHAR(255)
+    description_en VARCHAR(255),
+    description_ja VARCHAR(255),
+    description_zh VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 COMMENT='층별 설정';
 
@@ -202,7 +206,10 @@ COMMENT='보스 정보';
 -- =====================================================
 CREATE TABLE pvp_seasons (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    season_name VARCHAR(50) NOT NULL,
+    season_name_en VARCHAR(50) NOT NULL,
+    season_name_ko VARCHAR(50) NOT NULL,
+    season_name_ja VARCHAR(50) NOT NULL,
+    season_name_zh VARCHAR(50) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     is_active BOOLEAN DEFAULT FALSE,

@@ -66,6 +66,81 @@ mysql -u root -p hotel_sortis < insert.sql
 - Hand evaluation: `backend/src/main/java/com/hotelsortis/api/game/HandEvaluator.java`
 - Frontend mirror: `frontend/src/stores/battle.ts` (evaluateHand function)
 
+## i18n (다국어) 필수 규칙
+
+### 지원 언어 (4개, 순서 고정)
+| 코드 | 언어 | 용도 |
+|------|------|------|
+| `ko` | 한국어 | 기본 언어 |
+| `en` | English | 글로벌 기본 |
+| `ja` | 日本語 | 일본어 |
+| `zh` | 简体中文 | 중국어 간체 |
+
+### 규칙 1: DB 테이블 - 사용자에게 노출되는 텍스트는 반드시 4개국어 컬럼
+```sql
+-- ✅ 올바른 테이블 설계
+CREATE TABLE skills (
+    name_ko VARCHAR(100) NOT NULL,
+    name_en VARCHAR(100) NOT NULL,
+    name_ja VARCHAR(100) NOT NULL,
+    name_zh VARCHAR(100) NOT NULL,
+    description_ko TEXT NOT NULL,
+    description_en TEXT NOT NULL,
+    description_ja TEXT NOT NULL,
+    description_zh TEXT NOT NULL
+);
+
+-- ❌ 잘못된 설계 (일부 언어 누락)
+CREATE TABLE floors (
+    description_ko VARCHAR(255),
+    description_en VARCHAR(255)
+    -- ja, zh 누락!
+);
+```
+
+### 규칙 2: INSERT 문 - 모든 언어 컬럼에 데이터 필수
+```sql
+-- ✅ 올바른 INSERT
+INSERT INTO skills (name_ko, name_en, name_ja, name_zh) VALUES
+('행운의 재굴림', 'Lucky Reroll', 'ラッキーリロール', '幸运重掷');
+
+-- ❌ 잘못된 INSERT (일부 언어 누락)
+INSERT INTO skills (name_ko, name_en) VALUES
+('행운의 재굴림', 'Lucky Reroll');
+```
+
+### 규칙 3: JSON 데이터 내 텍스트도 4개국어
+```sql
+-- ✅ 보스 대사 JSON: 모든 키에 _ko, _en, _ja, _zh 접미사
+'{
+  "intro_ko": "어서 오게, 방랑자여.",
+  "intro_en": "Welcome, wanderer.",
+  "intro_ja": "ようこそ、放浪者よ。",
+  "intro_zh": "欢迎，流浪者。"
+}'
+
+-- ❌ 일부 언어 누락
+'{
+  "intro": "Welcome, wanderer.",
+  "intro_ko": "어서 오게, 방랑자여."
+}'
+```
+
+### 규칙 4: Frontend i18n JSON - 4개 파일 동일 키 구조 유지
+- `frontend/src/i18n/locales/ko.json`
+- `frontend/src/i18n/locales/en.json`
+- `frontend/src/i18n/locales/ja.json`
+- `frontend/src/i18n/locales/zh.json`
+
+**새 키를 추가할 때 반드시 4개 파일 모두에 추가해야 합니다.**
+
+### 규칙 5: 체크리스트 (새 기능/데이터 추가 시)
+- [ ] DB 테이블에 `_ko`, `_en`, `_ja`, `_zh` 컬럼 존재?
+- [ ] INSERT 문에 4개 언어 데이터 모두 포함?
+- [ ] JSON 내 텍스트에 4개 언어 키 존재?
+- [ ] Frontend i18n JSON 4개 파일에 동일 키 존재?
+- [ ] Backend API 응답에서 사용자 언어에 맞는 텍스트 반환?
+
 ---
 
 # HOTEL SORTIS 개발 준수 지침서
