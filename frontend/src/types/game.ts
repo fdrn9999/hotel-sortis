@@ -1,5 +1,5 @@
 // Hand Rankings
-export type HandRank = 'Ace' | 'Triple' | 'Straight' | 'Storm' | 'Pair' | 'NoHand'
+export type HandRank = 'Ace' | 'Triple' | 'Straight' | 'Strike' | 'Slash' | 'Storm' | 'Pair' | 'NoHand'
 
 export interface HandResult {
   rank: HandRank

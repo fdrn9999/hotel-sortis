@@ -9,20 +9,20 @@ Turn-based Strategy Roguelike with Dice & Skill Build System
 
 ---
 
-## 🎮 게임 소개
+## 게임 소개
 
 HOTEL SORTIS는 **친치로(Chinchiro) 주사위 게임**을 현대적 로그라이크로 재해석한 전략 게임입니다.
 
 ### 핵심 특징
-- 🎲 **3개의 주사위**로 만드는 족보 시스템
-- ⚔️ **최대 4개 스킬** 조합의 전략적 깊이
-- 🏨 **15층 캠페인** - 3명의 보스와 대결
-- 🏆 **PvP 랭크전** - ELO 기반 매칭
-- 🌍 **4개 언어 지원** - 한국어, 영어, 일본어, 중국어
+- **3개의 주사위**로 만드는 족보 시스템 (8종)
+- **최대 4개 스킬** 조합의 전략적 깊이 (60개 스킬)
+- **15층 캠페인** - 3명의 보스와 대결
+- **PvP 랭크전** - ELO 기반 매칭
+- **4개 언어 지원** - 한국어, 영어, 일본어, 중국어
 
 ---
 
-## 🛠️ 기술 스택
+## 기술 스택
 
 ### Frontend
 - Vue 3.4+ (Composition API)
@@ -44,7 +44,7 @@ HOTEL SORTIS는 **친치로(Chinchiro) 주사위 게임**을 현대적 로그라
 
 ---
 
-## 🚀 시작하기
+## 시작하기
 
 ### 요구사항
 - Node.js 18+
@@ -77,7 +77,7 @@ exit;
 # 테이블 생성 및 초기 데이터 삽입
 cd docs
 mysql -u root -p hotel_sortis < create.sql   # 테이블 생성
-mysql -u root -p hotel_sortis < insert.sql   # 초기 데이터 (스킬 35개, 층 15개, 보스 3개)
+mysql -u root -p hotel_sortis < insert.sql   # 초기 데이터 (스킬 60개, 층 15개, 보스 3개)
 ```
 
 자세한 설정은 [docs/dbinit.md](docs/dbinit.md) 참조
@@ -99,7 +99,7 @@ npm run dev
 
 ---
 
-## 📁 프로젝트 구조
+## 프로젝트 구조
 
 ```
 hotel-sortis/
@@ -109,7 +109,7 @@ hotel-sortis/
 │   │   ├── views/          # 페이지 컴포넌트
 │   │   ├── stores/         # Pinia 스토어
 │   │   ├── router/         # 라우팅
-│   │   ├── i18n/           # 다국어
+│   │   ├── i18n/           # 다국어 (ko, en, ja, zh)
 │   │   ├── composables/    # 컴포저블
 │   │   ├── types/          # TypeScript 타입
 │   │   └── game/           # 게임 로직 (Three.js)
@@ -122,14 +122,14 @@ hotel-sortis/
 │   │   ├── repository/     # 데이터 접근
 │   │   ├── entity/         # JPA 엔티티
 │   │   ├── dto/            # 데이터 전송 객체
-│   │   ├── game/           # 게임 로직
+│   │   ├── game/           # 게임 로직 (HandEvaluator)
 │   │   └── config/         # 설정
 │   └── build.gradle
 │
 ├── docs/                    # 문서
 │   ├── dbinit.md           # DB 설정 가이드
 │   ├── create.sql          # 테이블 생성 (DDL)
-│   ├── insert.sql          # 초기 데이터 (DML)
+│   ├── insert.sql          # 초기 데이터 (DML) - 60개 스킬
 │   └── script.sql          # 전체 실행 wrapper
 │
 ├── CLAUDE.md               # AI 개발 지침서
@@ -140,28 +140,35 @@ hotel-sortis/
 
 ---
 
-## 🎯 게임 규칙
+## 게임 규칙
 
-### 족보 시스템
+### 족보 시스템 (System A)
 
 | 순위 | 족보 | 조건 | 공격력 |
 |------|------|------|--------|
-| 1 | 에이스 (Ace) | [1-1-1] | 180 |
-| 2 | 트리플 (Triple) | [X-X-X] | X × 30 |
-| 3 | 스트레이트 (Straight) | [4-5-6] | 180 |
-| 4 | 스톰 (Storm) | [1-2-3] | 150 |
-| 5 | 페어 (Pair) | [X-X-Y] | X × 15 |
-| 6 | 노 핸드 (No Hand) | 없음 | 합계 |
+| 1 | Ace (에이스) | [1-1-1] | 60 |
+| 2 | Triple (트리플) | [X-X-X] (2-6) | 10 + X×5 (20-40) |
+| 3 | Straight (스트레이트) | [4-5-6] | 50 |
+| 4 | Strike (스트라이크) | [3-4-5] | 40 |
+| 5 | Slash (슬래시) | [2-3-4] | 30 |
+| 6 | Storm (스톰) | [1-2-3] | 20 |
+| 7 | Pair (페어) | [X-X-Y] | 5 + X×2 (7-17) |
+| 8 | NoHand (노 핸드) | 없음 | 합계 (3-16) |
 
 ### 전투 규칙
-- HP는 **항상 100** 고정
+- HP는 **항상 100** 고정 (보스는 페이즈당 100)
 - **턴제** 진행 (동시 굴림 금지)
 - 턴 시간 제한: **30초**
 - 최대 **10턴** (초과 시 무승부)
 
+### 스킬 시스템
+- 총 **60개** 스킬 (Common 10, Rare 15, Epic 20, Legendary 15)
+- 최대 **4개** 장착 가능
+- 보스 클리어 시 스킬 획득 (5층: Rare, 10층: Epic, 15층: Legendary)
+
 ---
 
-## 📖 문서
+## 문서
 
 - [CLAUDE.md](CLAUDE.md) - 개발 지침서
 - [PROJECTPLAN.md](PROJECTPLAN.md) - 게임 기획서
@@ -170,12 +177,12 @@ hotel-sortis/
 
 ---
 
-## 📜 라이선스
+## 라이선스
 
 MIT License - [LICENSE](LICENSE) 참조
 
 ---
 
-## 🤝 기여
+## 기여
 
 이슈와 PR을 환영합니다!

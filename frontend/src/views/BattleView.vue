@@ -259,17 +259,20 @@ function simulateRoll(): RollDiceResponse {
   }
 }
 
+// Hand evaluation (System A - PROJECTPLAN.md) - offline mode only
 function evaluateHand(dice: [number, number, number]) {
   const sorted = [...dice].sort((a, b) => a - b) as [number, number, number]
   const [a, b, c] = sorted
 
-  if (a === 1 && b === 1 && c === 1) return { rank: 'Ace', rankKR: '에이스', power: 180 }
-  if (a === b && b === c && a >= 2) return { rank: 'Triple', rankKR: '트리플', power: a * 30 }
-  if (a === 4 && b === 5 && c === 6) return { rank: 'Straight', rankKR: '스트레이트', power: 180 }
-  if (a === 1 && b === 2 && c === 3) return { rank: 'Storm', rankKR: '스톰', power: 150 }
+  if (a === 1 && b === 1 && c === 1) return { rank: 'Ace', rankKR: '에이스', power: 60 }
+  if (a === b && b === c && a >= 2) return { rank: 'Triple', rankKR: '트리플', power: 10 + (a * 5) }
+  if (a === 4 && b === 5 && c === 6) return { rank: 'Straight', rankKR: '스트레이트', power: 50 }
+  if (a === 3 && b === 4 && c === 5) return { rank: 'Strike', rankKR: '스트라이크', power: 40 }
+  if (a === 2 && b === 3 && c === 4) return { rank: 'Slash', rankKR: '슬래시', power: 30 }
+  if (a === 1 && b === 2 && c === 3) return { rank: 'Storm', rankKR: '스톰', power: 20 }
   if (a === b || b === c) {
     const pairValue = a === b ? a : b
-    return { rank: 'Pair', rankKR: '페어', power: pairValue * 15 }
+    return { rank: 'Pair', rankKR: '페어', power: 5 + (pairValue * 2) }
   }
   return { rank: 'NoHand', rankKR: '노 핸드', power: a + b + c }
 }
