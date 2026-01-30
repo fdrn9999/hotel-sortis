@@ -1,0 +1,55 @@
+{
+  "common": {
+    "confirm": "확인",
+    "cancel": "취소",
+    "back": "뒤로",
+    "home": "홈",
+    "settings": "설정",
+    "language": "언어"
+  },
+  "menu": {
+    "campaign": "PvE 캠페인",
+    "pvp": "PvP 랭크",
+    "collection": "컬렉션",
+    "shop": "상점"
+  },
+  "battle": {
+    "rollDice": "주사위 굴리기",
+    "playerHP": "플레이어 HP",
+    "enemyHP": "적 HP",
+    "turn": "턴",
+    "victory": "승리",
+    "defeat": "패배",
+    "draw": "무승부",
+    "timeRemaining": "남은 시간"
+  },
+  "hands": {
+    "ace": "에이스",
+    "triple": "트리플",
+    "straight": "스트레이트",
+    "storm": "스톰",
+    "pair": "페어",
+    "noHand": "노 핸드"
+  },
+  "skills": {
+    "luckyReroll": "행운의 재굴림",
+    "steadyHand": "안정된 손",
+    "safeBet": "안전한 베팅",
+    "highRoller": "하이 롤러",
+    "pairMaster": "페어 마스터",
+    "doubleOrNothing": "더블 오어 낫씽",
+    "stormSeeker": "스톰 시커",
+    "perfectDefense": "완벽한 방어",
+    "counterAttack": "반격",
+    "fateManipulation": "운명 조작",
+    "probabilityDistortion": "확률 왜곡",
+    "cosmicHand": "우주의 손"
+  },
+  "rarity": {
+    "common": "커먼",
+    "rare": "레어",
+    "epic": "에픽",
+    "legendary": "레전더리"
+  },
+  "floor": "층"
+}

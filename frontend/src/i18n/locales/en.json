@@ -1,0 +1,55 @@
+{
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "back": "Back",
+    "home": "Home",
+    "settings": "Settings",
+    "language": "Language"
+  },
+  "menu": {
+    "campaign": "PvE Campaign",
+    "pvp": "PvP Ranked",
+    "collection": "Collection",
+    "shop": "Shop"
+  },
+  "battle": {
+    "rollDice": "Roll Dice",
+    "playerHP": "Player HP",
+    "enemyHP": "Enemy HP",
+    "turn": "Turn",
+    "victory": "Victory",
+    "defeat": "Defeat",
+    "draw": "Draw",
+    "timeRemaining": "Time Remaining"
+  },
+  "hands": {
+    "ace": "Ace",
+    "triple": "Triple",
+    "straight": "Straight",
+    "storm": "Storm",
+    "pair": "Pair",
+    "noHand": "No Hand"
+  },
+  "skills": {
+    "luckyReroll": "Lucky Reroll",
+    "steadyHand": "Steady Hand",
+    "safeBet": "Safe Bet",
+    "highRoller": "High Roller",
+    "pairMaster": "Pair Master",
+    "doubleOrNothing": "Double or Nothing",
+    "stormSeeker": "Storm Seeker",
+    "perfectDefense": "Perfect Defense",
+    "counterAttack": "Counter Attack",
+    "fateManipulation": "Fate Manipulation",
+    "probabilityDistortion": "Probability Distortion",
+    "cosmicHand": "Cosmic Hand"
+  },
+  "rarity": {
+    "common": "Common",
+    "rare": "Rare",
+    "epic": "Epic",
+    "legendary": "Legendary"
+  },
+  "floor": "Floor"
+}

@@ -1,0 +1,55 @@
+{
+  "common": {
+    "confirm": "確認",
+    "cancel": "キャンセル",
+    "back": "戻る",
+    "home": "ホーム",
+    "settings": "設定",
+    "language": "言語"
+  },
+  "menu": {
+    "campaign": "PvEキャンペーン",
+    "pvp": "PvPランク",
+    "collection": "コレクション",
+    "shop": "ショップ"
+  },
+  "battle": {
+    "rollDice": "サイコロを振る",
+    "playerHP": "プレイヤーHP",
+    "enemyHP": "敵HP",
+    "turn": "ターン",
+    "victory": "勝利",
+    "defeat": "敗北",
+    "draw": "引き分け",
+    "timeRemaining": "残り時間"
+  },
+  "hands": {
+    "ace": "エース",
+    "triple": "トリプル",
+    "straight": "ストレート",
+    "storm": "ストーム",
+    "pair": "ペア",
+    "noHand": "役なし"
+  },
+  "skills": {
+    "luckyReroll": "ラッキーリロール",
+    "steadyHand": "安定の手",
+    "safeBet": "安全な賭け",
+    "highRoller": "ハイローラー",
+    "pairMaster": "ペアマスター",
+    "doubleOrNothing": "ダブル・オア・ナッシング",
+    "stormSeeker": "ストームシーカー",
+    "perfectDefense": "完全防御",
+    "counterAttack": "カウンター攻撃",
+    "fateManipulation": "運命操作",
+    "probabilityDistortion": "確率歪曲",
+    "cosmicHand": "宇宙の手"
+  },
+  "rarity": {
+    "common": "コモン",
+    "rare": "レア",
+    "epic": "エピック",
+    "legendary": "レジェンダリー"
+  },
+  "floor": "階"
+}

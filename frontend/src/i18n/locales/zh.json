@@ -1,0 +1,55 @@
+{
+  "common": {
+    "confirm": "确认",
+    "cancel": "取消",
+    "back": "返回",
+    "home": "主页",
+    "settings": "设置",
+    "language": "语言"
+  },
+  "menu": {
+    "campaign": "PvE战役",
+    "pvp": "PvP排位",
+    "collection": "收藏",
+    "shop": "商店"
+  },
+  "battle": {
+    "rollDice": "掷骰子",
+    "playerHP": "玩家HP",
+    "enemyHP": "敌人HP",
+    "turn": "回合",
+    "victory": "胜利",
+    "defeat": "失败",
+    "draw": "平局",
+    "timeRemaining": "剩余时间"
+  },
+  "hands": {
+    "ace": "Ace",
+    "triple": "三同号",
+    "straight": "顺子",
+    "storm": "风暴",
+    "pair": "对子",
+    "noHand": "无手牌"
+  },
+  "skills": {
+    "luckyReroll": "幸运重掷",
+    "steadyHand": "稳定之手",
+    "safeBet": "安全下注",
+    "highRoller": "豪赌客",
+    "pairMaster": "对子大师",
+    "doubleOrNothing": "全赢或全输",
+    "stormSeeker": "风暴追寻者",
+    "perfectDefense": "完美防御",
+    "counterAttack": "反击",
+    "fateManipulation": "命运操控",
+    "probabilityDistortion": "概率扭曲",
+    "cosmicHand": "宇宙之手"
+  },
+  "rarity": {
+    "common": "普通",
+    "rare": "稀有",
+    "epic": "史诗",
+    "legendary": "传说"
+  },
+  "floor": "层"
+}
