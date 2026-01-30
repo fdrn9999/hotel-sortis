@@ -3113,37 +3113,47 @@ public EntityModel<BattleActionResultDto> rollDice(
 
 #### 5.1.1 족보 판정 테스트 (100% 커버리지)
 ```javascript
-// ✅ 모든 족보에 대한 테스트 필수
+// ✅ 모든 족보에 대한 테스트 필수 (System A: PROJECTPLAN.md 기준)
 describe('evaluateHand', () => {
-  // Ace
-  test('[1-1-1] = Ace (180)', () => {
-    expect(evaluateHand([1, 1, 1])).toEqual({ rank: 'Ace', power: 180 });
+  // Ace: [1-1-1] → 60 DMG
+  test('[1-1-1] = Ace (60)', () => {
+    expect(evaluateHand([1, 1, 1])).toEqual({ rank: 'Ace', power: 60 });
   });
 
-  // Triple
-  test('[2-2-2] = Triple (60)', () => {
-    expect(evaluateHand([2, 2, 2])).toEqual({ rank: 'Triple', power: 60 });
+  // Triple: 동일 3개 [2-6] → 10 + (N*5)
+  test('[2-2-2] = Triple (20)', () => {
+    expect(evaluateHand([2, 2, 2])).toEqual({ rank: 'Triple', power: 20 });
   });
-  test('[6-6-6] = Triple (180)', () => {
-    expect(evaluateHand([6, 6, 6])).toEqual({ rank: 'Triple', power: 180 });
-  });
-
-  // Straight
-  test('[4-5-6] = Straight (180)', () => {
-    expect(evaluateHand([4, 5, 6])).toEqual({ rank: 'Straight', power: 180 });
+  test('[6-6-6] = Triple (40)', () => {
+    expect(evaluateHand([6, 6, 6])).toEqual({ rank: 'Triple', power: 40 });
   });
 
-  // Storm
-  test('[1-2-3] = Storm (150)', () => {
-    expect(evaluateHand([1, 2, 3])).toEqual({ rank: 'Storm', power: 150 });
+  // Straight: [4-5-6] → 50 DMG
+  test('[4-5-6] = Straight (50)', () => {
+    expect(evaluateHand([4, 5, 6])).toEqual({ rank: 'Straight', power: 50 });
   });
 
-  // Pair
-  test('[3-3-5] = Pair (45)', () => {
-    expect(evaluateHand([3, 3, 5])).toEqual({ rank: 'Pair', power: 45 });
+  // Strike: [3-4-5] → 40 DMG
+  test('[3-4-5] = Strike (40)', () => {
+    expect(evaluateHand([3, 4, 5])).toEqual({ rank: 'Strike', power: 40 });
   });
 
-  // No Hand
+  // Slash: [2-3-4] → 30 DMG
+  test('[2-3-4] = Slash (30)', () => {
+    expect(evaluateHand([2, 3, 4])).toEqual({ rank: 'Slash', power: 30 });
+  });
+
+  // Storm: [1-2-3] → 20 DMG
+  test('[1-2-3] = Storm (20)', () => {
+    expect(evaluateHand([1, 2, 3])).toEqual({ rank: 'Storm', power: 20 });
+  });
+
+  // Pair: 동일 2개 → 5 + (N*2)
+  test('[3-3-5] = Pair (11)', () => {
+    expect(evaluateHand([3, 3, 5])).toEqual({ rank: 'Pair', power: 11 });
+  });
+
+  // No Hand: 합계
   test('[1-3-5] = NoHand (9)', () => {
     expect(evaluateHand([1, 3, 5])).toEqual({ rank: 'NoHand', power: 9 });
   });
@@ -3384,14 +3394,16 @@ const GAME_CONSTANTS = {
   MAX_TURNS: 10,            // 최대 턴 수
   TURN_TIME_LIMIT: 30,      // 턴당 시간 제한 (초)
   
-  // 족보 공격력
+  // 족보 공격력 (System A: PROJECTPLAN.md 기준)
   HAND_POWERS: {
-    ACE: 180,
-    TRIPLE: (n) => n * 30,  // 2-6
-    STRAIGHT: 180,
-    STORM: 150,
-    PAIR: (n) => n * 15,
-    NO_HAND: (a,b,c) => a+b+c
+    ACE: 60,                       // [1-1-1]
+    TRIPLE: (n) => 10 + (n * 5),   // [2-6] → 20~40
+    STRAIGHT: 50,                  // [4-5-6]
+    STRIKE: 40,                    // [3-4-5]
+    SLASH: 30,                     // [2-3-4]
+    STORM: 20,                     // [1-2-3]
+    PAIR: (n) => 5 + (n * 2),      // 7~17
+    NO_HAND: (a,b,c) => a+b+c     // 3~16
   },
   
   // AI 레벨
@@ -3433,12 +3445,12 @@ function validateGameState(state) {
 
 function validateHandEvaluation(dice, result) {
   // 족보 판정 검증
-  const validRanks = ['Ace', 'Triple', 'Straight', 'Storm', 'Pair', 'NoHand'];
+  const validRanks = ['Ace', 'Triple', 'Straight', 'Strike', 'Slash', 'Storm', 'Pair', 'NoHand'];
   assert(validRanks.includes(result.rank), `Invalid rank: ${result.rank}`);
-  
-  // 공격력 검증
+
+  // 공격력 검증 (System A: max 60)
   assert(typeof result.power === 'number', 'Power must be number');
-  assert(result.power >= 3 && result.power <= 180, 'Power out of range');
+  assert(result.power >= 3 && result.power <= 60, 'Power out of range');
 }
 
 function validatePurchaseItem(item) {
