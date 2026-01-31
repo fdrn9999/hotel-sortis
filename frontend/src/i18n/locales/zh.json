@@ -52,6 +52,22 @@
     "pair": "对子",
     "noHand": "无手牌"
   },
+  "skillSelection": {
+    "title": "技能选择",
+    "rewardInfo": "奖励",
+    "selectInfo": "选择1个技能（所有3个将永久解锁）",
+    "trigger": "触发条件"
+  },
+  "skillEffects": {
+    "trigger": {
+      "BATTLE_START": "战斗开始",
+      "TURN_START": "回合开始",
+      "DICE_ROLL": "掷骰子",
+      "BEFORE_DAMAGE": "伤害前",
+      "AFTER_DAMAGE": "伤害后",
+      "PASSIVE": "被动"
+    }
+  },
   "skills": {
     "luckyReroll": "幸运重掷",
     "steadyHand": "稳定之手",
@@ -118,7 +134,16 @@
     "equip": "装备",
     "unequip": "卸下",
     "slotsFull": "技能槽已满。请移除一个技能后重试。",
-    "slotsCount": "{count}/4 已装备"
+    "slotsCount": "{count}/4 已装备",
+    "loadout": {
+      "title": "技能装备",
+      "equipped": "已装备",
+      "emptySlot": "空位",
+      "available": "拥有的技能",
+      "startBattle": "开始战斗",
+      "skillsEquipped": "个已装备",
+      "invalidLoadout": "无效的技能配置。"
+    }
   },
   "rarity": {
     "common": "普通",

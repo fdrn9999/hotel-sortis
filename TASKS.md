@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-01-31 (Phase 4 개선사항 추가)
+> 최종 업데이트: 2026-01-31 (Phase 5 스킬 시스템 완료)
 
 ---
 
@@ -81,11 +81,8 @@
 - [x] **서버 결과 동기화** - `rollTo()` 메서드로 서버 주사위 값과 3D 애니메이션 일치
 - [x] BattleView.vue에서 `rollTo()` 호출로 변경 (서버 API 먼저 → 3D 동기화)
 
----
+### Phase 5: 스킬 시스템
 
-## 🔄 진행 중 (In Progress)
-
-### Phase 5: 스킬 시스템 (백엔드 완료, 프론트엔드 진행 중)
 - [x] 스킬 효과 엔진 구현 (백엔드)
   - [x] SkillTrigger enum (BATTLE_START, DICE_ROLL, BEFORE_DAMAGE, AFTER_DAMAGE, PASSIVE)
   - [x] GameState 클래스 (스킬이 조작하는 게임 상태)
@@ -110,9 +107,20 @@
   - [x] Skill 타입 수정 (백엔드 응답 형식 맞춤)
   - [x] Skill Store (Pinia - 장착/해제/검증)
   - [x] SkillLoadoutView 컴포넌트 (4개 슬롯, 희귀도 필터, 아르데코 스타일)
-- [ ] i18n 번역 키 추가 (ko, en, ja, zh)
-- [ ] 스킬 선택 화면 (프론트엔드)
-- [ ] 스킬 효과 시각화 (프론트엔드)
+- [x] i18n 번역 키 추가 (ko, en, ja, zh)
+- [x] 스킬 선택 화면 (프론트엔드)
+  - [x] SkillSelectionView.vue 컴포넌트 (보스 클리어 후 3개 스킬 선택)
+  - [x] i18n 4개 언어 번역 (skillSelection 섹션)
+- [x] 스킬 효과 시각화 (프론트엔드)
+  - [x] SkillEffectNotification.vue 컴포넌트 (스킬 발동 알림)
+  - [x] useSkillEffectNotifications.ts composable (알림 큐 관리)
+  - [x] i18n 4개 언어 번역 (skillEffects.trigger 섹션)
+
+---
+
+## 🔄 진행 중 (In Progress)
+
+현재 진행 중인 작업 없음
 
 ---
 

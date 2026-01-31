@@ -52,6 +52,22 @@
     "pair": "ペア",
     "noHand": "役なし"
   },
+  "skillSelection": {
+    "title": "スキル選択",
+    "rewardInfo": "報酬",
+    "selectInfo": "1つ選択してください（3つすべてが永久に獲得されます）",
+    "trigger": "発動条件"
+  },
+  "skillEffects": {
+    "trigger": {
+      "BATTLE_START": "戦闘開始",
+      "TURN_START": "ターン開始",
+      "DICE_ROLL": "サイコロ",
+      "BEFORE_DAMAGE": "ダメージ前",
+      "AFTER_DAMAGE": "ダメージ後",
+      "PASSIVE": "パッシブ"
+    }
+  },
   "skills": {
     "luckyReroll": "ラッキーリロール",
     "steadyHand": "安定の手",
@@ -118,7 +134,16 @@
     "equip": "装備",
     "unequip": "外す",
     "slotsFull": "スロットがいっぱいです。スキルを外してから再度お試しください。",
-    "slotsCount": "{count}/4 装備中"
+    "slotsCount": "{count}/4 装備中",
+    "loadout": {
+      "title": "スキル装備",
+      "equipped": "装備中",
+      "emptySlot": "空きスロット",
+      "available": "所有スキル",
+      "startBattle": "戦闘開始",
+      "skillsEquipped": "個装備",
+      "invalidLoadout": "無効なスキル構成です。"
+    }
   },
   "rarity": {
     "common": "コモン",

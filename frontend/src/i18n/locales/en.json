@@ -52,6 +52,22 @@
     "pair": "Pair",
     "noHand": "No Hand"
   },
+  "skillSelection": {
+    "title": "Skill Selection",
+    "rewardInfo": "Reward",
+    "selectInfo": "Select 1 skill (All 3 will be permanently unlocked)",
+    "trigger": "Trigger"
+  },
+  "skillEffects": {
+    "trigger": {
+      "BATTLE_START": "Battle Start",
+      "TURN_START": "Turn Start",
+      "DICE_ROLL": "Dice Roll",
+      "BEFORE_DAMAGE": "Before Damage",
+      "AFTER_DAMAGE": "After Damage",
+      "PASSIVE": "Passive"
+    }
+  },
   "skills": {
     "luckyReroll": "Lucky Reroll",
     "steadyHand": "Steady Hand",
@@ -118,7 +134,16 @@
     "equip": "Equip",
     "unequip": "Unequip",
     "slotsFull": "All slots are full. Remove a skill and try again.",
-    "slotsCount": "{count}/4 Equipped"
+    "slotsCount": "{count}/4 Equipped",
+    "loadout": {
+      "title": "Skill Loadout",
+      "equipped": "Equipped",
+      "emptySlot": "Empty Slot",
+      "available": "Available Skills",
+      "startBattle": "Start Battle",
+      "skillsEquipped": " Skills Equipped",
+      "invalidLoadout": "Invalid skill loadout."
+    }
   },
   "rarity": {
     "common": "Common",
