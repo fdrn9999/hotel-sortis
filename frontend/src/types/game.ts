@@ -14,17 +14,17 @@ export type SkillTrigger = 'BATTLE_START' | 'TURN_START' | 'DICE_ROLL' | 'BEFORE
 export interface Skill {
   id: number
   skillCode: string
-  name: string
-  nameKR: string
-  nameJP: string
-  nameCN: string
+  name: string          // 사용자 언어의 이름 (백엔드 API 응답)
+  description: string   // 사용자 언어의 설명 (백엔드 API 응답)
   rarity: SkillRarity
-  description: string
-  descriptionKR: string
-  descriptionJP: string
-  descriptionCN: string
-  trigger: SkillTrigger
+  triggerType: string   // BATTLE_START, DICE_ROLL, etc.
   iconUrl?: string
+}
+
+export interface SkillListResponse {
+  skills: Skill[]
+  total: number
+  language: string  // 응답에 사용된 언어 (ko, en, ja, zh)
 }
 
 export type EquippedSkills = [Skill | null, Skill | null, Skill | null, Skill | null]

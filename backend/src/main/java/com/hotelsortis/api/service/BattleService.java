@@ -1,8 +1,13 @@
 package com.hotelsortis.api.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hotelsortis.api.dto.BattleDto;
 import com.hotelsortis.api.entity.Battle;
 import com.hotelsortis.api.game.HandEvaluator;
+import com.hotelsortis.api.game.skill.GameState;
+import com.hotelsortis.api.game.skill.SkillEffectEngine;
+import com.hotelsortis.api.game.skill.SkillTrigger;
 import com.hotelsortis.api.repository.BattleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +18,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HexFormat;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +29,8 @@ public class BattleService {
 
     private final BattleRepository battleRepository;
     private final HandEvaluator handEvaluator;
+    private final SkillEffectEngine skillEffectEngine;
+    private final ObjectMapper objectMapper;
 
     /**
      * Start a new battle
@@ -70,22 +79,49 @@ public class BattleService {
             throw new IllegalStateException("Not player's turn");
         }
 
+        // Parse equipped skills
+        List<Long> equippedSkills = parseEquippedSkills(battle.getPlayerEquippedSkills());
+        log.debug("Player equipped skills: {}", equippedSkills);
+
+        // 0. BATTLE_START trigger (first turn only)
+        if (battle.getTurnCount() == 1) {
+            log.info("First turn - executing BATTLE_START skills");
+            GameState initialState = buildGameState(battle, new int[]{0, 0, 0}, null, 0);
+            skillEffectEngine.executeSkillsByTrigger(SkillTrigger.BATTLE_START, equippedSkills, initialState);
+        }
+
         // 1. Roll dice (SERVER-SIDE!)
         int[] playerDice = handEvaluator.rollDice();
         String hash = generateDiceHash(playerDice);
+        log.info("Player rolled dice: {}", Arrays.toString(playerDice));
 
-        // 2. Evaluate hand
+        // 2. DICE_ROLL trigger - skills can modify dice
+        GameState state = buildGameState(battle, playerDice, null, 0);
+        state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.DICE_ROLL, equippedSkills, state);
+        playerDice = state.getDice();  // Get modified dice
+        log.debug("After DICE_ROLL skills: dice={}", Arrays.toString(playerDice));
+
+        // 3. Evaluate hand
         HandEvaluator.HandResult handResult = handEvaluator.evaluate(playerDice);
+        log.info("Player hand: {} (power={})", handResult.getRank(), handResult.getPower());
 
-        // 3. Calculate damage (base damage = hand power)
-        int playerDamage = handResult.getPower();
+        // 4. BEFORE_DAMAGE trigger - skills can modify damage
+        state.setHand(handResult);
+        state.setDamage(handResult.getPower());
+        state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.BEFORE_DAMAGE, equippedSkills, state);
+        int playerDamage = state.getDamage();  // Get modified damage
+        log.info("After BEFORE_DAMAGE skills: damage={}", playerDamage);
 
-        // 4. Apply damage to enemy
+        // 5. Apply damage to enemy
         int newEnemyHp = Math.max(0, battle.getEnemyHp() - playerDamage);
         battle.setEnemyHp(newEnemyHp);
+        state.setEnemyHp(newEnemyHp);
 
-        log.info("Player rolled: dice={}, hand={}, power={}, enemyHp={}",
-                Arrays.toString(playerDice), handResult.getRank(), handResult.getPower(), newEnemyHp);
+        // 6. AFTER_DAMAGE trigger - skills can have post-damage effects
+        state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.AFTER_DAMAGE, equippedSkills, state);
+
+        log.info("Player turn complete: dice={}, hand={}, damage={}, enemyHp={}",
+                Arrays.toString(playerDice), handResult.getRank(), playerDamage, newEnemyHp);
 
         // 5. Check if enemy defeated
         if (newEnemyHp <= 0) {
@@ -124,21 +160,41 @@ public class BattleService {
      * Process enemy AI turn
      */
     private BattleDto.EnemyTurnResult processEnemyTurn(Battle battle) {
-        // Roll dice for enemy (SERVER-SIDE!)
+        // Parse enemy equipped skills
+        List<Long> enemySkills = parseEquippedSkills(battle.getEnemyEquippedSkills());
+        log.debug("Enemy equipped skills: {}", enemySkills);
+
+        // 1. Roll dice for enemy (SERVER-SIDE!)
         int[] enemyDice = handEvaluator.rollDice();
+        log.info("Enemy rolled dice: {}", Arrays.toString(enemyDice));
 
-        // Evaluate enemy hand
+        // 2. DICE_ROLL trigger - enemy skills can modify dice
+        GameState state = buildGameState(battle, enemyDice, null, 0);
+        state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.DICE_ROLL, enemySkills, state);
+        enemyDice = state.getDice();  // Get modified dice
+        log.debug("After enemy DICE_ROLL skills: dice={}", Arrays.toString(enemyDice));
+
+        // 3. Evaluate enemy hand
         HandEvaluator.HandResult enemyHand = handEvaluator.evaluate(enemyDice);
+        log.info("Enemy hand: {} (power={})", enemyHand.getRank(), enemyHand.getPower());
 
-        // Calculate damage
-        int enemyDamage = enemyHand.getPower();
+        // 4. BEFORE_DAMAGE trigger - enemy skills can modify damage
+        state.setHand(enemyHand);
+        state.setDamage(enemyHand.getPower());
+        state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.BEFORE_DAMAGE, enemySkills, state);
+        int enemyDamage = state.getDamage();  // Get modified damage
+        log.info("After enemy BEFORE_DAMAGE skills: damage={}", enemyDamage);
 
-        // Apply damage to player
+        // 5. Apply damage to player
         int newPlayerHp = Math.max(0, battle.getPlayerHp() - enemyDamage);
         battle.setPlayerHp(newPlayerHp);
+        state.setPlayerHp(newPlayerHp);
 
-        log.info("Enemy rolled: dice={}, hand={}, power={}, playerHp={}",
-                Arrays.toString(enemyDice), enemyHand.getRank(), enemyHand.getPower(), newPlayerHp);
+        // 6. AFTER_DAMAGE trigger - enemy skills can have post-damage effects
+        state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.AFTER_DAMAGE, enemySkills, state);
+
+        log.info("Enemy turn complete: dice={}, hand={}, damage={}, playerHp={}",
+                Arrays.toString(enemyDice), enemyHand.getRank(), enemyDamage, newPlayerHp);
 
         return BattleDto.EnemyTurnResult.builder()
                 .dice(enemyDice)
@@ -188,6 +244,40 @@ public class BattleService {
         } catch (NoSuchAlgorithmException e) {
             return "hash-error";
         }
+    }
+
+    /**
+     * Parse equipped skill IDs from JSON string
+     */
+    private List<Long> parseEquippedSkills(String skillsJson) {
+        if (skillsJson == null || skillsJson.trim().isEmpty() || skillsJson.equals("[]")) {
+            return Collections.emptyList();
+        }
+
+        try {
+            return objectMapper.readValue(skillsJson, new TypeReference<List<Long>>() {});
+        } catch (Exception e) {
+            log.error("Failed to parse equipped skills: {}", skillsJson, e);
+            return Collections.emptyList();
+        }
+    }
+
+    /**
+     * Build GameState from current battle state
+     */
+    private GameState buildGameState(Battle battle, int[] dice, HandEvaluator.HandResult hand, int damage) {
+        return GameState.builder()
+                .dice(dice)
+                .hand(hand)
+                .damage(damage)
+                .playerHp(battle.getPlayerHp())
+                .enemyHp(battle.getEnemyHp())
+                .turnCount(battle.getTurnCount())
+                .currentTurn(battle.getCurrentTurn().name())
+                .battleId(battle.getId())
+                .playerId(battle.getPlayerId())
+                .enemyId(battle.getEnemyId())
+                .build();
     }
 
     /**

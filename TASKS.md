@@ -85,18 +85,38 @@
 
 ## 🔄 진행 중 (In Progress)
 
-_현재 진행 중인 작업 없음_
+### Phase 5: 스킬 시스템 (백엔드 완료, 프론트엔드 진행 중)
+- [x] 스킬 효과 엔진 구현 (백엔드)
+  - [x] SkillTrigger enum (BATTLE_START, DICE_ROLL, BEFORE_DAMAGE, AFTER_DAMAGE, PASSIVE)
+  - [x] GameState 클래스 (스킬이 조작하는 게임 상태)
+  - [x] SkillEffect 인터페이스
+  - [x] SkillEffectException (에러 처리)
+  - [x] SkillEffectEngine (스킬 실행 엔진)
+  - [x] SkillEffectConfiguration (자동 등록)
+  - [x] 구체적인 스킬 효과 5개 구현 (LuckyReroll, SteadyHand, SafeBet, HighRoller, PairMaster)
+- [x] 스킬 발동 트리거 처리 (BattleService 통합)
+  - [x] SkillEffectEngine 주입
+  - [x] GameState 생성 헬퍼 메서드
+  - [x] 스킬 ID 파싱 메서드
+  - [x] rollDice()에 트리거 추가 (BATTLE_START, DICE_ROLL, BEFORE_DAMAGE, AFTER_DAMAGE)
+  - [x] processEnemyTurn()에도 동일하게 적용
+- [x] 스킬 목록 조회 API (백엔드 i18n 지원)
+  - [x] SkillDto (사용자 언어에 맞게 변환)
+  - [x] SkillRepository (스킬 조회 쿼리)
+  - [x] SkillService (언어 검증 및 변환)
+  - [x] SkillController (Accept-Language 헤더 처리)
+- [x] 스킬 장착 UI (프론트엔드)
+  - [x] 스킬 API 클라이언트 (api/skill.ts)
+  - [x] Skill 타입 수정 (백엔드 응답 형식 맞춤)
+  - [x] Skill Store (Pinia - 장착/해제/검증)
+  - [x] SkillLoadoutView 컴포넌트 (4개 슬롯, 희귀도 필터, 아르데코 스타일)
+- [ ] i18n 번역 키 추가 (ko, en, ja, zh)
+- [ ] 스킬 선택 화면 (프론트엔드)
+- [ ] 스킬 효과 시각화 (프론트엔드)
 
 ---
 
 ## 📋 예정된 작업 (Planned)
-
-### Phase 5: 스킬 시스템
-- [ ] 스킬 효과 엔진 구현 (백엔드)
-- [ ] 스킬 발동 트리거 처리
-- [ ] 스킬 장착 UI
-- [ ] 스킬 선택 화면
-- [ ] 스킬 효과 시각화
 
 ### Phase 6: 캠페인 모드
 - [ ] 15층 구조 구현
