@@ -224,3 +224,107 @@ export interface BattleEndMessage {
   result: 'VICTORY' | 'DEFEAT' | 'DRAW'
   reward: PvPRewardInfo
 }
+
+// Cosmetic System (Phase 9)
+export type CosmeticType = 'DICE_SKIN' | 'AVATAR'
+export type CosmeticRarity = SkillRarity // Common, Rare, Epic, Legendary
+
+export interface DiceSkin {
+  id: number
+  skinCode: string
+  name: string          // 사용자 언어의 이름
+  description: string   // 사용자 언어의 설명
+  rarity: CosmeticRarity
+  price: number
+  material: string      // 'standard', 'metal', 'glass', 'cosmic'
+  baseColor: string     // HEX color
+  pipColor: string      // HEX color
+  textureUrl?: string
+  metalness: number     // 0.0 - 1.0
+  roughness: number     // 0.0 - 1.0
+  emissiveColor?: string
+  emissiveIntensity?: number
+  isDefault: boolean
+  isAvailable: boolean
+  isOwned: boolean      // 플레이어 소유 여부
+  isEquipped: boolean   // 장착 여부
+  previewUrl?: string
+}
+
+export interface Avatar {
+  id: number
+  avatarCode: string
+  name: string          // 사용자 언어의 이름
+  description: string   // 사용자 언어의 설명
+  rarity: CosmeticRarity
+  price: number
+  avatarUrl: string
+  isDefault: boolean
+  isAvailable: boolean
+  isOwned: boolean      // 플레이어 소유 여부
+  isEquipped: boolean   // 장착 여부
+  previewUrl?: string
+}
+
+export interface CollectionResponse {
+  diceSkins: DiceSkin[]
+  avatars: Avatar[]
+  equippedDiceSkinId?: number
+  equippedAvatarId?: number
+  language: string
+}
+
+export interface ShopItem {
+  cosmeticType: CosmeticType
+  id: number
+  code: string
+  name: string
+  description: string
+  rarity: CosmeticRarity
+  price: number
+  previewUrl?: string
+  isOwned: boolean
+  isPurchasable: boolean  // 미소유 + 영혼석 충분
+}
+
+export interface ShopResponse {
+  diceSkins: ShopItem[]
+  avatars: ShopItem[]
+  playerSoulStones: number
+  language: string
+}
+
+export interface PurchaseRequest {
+  playerId: number
+  cosmeticType: CosmeticType
+  cosmeticId: number
+}
+
+export interface PurchaseResponse {
+  success: boolean
+  message: string
+  cosmeticType?: CosmeticType
+  cosmeticId?: number
+  pricePaid?: number
+  remainingSoulStones?: number
+}
+
+export interface PlayerWallet {
+  playerId: number
+  soulStones: number
+  elo: number
+}
+
+export interface EquipCosmeticRequest {
+  playerId: number
+  cosmeticType: CosmeticType
+  cosmeticId: number
+}
+
+export interface EquipCosmeticResponse {
+  message: string
+  cosmeticType: CosmeticType
+  cosmeticId?: number
+  equippedDiceSkinId?: number
+  equippedAvatarId?: number
+}
