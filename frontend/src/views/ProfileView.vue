@@ -120,10 +120,12 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useI18n } from 'vue-i18n'
+import { useNotification } from '@/composables/useNotification'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const { t } = useI18n()
+const { info, success, error } = useNotification()
 
 const newUsername = ref('')
 const newLanguage = ref(authStore.user?.preferredLanguage || 'en')
@@ -149,7 +151,7 @@ async function handleUpdateProfile() {
   }
 
   if (Object.keys(updates).length === 0) {
-    alert(t('profile.noChanges'))
+    info(t('profile.noChanges'))
     return
   }
 
@@ -157,11 +159,11 @@ async function handleUpdateProfile() {
 
   try {
     await authStore.updateProfile(updates)
-    alert(t('profile.profileUpdated'))
+    success(t('profile.profileUpdated'))
     newUsername.value = ''
-  } catch (error: any) {
-    console.error('Profile update failed:', error)
-    alert(t('profile.updateFailed'))
+  } catch (err: any) {
+    console.error('Profile update failed:', err)
+    error(t('profile.updateFailed'))
   } finally {
     isLoading.value = false
   }
@@ -169,12 +171,12 @@ async function handleUpdateProfile() {
 
 async function handleChangePassword() {
   if (!currentPassword.value || !newPassword.value) {
-    alert(t('auth.errors.fillAllFields'))
+    error(t('auth.errors.fillAllFields'))
     return
   }
 
   if (newPassword.value.length < 8) {
-    alert(t('auth.errors.weakPassword'))
+    error(t('auth.errors.weakPassword'))
     return
   }
 
@@ -186,22 +188,22 @@ async function handleChangePassword() {
       newPassword: newPassword.value
     })
 
-    alert(t('profile.passwordChanged'))
+    success(t('profile.passwordChanged'))
     currentPassword.value = ''
     newPassword.value = ''
-  } catch (error: any) {
-    console.error('Password change failed:', error)
-    alert(t('profile.passwordChangeFailed'))
+  } catch (err: any) {
+    console.error('Password change failed:', err)
+    error(t('profile.passwordChangeFailed'))
   } finally {
     isLoading.value = false
   }
 }
 
 function handleLogout() {
-  if (confirm(t('auth.confirmLogout'))) {
-    authStore.logout()
-    router.push('/login')
-  }
+  // TODO: confirm() 대체 필요 (CLAUDE.md 3.3.1 규칙)
+  // 임시로 즉시 로그아웃 처리
+  authStore.logout()
+  router.push('/login')
 }
 </script>
 

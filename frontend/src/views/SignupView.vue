@@ -91,10 +91,12 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useI18n } from 'vue-i18n'
+import { useNotification } from '@/composables/useNotification'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const { t } = useI18n()
+const { error } = useNotification()
 
 const email = ref('')
 const username = ref('')
@@ -106,22 +108,22 @@ const isLoading = ref(false)
 async function handleSignup() {
   // 유효성 검사
   if (!email.value || !username.value || !password.value || !confirmPassword.value) {
-    alert(t('auth.errors.fillAllFields'))
+    error(t('auth.errors.fillAllFields'))
     return
   }
 
   if (password.value !== confirmPassword.value) {
-    alert(t('auth.errors.passwordMismatch'))
+    error(t('auth.errors.passwordMismatch'))
     return
   }
 
   if (password.value.length < 8) {
-    alert(t('auth.errors.weakPassword'))
+    error(t('auth.errors.weakPassword'))
     return
   }
 
   if (username.value.length < 3 || username.value.length > 20) {
-    alert(t('auth.errors.invalidUsername'))
+    error(t('auth.errors.invalidUsername'))
     return
   }
 
@@ -137,13 +139,13 @@ async function handleSignup() {
 
     // 회원가입 성공 시 홈으로 이동
     router.push('/')
-  } catch (error: any) {
-    console.error('Signup failed:', error)
+  } catch (err: any) {
+    console.error('Signup failed:', err)
 
-    if (error.message?.includes('Email already exists')) {
-      alert(t('auth.errors.emailExists'))
+    if (err.message?.includes('Email already exists')) {
+      error(t('auth.errors.emailExists'))
     } else {
-      alert(t('auth.errors.signupFailed'))
+      error(t('auth.errors.signupFailed'))
     }
   } finally {
     isLoading.value = false

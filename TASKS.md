@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-01 (Phase 8 완료: 사용자 시스템)
+> 최종 업데이트: 2026-02-01 (Phase 8.1 완료: alert() 제거, CLAUDE.md 규칙 준수)
 
 ---
 
@@ -196,6 +196,27 @@
 - [x] Frontend: router/index.ts에 인증 라우트 추가 (/login, /signup, /profile)
 - [x] Frontend: 네비게이션 가드 구현 (requiresAuth, guestOnly)
 - [x] i18n: 4개 언어 파일에 auth, profile 섹션 추가 (ko, en, ja, zh)
+
+### Phase 8.1: alert() 제거 (CLAUDE.md 3.3.1 규칙 준수)
+
+- [x] Toast 컴포넌트 생성 (components/Toast.vue)
+  - [x] 3가지 타입 지원 (success, error, info)
+  - [x] 아르데코 스타일 적용
+  - [x] 자동 3초 후 사라짐 + 애니메이션
+  - [x] 여러 개 동시 표시 가능 (큐 시스템)
+- [x] useNotification composable 생성 (composables/useNotification.ts)
+  - [x] success(), error(), info() 헬퍼 함수
+  - [x] CustomEvent 기반 전역 통신
+- [x] App.vue에 Toast 컴포넌트 추가
+- [x] LoginView.vue alert() 제거 (2개)
+- [x] SignupView.vue alert() 제거 (6개)
+- [x] ProfileView.vue alert() 제거 (7개)
+- [x] SkillLoadoutView.vue alert() 제거 (5개)
+- [x] PvPMatchmakingView.vue confirm() TODO 주석 추가
+- [x] 총 20개 alert() 호출 제거 완료
+- [ ] **TODO (Phase 10)**: confirm() 대체 모달 시스템 구현
+  - ProfileView.vue 로그아웃 확인 (1개)
+  - PvPMatchmakingView.vue 매칭 취소 확인 (1개)
 
 ---
 

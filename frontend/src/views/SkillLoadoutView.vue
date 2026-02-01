@@ -131,6 +131,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useSkillStore } from '@/stores/skill'
 import { useCampaignStore } from '@/stores/campaign'
+import { useNotification } from '@/composables/useNotification'
 import type { Skill } from '@/types/game'
 
 const router = useRouter()
@@ -138,6 +139,7 @@ const route = useRoute()
 const { t } = useI18n()
 const skillStore = useSkillStore()
 const campaignStore = useCampaignStore()
+const { info, error } = useNotification()
 
 // Campaign context from route query
 const isCampaignMode = computed(() => route.query.floor !== undefined)
@@ -188,7 +190,7 @@ function equipSkill(skill: Skill) {
     skillStore.equipSkill(skill, emptyIndex)
   } else {
     // 슬롯 가득 참 (커스텀 모달 사용 - CLAUDE.md 3.3.1절)
-    alert(t('skills.loadout.slotsFull'))  // TODO: 커스텀 모달로 교체
+    info(t('skills.loadout.slotsFull'))
   }
 }
 
@@ -206,7 +208,7 @@ function onSlotClick(index: number) {
 
 async function startBattle() {
   if (!skillStore.validateLoadout()) {
-    alert(t('skills.loadout.invalidLoadout'))  // TODO: 커스텀 모달로 교체
+    error(t('skills.loadout.invalidLoadout'))
     return
   }
 
@@ -223,7 +225,7 @@ async function startBattle() {
       )
 
       if (!response) {
-        alert('Failed to start floor')
+        error('Failed to start floor')
         return
       }
 
@@ -241,9 +243,9 @@ async function startBattle() {
           skills: equippedSkillIds.join(',')
         }
       })
-    } catch (e) {
-      console.error('Failed to start campaign floor:', e)
-      alert('Failed to start floor')
+    } catch (err) {
+      console.error('Failed to start campaign floor:', err)
+      error('Failed to start floor')
     }
   } else {
     // Normal mode: direct to battle

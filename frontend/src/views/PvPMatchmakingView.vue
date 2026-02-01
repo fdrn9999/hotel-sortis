@@ -242,10 +242,10 @@ const handleMatchFound = (match: MatchFoundResponse) => {
  */
 const goHome = () => {
   if (isMatching.value) {
-    if (confirm(t('pvp.matchmaking.confirmLeave'))) {
-      cancelMatching()
-      router.push('/')
-    }
+    // TODO: confirm() 대체 필요 (CLAUDE.md 3.3.1 규칙) - 모달 컴포넌트 구현 후 교체
+    // 임시로 즉시 취소 처리
+    cancelMatching()
+    router.push('/')
   } else {
     router.push('/')
   }

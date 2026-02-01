@@ -54,10 +54,12 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useI18n } from 'vue-i18n'
+import { useNotification } from '@/composables/useNotification'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const { t } = useI18n()
+const { error } = useNotification()
 
 const email = ref('')
 const password = ref('')
@@ -65,7 +67,7 @@ const isLoading = ref(false)
 
 async function handleLogin() {
   if (!email.value || !password.value) {
-    alert(t('auth.errors.fillAllFields'))
+    error(t('auth.errors.fillAllFields'))
     return
   }
 
@@ -79,9 +81,9 @@ async function handleLogin() {
 
     // 로그인 성공 시 홈으로 이동
     router.push('/')
-  } catch (error: any) {
-    console.error('Login failed:', error)
-    alert(t('auth.errors.invalidCredentials'))
+  } catch (err: any) {
+    console.error('Login failed:', err)
+    error(t('auth.errors.invalidCredentials'))
   } finally {
     isLoading.value = false
   }
