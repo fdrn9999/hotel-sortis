@@ -113,8 +113,7 @@ public class CosmeticController {
 
         CosmeticDto.EquipCosmeticResponse response = cosmeticService.equipCosmetic(
                 request.getPlayerId(),
-                request.getCosmeticType(),
-                request.getCosmeticId()
+                request
         );
 
         log.info("Cosmetic equipped successfully");
