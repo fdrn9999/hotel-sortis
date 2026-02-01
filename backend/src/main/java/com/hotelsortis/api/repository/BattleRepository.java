@@ -21,12 +21,12 @@ public interface BattleRepository extends JpaRepository<Battle, Long> {
      * player1 또는 player2로 참여 중인 ONGOING 상태의 PvP 전투를 찾습니다.
      */
     @Query("SELECT b FROM Battle b WHERE " +
-           "(b.player.id = :playerId OR b.enemyId = :playerId) " +
-           "AND b.type = :type " +
+           "(b.playerId = :playerId OR b.enemyId = :playerId) " +
+           "AND b.battleType = :battleType " +
            "AND b.status = :status")
     Optional<Battle> findOngoingPvPBattle(
         @Param("playerId") Long playerId,
-        @Param("type") Battle.Type type,
+        @Param("battleType") Battle.BattleType battleType,
         @Param("status") Battle.Status status
     );
 }

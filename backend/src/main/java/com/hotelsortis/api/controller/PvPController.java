@@ -51,7 +51,7 @@ public class PvPController {
         // 1. 진행 중인 PvP 전투가 있는지 확인 (재접속 처리)
         Optional<Battle> ongoingBattle = battleRepository.findOngoingPvPBattle(
             playerId,
-            Battle.Type.PVP,
+            Battle.BattleType.PVP,
             Battle.Status.ONGOING
         );
 
