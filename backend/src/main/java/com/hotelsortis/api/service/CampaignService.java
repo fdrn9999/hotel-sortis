@@ -64,9 +64,9 @@ public class CampaignService {
         }
 
         Map<String, Boolean> bossesDefeated = new LinkedHashMap<>();
-        bossesDefeated.put("mammon", Boolean.TRUE.equals(progress.getMammonDefeated()));
-        bossesDefeated.put("eligor", Boolean.TRUE.equals(progress.getEligorDefeated()));
-        bossesDefeated.put("lucifuge", Boolean.TRUE.equals(progress.getLucifugeDefeated()));
+        bossesDefeated.put(BossId.MAMMON.getValue(), Boolean.TRUE.equals(progress.getMammonDefeated()));
+        bossesDefeated.put(BossId.ELIGOR.getValue(), Boolean.TRUE.equals(progress.getEligorDefeated()));
+        bossesDefeated.put(BossId.LUCIFUGE.getValue(), Boolean.TRUE.equals(progress.getLucifugeDefeated()));
 
         return CampaignDto.CampaignProgressResponse.builder()
                 .playerId(playerId)
@@ -186,7 +186,7 @@ public class CampaignService {
 
             // Mark boss defeated
             if (floor.getFloorType() == Floor.FloorType.BOSS && floor.getBossId() != null) {
-                markBossDefeated(progress, floor.getBossId());
+                markBossDefeated(progress, BossId.fromValue(floor.getBossId()));
             }
 
             // Skill reward for boss floors
@@ -319,8 +319,8 @@ public class CampaignService {
     /**
      * Get boss skills for a specific phase from phase_config JSON
      */
-    public List<Long> getBossPhaseSkills(String bossId, int phase) {
-        Boss boss = bossRepository.findById(bossId).orElse(null);
+    public List<Long> getBossPhaseSkills(BossId bossId, int phase) {
+        Boss boss = bossRepository.findById(bossId.getValue()).orElse(null);
         if (boss == null) return Collections.emptyList();
 
         try {
@@ -345,8 +345,8 @@ public class CampaignService {
     /**
      * Get boss quote for a specific phase
      */
-    public String getBossQuote(String bossId, int phase, String language) {
-        Boss boss = bossRepository.findById(bossId).orElse(null);
+    public String getBossQuote(BossId bossId, int phase, String language) {
+        Boss boss = bossRepository.findById(bossId.getValue()).orElse(null);
         if (boss == null || boss.getQuotes() == null) return null;
 
         try {
@@ -371,11 +371,11 @@ public class CampaignService {
         return null;
     }
 
-    private void markBossDefeated(CampaignProgress progress, String bossId) {
+    private void markBossDefeated(CampaignProgress progress, BossId bossId) {
         switch (bossId) {
-            case "mammon" -> progress.setMammonDefeated(true);
-            case "eligor" -> progress.setEligorDefeated(true);
-            case "lucifuge" -> progress.setLucifugeDefeated(true);
+            case MAMMON -> progress.setMammonDefeated(true);
+            case ELIGOR -> progress.setEligorDefeated(true);
+            case LUCIFUGE -> progress.setLucifugeDefeated(true);
         }
     }
 
