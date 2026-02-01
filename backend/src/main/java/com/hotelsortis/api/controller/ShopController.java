@@ -74,12 +74,9 @@ public class ShopController {
         log.info("POST /api/v1/shop/purchase - playerId: {}, type: {}, cosmeticId: {}",
                 request.getPlayerId(), request.getCosmeticType(), request.getCosmeticId());
 
-        String language = extractLanguageCode(acceptLanguage);
         ShopDto.PurchaseResponse response = shopService.purchaseCosmetic(
                 request.getPlayerId(),
-                request.getCosmeticType(),
-                request.getCosmeticId(),
-                language
+                request
         );
 
         if (response.getSuccess()) {
