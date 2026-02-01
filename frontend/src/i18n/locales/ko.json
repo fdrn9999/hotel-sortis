@@ -290,5 +290,52 @@
       "reward": "보상",
       "soulStones": "영혼석"
     }
+  },
+  "auth": {
+    "welcome": "환영합니다",
+    "login": "로그인",
+    "signup": "회원가입",
+    "logout": "로그아웃",
+    "email": "이메일",
+    "password": "비밀번호",
+    "username": "사용자명",
+    "confirmPassword": "비밀번호 확인",
+    "preferredLanguage": "선호 언어",
+    "emailPlaceholder": "이메일을 입력하세요",
+    "passwordPlaceholder": "비밀번호를 입력하세요",
+    "usernamePlaceholder": "사용자명을 입력하세요 (3-20자)",
+    "confirmPasswordPlaceholder": "비밀번호를 다시 입력하세요",
+    "noAccount": "계정이 없으신가요?",
+    "signupNow": "지금 가입하기",
+    "alreadyHaveAccount": "이미 계정이 있으신가요?",
+    "loginNow": "로그인하기",
+    "createAccount": "계정 만들기",
+    "confirmLogout": "로그아웃하시겠습니까?",
+    "errors": {
+      "fillAllFields": "모든 필드를 입력해주세요.",
+      "invalidCredentials": "이메일 또는 비밀번호가 잘못되었습니다.",
+      "emailExists": "이미 사용 중인 이메일입니다.",
+      "passwordMismatch": "비밀번호가 일치하지 않습니다.",
+      "weakPassword": "비밀번호는 최소 8자 이상이어야 합니다.",
+      "invalidUsername": "사용자명은 3자 이상 20자 이하여야 합니다.",
+      "signupFailed": "회원가입에 실패했습니다. 다시 시도해주세요."
+    }
+  },
+  "profile": {
+    "myProfile": "내 프로필",
+    "editProfile": "프로필 수정",
+    "changePassword": "비밀번호 변경",
+    "elo": "ELO",
+    "soulStones": "영혼석",
+    "currentFloor": "현재 층",
+    "highestFloor": "최고 층",
+    "saveChanges": "변경사항 저장",
+    "currentPassword": "현재 비밀번호",
+    "newPassword": "새 비밀번호",
+    "noChanges": "변경사항이 없습니다.",
+    "profileUpdated": "프로필이 업데이트되었습니다.",
+    "updateFailed": "프로필 업데이트에 실패했습니다.",
+    "passwordChanged": "비밀번호가 변경되었습니다.",
+    "passwordChangeFailed": "비밀번호 변경에 실패했습니다. 현재 비밀번호를 확인해주세요."
   }
 }

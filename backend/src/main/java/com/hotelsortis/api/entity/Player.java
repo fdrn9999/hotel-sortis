@@ -20,11 +20,13 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // User와 1:1 관계
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
+
     @Column(nullable = false, unique = true, length = 20)
     private String username;
-
-    @Column(name = "password_hash", nullable = false)
-    private String passwordHash;
 
     @Column(nullable = false)
     @Builder.Default

@@ -290,5 +290,52 @@
       "reward": "Reward",
       "soulStones": "Soul Stones"
     }
+  },
+  "auth": {
+    "welcome": "Welcome",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "confirmPassword": "Confirm Password",
+    "preferredLanguage": "Preferred Language",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "usernamePlaceholder": "Enter your username (3-20 characters)",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "noAccount": "Don't have an account?",
+    "signupNow": "Sign up now",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginNow": "Login now",
+    "createAccount": "Create Account",
+    "confirmLogout": "Are you sure you want to logout?",
+    "errors": {
+      "fillAllFields": "Please fill in all fields.",
+      "invalidCredentials": "Invalid email or password.",
+      "emailExists": "Email already exists.",
+      "passwordMismatch": "Passwords do not match.",
+      "weakPassword": "Password must be at least 8 characters.",
+      "invalidUsername": "Username must be 3-20 characters.",
+      "signupFailed": "Signup failed. Please try again."
+    }
+  },
+  "profile": {
+    "myProfile": "My Profile",
+    "editProfile": "Edit Profile",
+    "changePassword": "Change Password",
+    "elo": "ELO",
+    "soulStones": "Soul Stones",
+    "currentFloor": "Current Floor",
+    "highestFloor": "Highest Floor",
+    "saveChanges": "Save Changes",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "noChanges": "No changes to save.",
+    "profileUpdated": "Profile updated successfully.",
+    "updateFailed": "Profile update failed.",
+    "passwordChanged": "Password changed successfully.",
+    "passwordChangeFailed": "Password change failed. Please check your current password."
   }
 }

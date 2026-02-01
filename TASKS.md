@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-01 (Phase 7 PvP 시스템 완료)
+> 최종 업데이트: 2026-02-01 (Phase 8 완료: 사용자 시스템)
 
 ---
 
@@ -169,6 +169,33 @@
   - [x] 티어별 색상 및 이펙트
 - [x] Frontend: router/index.ts PvP 라우트 추가
 - [x] i18n: 4개 언어 파일에 pvp 섹션 추가 (ko, en, ja, zh)
+- [x] **Phase 7 개선사항** (2026-02-01)
+  - [x] Redis Lua Script로 매칭 동시성 문제 해결 (원자적 연산)
+  - [x] 재접속 처리 구현 (진행 중인 PvP 전투 체크)
+  - [x] PvPView.vue를 PvP 대시보드로 전환
+  - [x] i18n: viewRankDetails, eloRange 키 추가 (4개 언어)
+  - [x] 컴파일 에러 수정 (Battle.Type → Battle.BattleType)
+
+### Phase 8: 사용자 시스템
+- [x] Backend: User 엔티티 및 UserRepository 생성
+- [x] Backend: JWT 토큰 유틸리티 구현 (JwtTokenProvider)
+- [x] Backend: Spring Security 설정 (SecurityConfig, CustomUserDetailsService, JwtAuthenticationFilter)
+- [x] Backend: 회원가입/로그인 API (AuthController, AuthService, AuthDto)
+- [x] Backend: 프로필 관리 API (UserController, UserService, UserDto)
+- [x] Backend: User-Player 1:1 연결 (회원가입 시 자동 Player 생성)
+- [x] Backend: build.gradle에 Spring Security, JWT 의존성 추가
+- [x] Backend: application.yml에 JWT 설정 추가
+- [x] DB: users 테이블 생성 (email, password, role, is_active, email_verified)
+- [x] DB: players 테이블에 user_id 외래키 추가
+- [x] Frontend: Auth API 클라이언트 (api/auth.ts)
+- [x] Frontend: Auth Pinia Store (stores/auth.ts, localStorage 토큰 저장)
+- [x] Frontend: api/client.ts에 JWT 토큰 자동 첨부 (Authorization 헤더)
+- [x] Frontend: LoginView.vue (아르데코 스타일)
+- [x] Frontend: SignupView.vue (이메일, 사용자명, 비밀번호, 선호 언어)
+- [x] Frontend: ProfileView.vue (프로필 조회/수정, 비밀번호 변경, 로그아웃)
+- [x] Frontend: router/index.ts에 인증 라우트 추가 (/login, /signup, /profile)
+- [x] Frontend: 네비게이션 가드 구현 (requiresAuth, guestOnly)
+- [x] i18n: 4개 언어 파일에 auth, profile 섹션 추가 (ko, en, ja, zh)
 
 ---
 
@@ -179,12 +206,6 @@
 ---
 
 ## 📋 예정된 작업 (Planned)
-
-### Phase 8: 사용자 시스템
-- [ ] 회원가입/로그인
-- [ ] JWT 인증
-- [ ] 프로필 관리
-- [ ] 설정 저장
 
 ### Phase 9: 코스메틱 & 상점
 - [ ] 주사위 스킨 시스템

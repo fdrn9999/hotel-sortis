@@ -25,6 +25,11 @@ spring:
 server:
   port: 8080
 
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:hotelsortis-secret-key-for-jwt-token-generation-minimum-32-characters-required}
+  expiration: 86400000  # 24시간 (밀리초)
+
 # Logging
 logging:
   level:

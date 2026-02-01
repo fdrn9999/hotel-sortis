@@ -290,5 +290,52 @@
       "reward": "報酬",
       "soulStones": "魂の石"
     }
+  },
+  "auth": {
+    "welcome": "ようこそ",
+    "login": "ログイン",
+    "signup": "新規登録",
+    "logout": "ログアウト",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "username": "ユーザー名",
+    "confirmPassword": "パスワード確認",
+    "preferredLanguage": "優先言語",
+    "emailPlaceholder": "メールアドレスを入力",
+    "passwordPlaceholder": "パスワードを入力",
+    "usernamePlaceholder": "ユーザー名を入力 (3-20文字)",
+    "confirmPasswordPlaceholder": "パスワードを再入力",
+    "noAccount": "アカウントをお持ちでないですか？",
+    "signupNow": "今すぐ登録",
+    "alreadyHaveAccount": "既にアカウントをお持ちですか？",
+    "loginNow": "ログイン",
+    "createAccount": "アカウント作成",
+    "confirmLogout": "ログアウトしますか？",
+    "errors": {
+      "fillAllFields": "すべてのフィールドを入力してください。",
+      "invalidCredentials": "メールアドレスまたはパスワードが間違っています。",
+      "emailExists": "このメールアドレスは既に使用されています。",
+      "passwordMismatch": "パスワードが一致しません。",
+      "weakPassword": "パスワードは8文字以上である必要があります。",
+      "invalidUsername": "ユーザー名は3文字以上20文字以下である必要があります。",
+      "signupFailed": "登録に失敗しました。もう一度お試しください。"
+    }
+  },
+  "profile": {
+    "myProfile": "マイプロフィール",
+    "editProfile": "プロフィール編集",
+    "changePassword": "パスワード変更",
+    "elo": "ELO",
+    "soulStones": "魂の石",
+    "currentFloor": "現在の階層",
+    "highestFloor": "最高到達階層",
+    "saveChanges": "変更を保存",
+    "currentPassword": "現在のパスワード",
+    "newPassword": "新しいパスワード",
+    "noChanges": "変更がありません。",
+    "profileUpdated": "プロフィールが更新されました。",
+    "updateFailed": "プロフィールの更新に失敗しました。",
+    "passwordChanged": "パスワードが変更されました。",
+    "passwordChangeFailed": "パスワードの変更に失敗しました。現在のパスワードを確認してください。"
   }
 }

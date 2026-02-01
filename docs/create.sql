@@ -17,17 +17,35 @@ DROP TABLE IF EXISTS battles;
 DROP TABLE IF EXISTS player_skills;
 DROP TABLE IF EXISTS campaign_progress;
 DROP TABLE IF EXISTS players;
+DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS skills;
 DROP TABLE IF EXISTS bosses;
 DROP TABLE IF EXISTS floors;
 
 -- =====================================================
--- 1. 플레이어 테이블 (players)
+-- 1. 사용자 테이블 (users)
+-- =====================================================
+CREATE TABLE users (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL COMMENT 'BCrypt 해시',
+    role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    email_verified BOOLEAN NOT NULL DEFAULT FALSE,
+    last_login_at TIMESTAMP,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+COMMENT='사용자 인증 정보';
+
+-- =====================================================
+-- 2. 플레이어 테이블 (players)
 -- =====================================================
 CREATE TABLE players (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(20) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
+    user_id BIGINT NOT NULL UNIQUE COMMENT '사용자 ID (1:1 관계)',
+    username VARCHAR(20) NOT NULL UNIQUE COMMENT '게임 내 닉네임',
     elo INT NOT NULL DEFAULT 1000,
     soul_stones INT NOT NULL DEFAULT 0,
     current_floor INT NOT NULL DEFAULT 1,
@@ -36,13 +54,15 @@ CREATE TABLE players (
     preferred_language ENUM('ko', 'en', 'ja', 'zh') NOT NULL DEFAULT 'en',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     INDEX idx_username (username),
-    INDEX idx_elo (elo)
+    INDEX idx_elo (elo),
+    INDEX idx_user_id (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-COMMENT='플레이어 정보';
+COMMENT='플레이어 게임 정보';
 
 -- =====================================================
--- 2. 스킬 테이블 (skills)
+-- 3. 스킬 테이블 (skills)
 -- =====================================================
 CREATE TABLE skills (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -67,7 +87,7 @@ CREATE TABLE skills (
 COMMENT='스킬 정보';
 
 -- =====================================================
--- 3. 플레이어-스킬 연결 테이블 (player_skills)
+-- 4. 플레이어-스킬 연결 테이블 (player_skills)
 -- =====================================================
 CREATE TABLE player_skills (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -82,7 +102,7 @@ CREATE TABLE player_skills (
 COMMENT='플레이어가 보유한 스킬';
 
 -- =====================================================
--- 4. 전투 테이블 (battles)
+-- 5. 전투 테이블 (battles)
 -- =====================================================
 CREATE TABLE battles (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -109,7 +129,7 @@ CREATE TABLE battles (
 COMMENT='전투 기록';
 
 -- =====================================================
--- 5. 전투 로그 테이블 (battle_logs)
+-- 6. 전투 로그 테이블 (battle_logs)
 -- =====================================================
 CREATE TABLE battle_logs (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -132,7 +152,7 @@ CREATE TABLE battle_logs (
 COMMENT='전투 턴별 로그';
 
 -- =====================================================
--- 6. 캠페인 진행도 테이블 (campaign_progress)
+-- 7. 캠페인 진행도 테이블 (campaign_progress)
 -- =====================================================
 CREATE TABLE campaign_progress (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -167,7 +187,7 @@ CREATE TABLE campaign_progress (
 COMMENT='캠페인 진행 상황';
 
 -- =====================================================
--- 7. 층 정보 테이블 (floors)
+-- 8. 층 정보 테이블 (floors)
 -- =====================================================
 CREATE TABLE floors (
     id INT PRIMARY KEY,
@@ -185,7 +205,7 @@ CREATE TABLE floors (
 COMMENT='층별 설정';
 
 -- =====================================================
--- 8. 보스 테이블 (bosses)
+-- 9. 보스 테이블 (bosses)
 -- =====================================================
 CREATE TABLE bosses (
     id VARCHAR(50) PRIMARY KEY,
@@ -202,7 +222,7 @@ CREATE TABLE bosses (
 COMMENT='보스 정보';
 
 -- =====================================================
--- 9. PvP 시즌 테이블 (pvp_seasons)
+-- 10. PvP 시즌 테이블 (pvp_seasons)
 -- =====================================================
 CREATE TABLE pvp_seasons (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -218,7 +238,7 @@ CREATE TABLE pvp_seasons (
 COMMENT='PvP 시즌 정보';
 
 -- =====================================================
--- 10. PvP 랭킹 테이블 (pvp_rankings)
+-- 11. PvP 랭킹 테이블 (pvp_rankings)
 -- =====================================================
 CREATE TABLE pvp_rankings (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
