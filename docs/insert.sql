@@ -711,11 +711,17 @@ INSERT INTO pvp_seasons (season_name_en, season_name_ko, season_name_ja, season_
 ('Season 1 - Grand Opening', '시즌 1 - 그랜드 오프닝', 'シーズン1 - グランドオープニング', '赛季1 - 盛大开幕', '2026-01-01', '2026-03-31', TRUE);
 
 -- =====================================================
--- 5. 테스트용 플레이어 (개발용, 운영시 제거)
+-- 5. 테스트용 사용자 및 플레이어 (개발용, 운영시 제거)
 -- =====================================================
-INSERT INTO players (username, password_hash, elo, soul_stones, preferred_language) VALUES
-('testplayer', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqDqX7jbkBBqJc9B.x3xmNYTMBq8Xci', 1000, 100, 'ko'),
-('testplayer2', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqDqX7jbkBBqJc9B.x3xmNYTMBq8Xci', 1000, 100, 'en');
+-- 테스트 사용자 생성 (비밀번호: test123)
+INSERT INTO users (email, password, role, is_active, email_verified) VALUES
+('test1@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqDqX7jbkBBqJc9B.x3xmNYTMBq8Xci', 'USER', TRUE, TRUE),
+('test2@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqDqX7jbkBBqJc9B.x3xmNYTMBq8Xci', 'USER', TRUE, TRUE);
+
+-- 테스트 플레이어 생성
+INSERT INTO players (user_id, username, elo, soul_stones, preferred_language) VALUES
+(1, 'testplayer', 1000, 100, 'ko'),
+(2, 'testplayer2', 1000, 100, 'en');
 
 -- 테스트 플레이어에게 기본 Common 스킬 해금
 INSERT INTO player_skills (player_id, skill_id)
@@ -728,6 +734,234 @@ SELECT 2, id FROM skills WHERE rarity = 'Common';
 INSERT INTO campaign_progress (player_id) VALUES (1), (2);
 
 -- =====================================================
+-- 6. 주사위 스킨 데이터 (Dice Skins)
+-- =====================================================
+INSERT INTO dice_skins (
+    skin_code,
+    name_ko, name_en, name_ja, name_zh,
+    description_ko, description_en, description_ja, description_zh,
+    rarity, price,
+    material, base_color, pip_color,
+    texture_url, metalness, roughness,
+    emissive_color, emissive_intensity,
+    is_default, is_available, preview_url
+) VALUES
+
+-- 1. Classic Ivory (기본, 무료)
+('classic_ivory',
+ '클래식 아이보리', 'Classic Ivory', 'クラシックアイボリー', '经典象牙',
+ '전통적인 상아색 주사위. 모든 여정의 시작.',
+ 'Traditional ivory-colored dice. The beginning of every journey.',
+ '伝統的なアイボリー色のサイコロ。すべての旅の始まり。',
+ '传统象牙色骰子。每段旅程的开始。',
+ 'Common', 0,
+ 'MeshStandardMaterial', '#FFFDD0', '#000000',
+ NULL, 0.0, 0.5,
+ NULL, 0.0,
+ TRUE, TRUE, '/assets/dice/classic_ivory_preview.png'),
+
+-- 2. Obsidian (Common)
+('obsidian',
+ '흑요석', 'Obsidian', 'オブシディアン', '黑曜石',
+ '검은 유리로 만든 주사위. 깊은 어둠을 담고 있습니다.',
+ 'Dice made of black glass. Holds deep darkness within.',
+ '黒いガラスで作られたサイコロ。深い闇を秘めています。',
+ '黑色玻璃骰子。蕴含深邃黑暗。',
+ 'Common', 50,
+ 'MeshPhysicalMaterial', '#0D0D0D', '#FFFFFF',
+ NULL, 0.1, 0.1,
+ NULL, 0.0,
+ FALSE, TRUE, '/assets/dice/obsidian_preview.png'),
+
+-- 3. Gold Luxe (Rare)
+('gold_luxe',
+ '골드 럭스', 'Gold Luxe', 'ゴールドリュクス', '奢华金',
+ '순금으로 제작된 고급 주사위. Mammon이 선호했던 스타일.',
+ 'Premium dice crafted from pure gold. Style favored by Mammon.',
+ '純金で作られた高級サイコロ。マモンが好んだスタイル。',
+ '纯金制作的高档骰子。Mammon钟爱的风格。',
+ 'Rare', 150,
+ 'MeshStandardMaterial', '#D4AF37', '#000000',
+ NULL, 1.0, 0.2,
+ '#FFD700', 0.1,
+ FALSE, TRUE, '/assets/dice/gold_luxe_preview.png'),
+
+-- 4. Ruby Crimson (Rare)
+('ruby_crimson',
+ '루비 크림슨', 'Ruby Crimson', 'ルビークリムゾン', '红宝石深红',
+ '루비처럼 빛나는 붉은 주사위. 열정과 용기의 상징.',
+ 'Red dice shining like ruby. Symbol of passion and courage.',
+ 'ルビーのように輝く赤いサイコロ。情熱と勇気の象徴。',
+ '如红宝石般闪耀的红色骰子。激情与勇气的象征。',
+ 'Rare', 150,
+ 'MeshPhongMaterial', '#8B0000', '#FFFFFF',
+ NULL, 0.8, 0.3,
+ '#FF0000', 0.05,
+ FALSE, TRUE, '/assets/dice/ruby_crimson_preview.png'),
+
+-- 5. Emerald Glow (Epic)
+('emerald_glow',
+ '에메랄드 글로우', 'Emerald Glow', 'エメラルドグロー', '翡翠光芒',
+ '은은하게 빛나는 에메랄드 주사위. 생명의 기운이 느껴집니다.',
+ 'Gently glowing emerald dice. You can feel the energy of life.',
+ 'ほのかに輝くエメラルドのサイコロ。生命の気が感じられます。',
+ '微微发光的翡翠骰子。能感受到生命的气息。',
+ 'Epic', 300,
+ 'MeshPhysicalMaterial', '#50C878', '#000000',
+ NULL, 0.5, 0.2,
+ '#50C878', 0.3,
+ FALSE, TRUE, '/assets/dice/emerald_glow_preview.png'),
+
+-- 6. Sapphire Ice (Epic)
+('sapphire_ice',
+ '사파이어 아이스', 'Sapphire Ice', 'サファイアアイス', '蓝宝石冰',
+ '차갑고 투명한 사파이어 주사위. 얼어붙은 시간의 파편.',
+ 'Cold and transparent sapphire dice. Fragment of frozen time.',
+ '冷たく透明なサファイアのサイコロ。凍りついた時間の欠片。',
+ '冰冷透明的蓝宝石骰子。冻结时间的碎片。',
+ 'Epic', 300,
+ 'MeshPhysicalMaterial', '#4682B4', '#FFFFFF',
+ NULL, 0.3, 0.1,
+ '#87CEEB', 0.2,
+ FALSE, TRUE, '/assets/dice/sapphire_ice_preview.png'),
+
+-- 7. Amethyst Dream (Epic)
+('amethyst_dream',
+ '자수정 꿈', 'Amethyst Dream', 'アメジストドリーム', '紫水晶梦境',
+ '몽환적인 보라색 주사위. 꿈과 현실의 경계.',
+ 'Dreamlike purple dice. Border between dream and reality.',
+ '夢幻的な紫色のサイコロ。夢と現実の境界。',
+ '梦幻般的紫色骰子。梦境与现实的边界。',
+ 'Epic', 300,
+ 'MeshStandardMaterial', '#9966CC', '#FFFFFF',
+ NULL, 0.4, 0.4,
+ '#9966CC', 0.15,
+ FALSE, TRUE, '/assets/dice/amethyst_dream_preview.png'),
+
+-- 8. Diamond Pure (Legendary)
+('diamond_pure',
+ '다이아몬드 퓨어', 'Diamond Pure', 'ダイヤモンドピュア', '钻石纯净',
+ '완벽하게 투명한 다이아몬드 주사위. 순수함의 극치.',
+ 'Perfectly transparent diamond dice. The pinnacle of purity.',
+ '完全に透明なダイヤモンドのサイコロ。純粋さの極致。',
+ '完美透明的钻石骰子。纯净的极致。',
+ 'Legendary', 500,
+ 'MeshPhysicalMaterial', '#FFFFFF', '#000000',
+ NULL, 0.0, 0.0,
+ NULL, 0.0,
+ FALSE, TRUE, '/assets/dice/diamond_pure_preview.png'),
+
+-- 9. Void Walker (Legendary)
+('void_walker',
+ '공허의 방랑자', 'Void Walker', 'ヴォイドウォーカー', '虚空行者',
+ '검은 공허 주사위. 아무것도 보이지 않지만 모든 것을 품고 있습니다.',
+ 'Black void dice. Sees nothing but holds everything.',
+ '黒い虚無のサイコロ。何も見えないが、すべてを包んでいます。',
+ '黑色虚空骰子。看不见任何东西却包含一切。',
+ 'Legendary', 500,
+ 'MeshStandardMaterial', '#000000', '#000000',
+ NULL, 0.0, 0.8,
+ '#6A0DAD', 0.4,
+ FALSE, TRUE, '/assets/dice/void_walker_preview.png'),
+
+-- 10. Cosmic Fate (Legendary)
+('cosmic_fate',
+ '우주의 운명', 'Cosmic Fate', 'コズミックフェイト', '宇宙命运',
+ '보라색 우주 주사위. Lucifuge의 본질을 담고 있습니다.',
+ 'Purple cosmic dice. Contains the essence of Lucifuge.',
+ '紫色の宇宙のサイコロ。ルキフゲの本質を秘めています。',
+ '紫色宇宙骰子。蕴含Lucifuge的本质。',
+ 'Legendary', 500,
+ 'MeshPhysicalMaterial', '#6A0DAD', '#FFFFFF',
+ NULL, 0.2, 0.3,
+ '#FF10F0', 0.5,
+ FALSE, TRUE, '/assets/dice/cosmic_fate_preview.png');
+
+-- =====================================================
+-- 7. 아바타 데이터 (Avatars)
+-- =====================================================
+INSERT INTO avatars (
+    avatar_code,
+    name_ko, name_en, name_ja, name_zh,
+    description_ko, description_en, description_ja, description_zh,
+    rarity, price,
+    avatar_url, is_default, is_available, preview_url
+) VALUES
+
+-- 1. The Wanderer (기본, 무료)
+('the_wanderer',
+ '방랑자', 'The Wanderer', '放浪者', '流浪者',
+ '폭우를 뚫고 호텔에 들어선 여행자. 당신의 이야기는 여기서 시작됩니다.',
+ 'A traveler who entered the hotel through the storm. Your story begins here.',
+ '豪雨を抜けてホテルに入った旅行者。あなたの物語はここから始まります。',
+ '穿过暴雨进入酒店的旅行者。你的故事从这里开始。',
+ 'Common', 0,
+ '/assets/avatars/the_wanderer.png', TRUE, TRUE, '/assets/avatars/the_wanderer_preview.png'),
+
+-- 2. Gentleman Scholar (Rare)
+('gentleman_scholar',
+ '신사 학자', 'Gentleman Scholar', 'ジェントルマンスカラー', '绅士学者',
+ '1920년대 신사복을 입은 지식인. 우아함과 지성의 상징.',
+ 'An intellectual in 1920s gentleman attire. Symbol of elegance and wisdom.',
+ '1920年代の紳士服を着た知識人。優雅さと知性の象徴。',
+ '身着1920年代绅士服的知识分子。优雅与智慧的象征。',
+ 'Rare', 200,
+ '/assets/avatars/gentleman_scholar.png', FALSE, TRUE, '/assets/avatars/gentleman_scholar_preview.png'),
+
+-- 3. Mysterious Stranger (Epic)
+('mysterious_stranger',
+ '미스터리한 방랑자', 'Mysterious Stranger', 'ミステリアスストレンジャー', '神秘陌生人',
+ '정체를 알 수 없는 검은 코트의 방문자. 진실을 찾아 헤맵니다.',
+ 'An unknown visitor in a black coat. Searching for the truth.',
+ '正体不明の黒いコートの訪問者。真実を求めてさまよっています。',
+ '身份不明的黑色大衣访客。寻找真相。',
+ 'Epic', 350,
+ '/assets/avatars/mysterious_stranger.png', FALSE, TRUE, '/assets/avatars/mysterious_stranger_preview.png'),
+
+-- 4. Shadow Walker (Epic)
+('shadow_walker',
+ '그림자 워커', 'Shadow Walker', 'シャドウウォーカー', '暗影行者',
+ '그림자 속을 걷는 자. 보이지 않는 것을 봅니다.',
+ 'One who walks in shadows. Sees the unseen.',
+ '影の中を歩く者。見えないものを見ます。',
+ '行走于阴影中的人。看见看不见的东西。',
+ 'Epic', 350,
+ '/assets/avatars/shadow_walker.png', FALSE, TRUE, '/assets/avatars/shadow_walker_preview.png'),
+
+-- 5. Cosmic Arbiter (Legendary)
+('cosmic_arbiter',
+ '우주의 중재자', 'Cosmic Arbiter', 'コズミックアービター', '宇宙仲裁者',
+ '운명을 중재하는 자. Lucifuge와 같은 존재가 되었습니다.',
+ 'One who arbitrates fate. You have become like Lucifuge.',
+ '運命を仲裁する者。ルキフゲのような存在になりました。',
+ '仲裁命运的人。你已经成为像Lucifuge一样的存在。',
+ 'Legendary', 600,
+ '/assets/avatars/cosmic_arbiter.png', FALSE, TRUE, '/assets/avatars/cosmic_arbiter_preview.png');
+
+-- =====================================================
+-- 8. 테스트 플레이어에게 기본 코스메틱 지급
+-- =====================================================
+-- 기본 주사위 스킨 지급
+INSERT INTO player_cosmetics (player_id, cosmetic_type, cosmetic_id)
+SELECT 1, 'DICE_SKIN', id FROM dice_skins WHERE skin_code = 'classic_ivory';
+
+INSERT INTO player_cosmetics (player_id, cosmetic_type, cosmetic_id)
+SELECT 2, 'DICE_SKIN', id FROM dice_skins WHERE skin_code = 'classic_ivory';
+
+-- 기본 아바타 지급
+INSERT INTO player_cosmetics (player_id, cosmetic_type, cosmetic_id)
+SELECT 1, 'AVATAR', id FROM avatars WHERE avatar_code = 'the_wanderer';
+
+INSERT INTO player_cosmetics (player_id, cosmetic_type, cosmetic_id)
+SELECT 2, 'AVATAR', id FROM avatars WHERE avatar_code = 'the_wanderer';
+
+-- 기본 코스메틱 장착
+UPDATE players
+SET equipped_dice_skin_id = (SELECT id FROM dice_skins WHERE skin_code = 'classic_ivory'),
+    equipped_avatar_id = (SELECT id FROM avatars WHERE avatar_code = 'the_wanderer')
+WHERE id IN (1, 2);
+
+-- =====================================================
 -- 완료 메시지
 -- =====================================================
 SELECT 'Data insertion complete!' AS message;
@@ -735,3 +969,5 @@ SELECT rarity, COUNT(*) as count FROM skills GROUP BY rarity;
 SELECT 'Total skills:' AS label, COUNT(*) AS total FROM skills;
 SELECT 'Total floors:' AS label, COUNT(*) AS total FROM floors;
 SELECT 'Total bosses:' AS label, COUNT(*) AS total FROM bosses;
+SELECT 'Total dice skins:' AS label, COUNT(*) AS total FROM dice_skins;
+SELECT 'Total avatars:' AS label, COUNT(*) AS total FROM avatars;

@@ -12,6 +12,9 @@
 -- =====================================================
 -- 기존 테이블 삭제 (개발용, 운영시 주석 처리)
 -- =====================================================
+DROP TABLE IF EXISTS player_cosmetics;
+DROP TABLE IF EXISTS dice_skins;
+DROP TABLE IF EXISTS avatars;
 DROP TABLE IF EXISTS battle_logs;
 DROP TABLE IF EXISTS battles;
 DROP TABLE IF EXISTS player_skills;
@@ -51,6 +54,8 @@ CREATE TABLE players (
     current_floor INT NOT NULL DEFAULT 1,
     highest_floor_cleared INT NOT NULL DEFAULT 0,
     equipped_skill_ids JSON COMMENT '장착된 스킬 ID 배열 (최대 4개)',
+    equipped_dice_skin_id BIGINT COMMENT '장착 중인 주사위 스킨 ID',
+    equipped_avatar_id BIGINT COMMENT '장착 중인 아바타 ID',
     preferred_language ENUM('ko', 'en', 'ja', 'zh') NOT NULL DEFAULT 'en',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -259,7 +264,85 @@ CREATE TABLE pvp_rankings (
 COMMENT='PvP 시즌별 랭킹';
 
 -- =====================================================
+-- 12. 주사위 스킨 테이블 (dice_skins)
+-- =====================================================
+CREATE TABLE dice_skins (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    skin_code VARCHAR(50) NOT NULL UNIQUE COMMENT '스킨 고유 코드',
+    name_ko VARCHAR(100) NOT NULL,
+    name_en VARCHAR(100) NOT NULL,
+    name_ja VARCHAR(100) NOT NULL,
+    name_zh VARCHAR(100) NOT NULL,
+    description_ko TEXT NOT NULL,
+    description_en TEXT NOT NULL,
+    description_ja TEXT NOT NULL,
+    description_zh TEXT NOT NULL,
+    rarity ENUM('Common', 'Rare', 'Epic', 'Legendary') NOT NULL,
+    price INT NOT NULL COMMENT '영혼석 가격 (0이면 기본 제공)',
+    material VARCHAR(50) NOT NULL DEFAULT 'MeshStandardMaterial' COMMENT 'Three.js 재질 타입',
+    base_color VARCHAR(7) NOT NULL COMMENT '주사위 기본 색상 (#RRGGBB)',
+    pip_color VARCHAR(7) NOT NULL COMMENT '주사위 눈 색상 (#RRGGBB)',
+    texture_url VARCHAR(255) COMMENT '텍스처 이미지 URL (선택)',
+    metalness FLOAT DEFAULT 0.0 COMMENT '금속성 (0.0-1.0)',
+    roughness FLOAT DEFAULT 0.5 COMMENT '거칠기 (0.0-1.0)',
+    emissive_color VARCHAR(7) COMMENT '발광 색상 (#RRGGBB, 선택)',
+    emissive_intensity FLOAT DEFAULT 0.0 COMMENT '발광 강도 (0.0-1.0)',
+    is_default BOOLEAN DEFAULT FALSE COMMENT '기본 스킨 여부',
+    is_available BOOLEAN DEFAULT TRUE COMMENT '구매 가능 여부',
+    preview_url VARCHAR(255) COMMENT '미리보기 이미지 URL',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_rarity (rarity),
+    INDEX idx_is_available (is_available),
+    INDEX idx_skin_code (skin_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+COMMENT='주사위 스킨 정보 (코스메틱)';
+
+-- =====================================================
+-- 13. 아바타 테이블 (avatars)
+-- =====================================================
+CREATE TABLE avatars (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    avatar_code VARCHAR(50) NOT NULL UNIQUE COMMENT '아바타 고유 코드',
+    name_ko VARCHAR(100) NOT NULL,
+    name_en VARCHAR(100) NOT NULL,
+    name_ja VARCHAR(100) NOT NULL,
+    name_zh VARCHAR(100) NOT NULL,
+    description_ko TEXT NOT NULL,
+    description_en TEXT NOT NULL,
+    description_ja TEXT NOT NULL,
+    description_zh TEXT NOT NULL,
+    rarity ENUM('Common', 'Rare', 'Epic', 'Legendary') NOT NULL,
+    price INT NOT NULL COMMENT '영혼석 가격 (0이면 기본 제공)',
+    avatar_url VARCHAR(255) NOT NULL COMMENT '아바타 이미지 URL',
+    is_default BOOLEAN DEFAULT FALSE COMMENT '기본 아바타 여부',
+    is_available BOOLEAN DEFAULT TRUE COMMENT '구매 가능 여부',
+    preview_url VARCHAR(255) COMMENT '미리보기 이미지 URL',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_rarity (rarity),
+    INDEX idx_is_available (is_available),
+    INDEX idx_avatar_code (avatar_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+COMMENT='아바타 정보 (코스메틱)';
+
+-- =====================================================
+-- 14. 플레이어 코스메틱 소유 테이블 (player_cosmetics)
+-- =====================================================
+CREATE TABLE player_cosmetics (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    player_id BIGINT NOT NULL,
+    cosmetic_type ENUM('DICE_SKIN', 'AVATAR') NOT NULL,
+    cosmetic_id BIGINT NOT NULL COMMENT '코스메틱 아이템 ID (dice_skins.id or avatars.id)',
+    purchased_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE,
+    UNIQUE KEY uk_player_cosmetic (player_id, cosmetic_type, cosmetic_id),
+    INDEX idx_player_id (player_id),
+    INDEX idx_cosmetic_type (cosmetic_type),
+    INDEX idx_player_type (player_id, cosmetic_type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+COMMENT='플레이어가 소유한 코스메틱 아이템';
+
+-- =====================================================
 -- 완료 메시지
 -- =====================================================
-SELECT 'Table creation complete!' AS message;
+SELECT 'Table creation complete! (14 tables)' AS message;
 SHOW TABLES;

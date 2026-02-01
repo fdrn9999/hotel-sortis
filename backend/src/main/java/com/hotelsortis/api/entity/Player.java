@@ -47,6 +47,12 @@ public class Player {
     @Column(name = "equipped_skill_ids", columnDefinition = "JSON")
     private String equippedSkillIds;
 
+    @Column(name = "equipped_dice_skin_id")
+    private Long equippedDiceSkinId;
+
+    @Column(name = "equipped_avatar_id")
+    private Long equippedAvatarId;
+
     @Column(name = "preferred_language", nullable = false, length = 2)
     @Builder.Default
     @Enumerated(EnumType.STRING)
