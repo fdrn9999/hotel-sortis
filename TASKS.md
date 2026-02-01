@@ -136,6 +136,11 @@
 - [x] Frontend: SkillLoadoutView.vue에 캠페인 컨텍스트 추가
 - [x] Frontend: router/index.ts 캠페인 라우트 추가
 - [x] i18n: 4개 언어 파일에 campaign, floors, bosses 섹션 추가 (ko, en, ja, zh)
+- [x] 리팩토링: BossId enum 도입 (타입 안전성 향상)
+  - [x] BossId.java enum 클래스 생성 (MAMMON, ELIGOR, LUCIFUGE)
+  - [x] CampaignService에서 BossId enum 사용
+  - [x] HandRank enum 비교 버그 수정 (PairMasterEffect, SafeBetEffect)
+  - [x] BossIdTest.java 단위 테스트 추가
 
 ---
 
