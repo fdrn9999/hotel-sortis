@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-01 (Phase 9 완료: 코스메틱 & 상점 시스템)
+> 최종 업데이트: 2026-02-02 (Phase 10 Part 1 완료: 네비게이션 시스템)
 
 ---
 
@@ -262,18 +262,36 @@
 
 ## 🔄 진행 중 (In Progress)
 
-현재 진행 중인 작업 없음
+### Phase 10: 폴리싱
+- [x] confirm() 모달 시스템 (CLAUDE.md 3.3.1 규칙 준수)
+  - ConfirmModal.vue, useConfirmModal.ts 이미 구현됨
+  - ProfileView.vue, PvPMatchmakingView.vue에서 사용 중
+- [x] 네비게이션 시스템 (CLAUDE.md 3.3.2 규칙 100% 준수)
+  - AppNavigation.vue 공통 컴포넌트 생성
+  - 7개 화면 수정 (ProfileView, CollectionView, RankView, PvPView, PvPMatchmakingView, BattleView, HomeView)
+  - 모든 화면에 홈/뒤로가기/설정 버튼 추가
+- [ ] UI/UX 개선
+  - [ ] 로딩 애니메이션 통일
+  - [ ] 트랜지션/애니메이션 개선
+  - [ ] 버튼 hover/active 상태 일관성
+- [ ] 반응형 모바일 최적화
+  - [ ] 터치 제스처 지원 강화
+  - [ ] 모바일 화면 레이아웃 검증
+  - [ ] 성능 최적화 (모바일)
+- [ ] 성능 최적화
+  - [ ] 이미지/리소스 최적화
+  - [ ] 코드 스플리팅
+  - [ ] 렌더링 최적화
+- [ ] 사운드 디자인 (선택적)
+  - [ ] BGM 추가
+  - [ ] 효과음 (주사위, 버튼 등)
+- [ ] 버그 수정
 
 ---
 
 ## 📋 예정된 작업 (Planned)
 
-### Phase 10: 폴리싱
-- [ ] 사운드 디자인 (BGM, SFX)
-- [ ] UI/UX 개선
-- [ ] 반응형 모바일 최적화
-- [ ] 성능 최적화
-- [ ] 버그 수정
+_현재 예정된 작업 없음_
 
 ---
 
