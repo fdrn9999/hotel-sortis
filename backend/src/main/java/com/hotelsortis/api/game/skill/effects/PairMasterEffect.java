@@ -1,5 +1,6 @@
 package com.hotelsortis.api.game.skill.effects;
 
+import com.hotelsortis.api.game.HandEvaluator;
 import com.hotelsortis.api.game.HandEvaluator.HandResult;
 import com.hotelsortis.api.game.skill.GameState;
 import com.hotelsortis.api.game.skill.SkillEffect;
@@ -41,7 +42,7 @@ public class PairMasterEffect implements SkillEffect {
             }
 
             // 페어일 때만 효과 발동
-            if ("Pair".equalsIgnoreCase(hand.getRank())) {
+            if (hand.getRank() == HandEvaluator.HandRank.PAIR) {
                 int originalDamage = state.getDamage();
                 int newDamage = originalDamage + DAMAGE_BONUS;
 
@@ -78,7 +79,7 @@ public class PairMasterEffect implements SkillEffect {
     public boolean canApply(GameState state) {
         // 페어일 때만 발동
         HandResult hand = state.getHand();
-        return hand != null && "Pair".equalsIgnoreCase(hand.getRank());
+        return hand != null && hand.getRank() == HandEvaluator.HandRank.PAIR;
     }
 
     @Override

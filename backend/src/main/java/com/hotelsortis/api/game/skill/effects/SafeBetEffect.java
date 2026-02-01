@@ -1,5 +1,6 @@
 package com.hotelsortis.api.game.skill.effects;
 
+import com.hotelsortis.api.game.HandEvaluator;
 import com.hotelsortis.api.game.HandEvaluator.HandResult;
 import com.hotelsortis.api.game.skill.GameState;
 import com.hotelsortis.api.game.skill.SkillEffect;
@@ -39,7 +40,7 @@ public class SafeBetEffect implements SkillEffect {
             }
 
             // 노 핸드일 때만 효과 발동
-            if ("NoHand".equalsIgnoreCase(hand.getRank())) {
+            if (hand.getRank() == HandEvaluator.HandRank.NO_HAND) {
                 int originalDamage = state.getDamage();
                 int newDamage = originalDamage * 2;
 
@@ -76,7 +77,7 @@ public class SafeBetEffect implements SkillEffect {
     public boolean canApply(GameState state) {
         // 노 핸드일 때만 발동
         HandResult hand = state.getHand();
-        return hand != null && "NoHand".equalsIgnoreCase(hand.getRank());
+        return hand != null && hand.getRank() == HandEvaluator.HandRank.NO_HAND;
     }
 
     @Override

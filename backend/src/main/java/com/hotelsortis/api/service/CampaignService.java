@@ -293,7 +293,7 @@ public class CampaignService {
 
         // For boss floors, skills come from boss phase config
         if (floor.getFloorType() == Floor.FloorType.BOSS && floor.getBossId() != null) {
-            return getBossPhaseSkills(floor.getBossId(), 1);
+            return getBossPhaseSkills(BossId.fromValue(floor.getBossId()), 1);
         }
 
         // For normal/elite floors, pick random skills based on AI level
