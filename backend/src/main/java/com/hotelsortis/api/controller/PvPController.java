@@ -4,6 +4,7 @@ import com.hotelsortis.api.dto.BattleDto;
 import com.hotelsortis.api.dto.PvPDto;
 import com.hotelsortis.api.entity.Battle;
 import com.hotelsortis.api.entity.Player;
+import com.hotelsortis.api.repository.BattleRepository;
 import com.hotelsortis.api.repository.PlayerRepository;
 import com.hotelsortis.api.service.BattleService;
 import com.hotelsortis.api.service.MatchmakingService;
@@ -14,6 +15,8 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -30,10 +33,11 @@ public class PvPController {
     private final MatchmakingService matchmakingService;
     private final BattleService battleService;
     private final PlayerRepository playerRepository;
+    private final BattleRepository battleRepository;
     private final SimpMessagingTemplate messagingTemplate;
 
     /**
-     * 매칭 대기열 참가
+     * 매칭 대기열 참가 (재접속 처리 포함)
      */
     @PostMapping("/matchmaking/join")
     public ResponseEntity<EntityModel<PvPDto.JoinQueueResponse>> joinQueue(
@@ -41,22 +45,52 @@ public class PvPController {
     ) {
         Long playerId = request.getPlayerId();
 
-        // 이미 대기 중인지 확인
+        Player player = playerRepository.findById(playerId)
+            .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+
+        // 1. 진행 중인 PvP 전투가 있는지 확인 (재접속 처리)
+        Optional<Battle> ongoingBattle = battleRepository.findOngoingPvPBattle(
+            playerId,
+            Battle.Type.PVP,
+            Battle.Status.ONGOING
+        );
+
+        if (ongoingBattle.isPresent()) {
+            Battle battle = ongoingBattle.get();
+            log.info("Player {} has ongoing PvP battle {}, resuming instead of joining queue",
+                playerId, battle.getId());
+
+            PvPDto.JoinQueueResponse response = PvPDto.JoinQueueResponse.builder()
+                .playerId(playerId)
+                .elo(player.getElo())
+                .queueSize(0L)
+                .status("ALREADY_IN_BATTLE")
+                .battleId(battle.getId())
+                .build();
+
+            EntityModel<PvPDto.JoinQueueResponse> resource = EntityModel.of(response);
+            resource.add(linkTo(methodOn(BattleController.class).getBattleStatus(battle.getId()))
+                .withRel("battle"));
+            resource.add(Link.of("/ws", "websocket"));
+
+            return ResponseEntity.ok(resource);
+        }
+
+        // 2. 이미 대기 중인지 확인
         if (matchmakingService.isInQueue(playerId)) {
+            log.warn("Player {} already in matchmaking queue", playerId);
             return ResponseEntity.badRequest().build();
         }
 
-        // 대기열 참가
+        // 3. 대기열 참가
         matchmakingService.joinQueue(playerId);
-
-        Player player = playerRepository.findById(playerId)
-            .orElseThrow(() -> new IllegalArgumentException("Player not found"));
 
         PvPDto.JoinQueueResponse response = PvPDto.JoinQueueResponse.builder()
             .playerId(playerId)
             .elo(player.getElo())
             .queueSize(matchmakingService.getQueueSize())
             .status("WAITING")
+            .battleId(null)
             .build();
 
         EntityModel<PvPDto.JoinQueueResponse> resource = EntityModel.of(response);
@@ -77,16 +111,14 @@ public class PvPController {
     public ResponseEntity<EntityModel<PvPDto.MatchFoundResponse>> findMatch(
         @PathVariable Long playerId
     ) {
-        // 상대 찾기
+        // 상대 찾기 (원자적 연산: 찾기 + 큐에서 제거)
+        // findOpponent()가 Lua Script로 매칭 확정까지 자동 처리
         Long opponentId = matchmakingService.findOpponent(playerId);
 
         if (opponentId == null) {
             // 아직 상대 없음
             return ResponseEntity.noContent().build();
         }
-
-        // 매칭 확정
-        matchmakingService.confirmMatch(playerId, opponentId);
 
         // PvP 전투 생성
         Player player1 = playerRepository.findById(playerId)

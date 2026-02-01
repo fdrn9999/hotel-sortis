@@ -249,6 +249,8 @@
     "losses": "패",
     "draws": "무",
     "winRate": "승률",
+    "eloRange": "ELO 범위",
+    "viewRankDetails": "랭크 상세 보기",
     "tiers": {
       "bronze": "브론즈",
       "silver": "실버",

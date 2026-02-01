@@ -249,6 +249,8 @@
     "losses": "Losses",
     "draws": "Draws",
     "winRate": "Win Rate",
+    "eloRange": "ELO Range",
+    "viewRankDetails": "View Rank Details",
     "tiers": {
       "bronze": "Bronze",
       "silver": "Silver",

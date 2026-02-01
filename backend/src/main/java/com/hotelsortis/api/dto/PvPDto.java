@@ -31,7 +31,8 @@ public class PvPDto {
         private Long playerId;
         private Integer elo;
         private Long queueSize;
-        private String status; // "WAITING", "MATCH_FOUND"
+        private String status; // "WAITING", "ALREADY_IN_BATTLE"
+        private Long battleId; // status가 "ALREADY_IN_BATTLE"일 때 전투 ID
     }
 
     /**

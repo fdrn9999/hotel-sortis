@@ -249,6 +249,8 @@
     "losses": "负",
     "draws": "平",
     "winRate": "胜率",
+    "eloRange": "ELO范围",
+    "viewRankDetails": "查看排位详情",
     "tiers": {
       "bronze": "青铜",
       "silver": "白银",

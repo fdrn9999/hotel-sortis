@@ -249,6 +249,8 @@
     "losses": "負",
     "draws": "引",
     "winRate": "勝率",
+    "eloRange": "ELO範囲",
+    "viewRankDetails": "ランク詳細を見る",
     "tiers": {
       "bronze": "ブロンズ",
       "silver": "シルバー",

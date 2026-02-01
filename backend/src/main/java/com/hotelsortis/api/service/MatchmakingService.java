@@ -5,10 +5,13 @@ import com.hotelsortis.api.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +37,36 @@ public class MatchmakingService {
     private static final int RANGE_EXPANSION_INTERVAL_SECONDS = 30;
     private static final int RANGE_EXPANSION_AMOUNT = 50;
     private static final int MAX_WAIT_TIME_SECONDS = 180; // 3분
+
+    /**
+     * Redis Lua Script for atomic find-and-match operation
+     *
+     * Race condition 방지: 후보 찾기 + 큐에서 제거를 원자적으로 처리
+     */
+    private static final String FIND_AND_MATCH_SCRIPT =
+        "local queue_key = KEYS[1]\n" +
+        "local timestamp_key_prefix = KEYS[2]\n" +
+        "local player_id = ARGV[1]\n" +
+        "local min_elo = tonumber(ARGV[2])\n" +
+        "local max_elo = tonumber(ARGV[3])\n" +
+        "\n" +
+        "-- ELO 범위 내 후보 검색\n" +
+        "local candidates = redis.call('ZRANGEBYSCORE', queue_key, min_elo, max_elo)\n" +
+        "\n" +
+        "-- 자신 제외하고 첫 번째 상대 선택\n" +
+        "for i, candidate_id in ipairs(candidates) do\n" +
+        "    if candidate_id ~= player_id then\n" +
+        "        -- 매칭 확정: 두 플레이어 큐에서 원자적으로 제거\n" +
+        "        redis.call('ZREM', queue_key, player_id)\n" +
+        "        redis.call('ZREM', queue_key, candidate_id)\n" +
+        "        redis.call('DEL', timestamp_key_prefix .. player_id)\n" +
+        "        redis.call('DEL', timestamp_key_prefix .. candidate_id)\n" +
+        "        \n" +
+        "        return candidate_id\n" +
+        "    end\n" +
+        "end\n" +
+        "\n" +
+        "return nil";
 
     /**
      * 매칭 대기열에 플레이어 추가
@@ -71,7 +104,10 @@ public class MatchmakingService {
     }
 
     /**
-     * 상대 찾기
+     * 상대 찾기 (원자적 연산)
+     *
+     * Redis Lua Script를 사용하여 후보 찾기 + 큐에서 제거를 원자적으로 처리
+     * Race condition 방지: 두 플레이어가 동시에 같은 상대와 매칭되는 것을 방지
      *
      * @param playerId 매칭을 찾을 플레이어 ID
      * @return 매칭된 상대 플레이어 ID (없으면 null)
@@ -105,38 +141,48 @@ public class MatchmakingService {
             log.info("Player {} wait time exceeded 3 minutes, removing ELO restriction", playerId);
         }
 
-        // ELO 범위 내 상대 검색
+        // ELO 범위 계산
         int minElo = playerElo - range;
         int maxElo = playerElo + range;
 
-        Set<String> candidates = redisTemplate.opsForZSet().rangeByScore(
+        // Redis Lua Script 실행 (원자적 연산)
+        DefaultRedisScript<String> script = new DefaultRedisScript<>();
+        script.setScriptText(FIND_AND_MATCH_SCRIPT);
+        script.setResultType(String.class);
+
+        List<String> keys = Arrays.asList(
             MATCHMAKING_QUEUE_KEY,
-            minElo,
-            maxElo
+            MATCHMAKING_TIMESTAMP_KEY
         );
 
-        if (candidates == null || candidates.isEmpty()) {
+        List<String> args = Arrays.asList(
+            playerId.toString(),
+            String.valueOf(minElo),
+            String.valueOf(maxElo)
+        );
+
+        String opponentIdStr = redisTemplate.execute(script, keys, args.toArray());
+
+        if (opponentIdStr == null) {
             log.debug("No opponent found for player {} (ELO: {}, range: ±{})", playerId, playerElo, range);
             return null;
         }
 
-        // 자신 제외하고 첫 번째 상대 선택
-        for (String candidateIdStr : candidates) {
-            Long candidateId = Long.parseLong(candidateIdStr);
-            if (!candidateId.equals(playerId)) {
-                log.info("Match found: Player {} (ELO: {}) vs Player {} (range: ±{})",
-                    playerId, playerElo, candidateId, range);
-                return candidateId;
-            }
-        }
+        Long opponentId = Long.parseLong(opponentIdStr);
+        log.info("Match found (atomic): Player {} (ELO: {}) vs Player {} (range: ±{})",
+            playerId, playerElo, opponentId, range);
 
-        log.debug("No opponent found for player {} (only self in range)", playerId);
-        return null;
+        return opponentId;
     }
 
     /**
      * 매칭 확정 (두 플레이어를 큐에서 제거)
+     *
+     * 참고: findOpponent() 메서드가 Lua Script를 사용하여 자동으로 큐에서 제거하므로,
+     * 이 메서드는 findOpponent() 호출 후 별도로 호출할 필요가 없습니다.
+     * (레거시 호환성을 위해 남겨둠)
      */
+    @Deprecated
     public void confirmMatch(Long player1Id, Long player2Id) {
         leaveQueue(player1Id);
         leaveQueue(player2Id);
