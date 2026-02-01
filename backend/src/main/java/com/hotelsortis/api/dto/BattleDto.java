@@ -19,6 +19,9 @@ public class BattleDto {
         private String battleType; // PVE or PVP
         private Integer floor;
         private List<Long> equippedSkills; // max 4
+        private String bossId;
+        private Integer bossPhase;
+        private List<Long> enemySkills;
     }
 
     @Data
@@ -34,6 +37,10 @@ public class BattleDto {
         private Integer enemyHp;
         private Integer turnCount;
         private String status;
+        private String bossId;
+        private Integer bossPhase;
+        private Integer bossTotalPhases;
+        private String bossName;
     }
 
     @Data
@@ -58,6 +65,19 @@ public class BattleDto {
         private String currentTurn;
         private String status;
         private EnemyTurnResult enemyTurn; // AI의 턴 결과 (PvE)
+        private BossPhaseTransition bossPhaseTransition; // 보스 페이즈 전환 정보
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class BossPhaseTransition {
+        private String bossId;
+        private Integer newPhase;
+        private Integer totalPhases;
+        private String quote;
+        private String newPattern;
     }
 
     @Data
@@ -103,6 +123,8 @@ public class BattleDto {
                 .enemyHp(battle.getEnemyHp())
                 .turnCount(battle.getTurnCount())
                 .status(battle.getStatus().name())
+                .bossId(battle.getBossId())
+                .bossPhase(battle.getBossPhase())
                 .build();
     }
 }

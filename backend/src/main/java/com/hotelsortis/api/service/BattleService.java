@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hotelsortis.api.dto.BattleDto;
 import com.hotelsortis.api.entity.Battle;
+import com.hotelsortis.api.entity.Boss;
 import com.hotelsortis.api.game.HandEvaluator;
 import com.hotelsortis.api.game.skill.GameState;
 import com.hotelsortis.api.game.skill.SkillEffectEngine;
 import com.hotelsortis.api.game.skill.SkillTrigger;
 import com.hotelsortis.api.repository.BattleRepository;
+import com.hotelsortis.api.repository.BossRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ import java.util.List;
 public class BattleService {
 
     private final BattleRepository battleRepository;
+    private final BossRepository bossRepository;
     private final HandEvaluator handEvaluator;
     private final SkillEffectEngine skillEffectEngine;
     private final ObjectMapper objectMapper;
@@ -46,6 +49,8 @@ public class BattleService {
                 .playerId(request.getPlayerId())
                 .battleType(Battle.BattleType.valueOf(request.getBattleType()))
                 .floor(request.getFloor())
+                .bossId(request.getBossId())
+                .bossPhase(request.getBossPhase() != null ? request.getBossPhase() : 1)
                 .playerHp(100)  // HP is always 100
                 .enemyHp(100)   // HP is always 100
                 .turnCount(1)
@@ -53,6 +58,8 @@ public class BattleService {
                 .status(Battle.Status.ONGOING)
                 .playerEquippedSkills(request.getEquippedSkills() != null ?
                         request.getEquippedSkills().toString() : "[]")
+                .enemyEquippedSkills(request.getEnemySkills() != null ?
+                        request.getEnemySkills().toString() : "[]")
                 .build();
 
         battle = battleRepository.save(battle);
@@ -125,6 +132,18 @@ public class BattleService {
 
         // 5. Check if enemy defeated
         if (newEnemyHp <= 0) {
+            // Boss phase transition check
+            BattleDto.BossPhaseTransition phaseTransition = checkBossPhaseTransition(battle);
+            if (phaseTransition != null) {
+                // Boss has more phases - reset HP, advance phase
+                battleRepository.save(battle);
+                BattleDto.RollResponse response = buildRollResponse(
+                        battle, playerDice, hash, handResult, playerDamage, null);
+                response.setBossPhaseTransition(phaseTransition);
+                return response;
+            }
+
+            // Final phase or non-boss: victory
             battle.setStatus(Battle.Status.VICTORY);
             battle.setEndedAt(LocalDateTime.now());
             battleRepository.save(battle);
@@ -204,6 +223,51 @@ public class BattleService {
                         .power(enemyHand.getPower())
                         .build())
                 .damage(enemyDamage)
+                .build();
+    }
+
+    /**
+     * Check if boss has more phases. If so, transition to next phase.
+     * Returns BossPhaseTransition if transition happened, null otherwise.
+     */
+    private BattleDto.BossPhaseTransition checkBossPhaseTransition(Battle battle) {
+        if (battle.getBossId() == null) return null;
+
+        Boss boss = bossRepository.findById(battle.getBossId()).orElse(null);
+        if (boss == null) return null;
+
+        int currentPhase = battle.getBossPhase() != null ? battle.getBossPhase() : 1;
+        if (currentPhase >= boss.getTotalPhases()) {
+            return null; // Final phase defeated
+        }
+
+        // Transition to next phase
+        int nextPhase = currentPhase + 1;
+        battle.setBossPhase(nextPhase);
+        battle.setEnemyHp(100); // HP resets to 100 per phase
+
+        log.info("Boss {} phase transition: {} -> {} (totalPhases={})",
+                battle.getBossId(), currentPhase, nextPhase, boss.getTotalPhases());
+
+        // Get quote for the new phase (default to English)
+        String quote = null;
+        try {
+            if (boss.getQuotes() != null) {
+                var quotesNode = objectMapper.readTree(boss.getQuotes());
+                String phaseKey = "phase" + nextPhase + "_en";
+                if (quotesNode.has(phaseKey)) {
+                    quote = quotesNode.get(phaseKey).asText();
+                }
+            }
+        } catch (Exception e) {
+            log.error("Failed to parse boss quotes", e);
+        }
+
+        return BattleDto.BossPhaseTransition.builder()
+                .bossId(battle.getBossId())
+                .newPhase(nextPhase)
+                .totalPhases(boss.getTotalPhases())
+                .quote(quote)
                 .build();
     }
 

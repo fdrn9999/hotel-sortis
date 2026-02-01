@@ -61,6 +61,9 @@ public class Skill {
     @Column(name = "icon_url")
     private String iconUrl;
 
+    @Column(name = "unlock_floor")
+    private Integer unlockFloor;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

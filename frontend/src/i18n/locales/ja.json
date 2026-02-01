@@ -174,6 +174,31 @@
     "eligor": "鉄壁のエリゴール",
     "lucifuge": "ルシフージュ・ロフォカーレ"
   },
+  "campaign": {
+    "title": "PvEキャンペーン",
+    "totalRuns": "総挑戦",
+    "victories": "勝利",
+    "defeats": "敗北",
+    "floorTypes": {
+      "normal": "通常",
+      "elite": "エリート",
+      "boss": "ボス"
+    },
+    "battles": "{count}回戦闘",
+    "battleCount": "戦闘数",
+    "difficulty": "難易度",
+    "difficulty_basic": "基本",
+    "difficulty_standard": "標準",
+    "difficulty_advanced": "上級",
+    "difficulty_master": "マスター",
+    "reward": "報酬",
+    "skillReward": "スキル",
+    "floorLocked": "ロックされた階",
+    "startFloor": "階を開始",
+    "replayFloor": "再挑戦",
+    "returnToCampaign": "キャンペーンへ",
+    "battleProgress": "戦闘 {current}/{total}"
+  },
   "pvp": {
     "ranked": "ランクマッチ",
     "matchmaking": "対戦相手を検索中...",

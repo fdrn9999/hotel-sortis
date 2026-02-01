@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface BattleRepository extends JpaRepository<Battle, Long> {
     List<Battle> findByPlayerIdAndStatus(Long playerId, Battle.Status status);
     Optional<Battle> findByIdAndPlayerId(Long id, Long playerId);
+    int countByPlayerIdAndFloorAndStatus(Long playerId, Integer floor, Battle.Status status);
 }

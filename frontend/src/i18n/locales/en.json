@@ -174,6 +174,31 @@
     "eligor": "Eligor the Ironclad",
     "lucifuge": "Lucifuge Rofocale"
   },
+  "campaign": {
+    "title": "PvE Campaign",
+    "totalRuns": "Total Runs",
+    "victories": "Victories",
+    "defeats": "Defeats",
+    "floorTypes": {
+      "normal": "Normal",
+      "elite": "Elite",
+      "boss": "Boss"
+    },
+    "battles": "{count} Battles",
+    "battleCount": "Battle Count",
+    "difficulty": "Difficulty",
+    "difficulty_basic": "Basic",
+    "difficulty_standard": "Standard",
+    "difficulty_advanced": "Advanced",
+    "difficulty_master": "Master",
+    "reward": "Reward",
+    "skillReward": "Skill",
+    "floorLocked": "Floor Locked",
+    "startFloor": "Start Floor",
+    "replayFloor": "Replay",
+    "returnToCampaign": "Return to Campaign",
+    "battleProgress": "Battle {current}/{total}"
+  },
   "pvp": {
     "ranked": "Ranked Match",
     "matchmaking": "Finding opponent...",

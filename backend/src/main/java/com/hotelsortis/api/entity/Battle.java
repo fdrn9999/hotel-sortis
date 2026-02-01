@@ -33,6 +33,13 @@ public class Battle {
     @Column
     private Integer floor;
 
+    @Column(name = "boss_id", length = 50)
+    private String bossId;
+
+    @Column(name = "boss_phase")
+    @Builder.Default
+    private Integer bossPhase = 1;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default

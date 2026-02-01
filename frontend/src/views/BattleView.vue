@@ -1,16 +1,30 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { battleApi, type RollDiceResponse, type EnemyTurnResult } from '@/api/battle'
 import { useDiceScene } from '@/composables/useDiceScene'
+import { useCampaignStore } from '@/stores/campaign'
+import SkillSelectionView from '@/views/SkillSelectionView.vue'
+import type { SkillRewardOption } from '@/types/game'
 
 const { t } = useI18n()
 const router = useRouter()
+const route = useRoute()
+const campaignStore = useCampaignStore()
 
 // 3D Dice Scene
 const diceContainer = ref<HTMLElement | null>(null)
 const { rollTo: rollTo3D } = useDiceScene(diceContainer)
+
+// Campaign context from route query
+const isCampaignMode = computed(() => route.query.campaignMode === 'true')
+const campaignFloor = computed(() => Number(route.query.floor) || 1)
+const campaignBattleIndex = computed(() => Number(route.query.battleIndex) || 1)
+const campaignTotalBattles = computed(() => Number(route.query.totalBattles) || 1)
+const campaignBattleId = computed(() => Number(route.query.battleId) || null)
+const campaignBossId = computed(() => (route.query.bossId as string) || null)
+const campaignBossName = computed(() => (route.query.bossName as string) || null)
 
 // Battle state
 const battleId = ref<number | null>(null)
@@ -20,6 +34,18 @@ const playerHP = ref(100)
 const enemyHP = ref(100)
 const turnCount = ref(1)
 const status = ref<'ONGOING' | 'VICTORY' | 'DEFEAT' | 'DRAW'>('ONGOING')
+
+// Boss state
+const bossId = ref<string | null>(null)
+const bossName = ref<string | null>(null)
+const bossPhase = ref(1)
+const bossTotalPhases = ref(1)
+const showPhaseTransition = ref(false)
+const phaseTransitionQuote = ref('')
+
+// Skill reward state
+const showSkillReward = ref(false)
+const offeredSkills = ref<SkillRewardOption[]>([])
 
 // Dice state
 const playerDice = ref<number[]>([])
@@ -41,8 +67,45 @@ const timerInterval = ref<ReturnType<typeof setInterval> | null>(null)
 const timerPercentage = computed(() => (timeRemaining.value / TURN_TIME_LIMIT) * 100)
 const timerWarning = computed(() => timeRemaining.value <= 10)
 
+// Campaign header text
+const headerText = computed(() => {
+  if (!isCampaignMode.value) return `${t('battle.turn')} ${floor.value}`
+  if (bossId.value && bossName.value) {
+    return `${campaignFloor.value}F - ${bossName.value} ${t('battle.bossPhase', { phase: bossPhase.value })}`
+  }
+  return `${campaignFloor.value}F - ${t('campaign.battleProgress', { current: campaignBattleIndex.value, total: campaignTotalBattles.value })}`
+})
+
+// Boss phase dots
+const phaseDots = computed(() => {
+  if (!bossId.value || bossTotalPhases.value <= 1) return []
+  return Array.from({ length: bossTotalPhases.value }, (_, i) => ({
+    index: i + 1,
+    completed: i + 1 < bossPhase.value,
+    active: i + 1 === bossPhase.value,
+    pending: i + 1 > bossPhase.value
+  }))
+})
+
 // Start battle on mount
 onMounted(async () => {
+  // Set campaign context
+  if (isCampaignMode.value) {
+    floor.value = campaignFloor.value
+    bossId.value = campaignBossId.value
+    bossName.value = campaignBossName.value
+    if (campaignBattleId.value) {
+      battleId.value = campaignBattleId.value
+    }
+    // Boss phase info from campaign store
+    if (campaignStore.bossPhase) {
+      bossPhase.value = campaignStore.bossPhase
+    }
+    if (campaignStore.bossTotalPhases) {
+      bossTotalPhases.value = campaignStore.bossTotalPhases
+    }
+  }
+
   await startBattle()
 })
 
@@ -53,11 +116,17 @@ onUnmounted(() => {
 // Start a new battle
 async function startBattle() {
   try {
+    const equippedSkills = route.query.skills
+      ? String(route.query.skills).split(',').map(Number).filter(n => !isNaN(n))
+      : []
+
     const response = await battleApi.startBattle({
       playerId: playerId.value,
       battleType: 'PVE',
       floor: floor.value,
-      equippedSkills: []
+      equippedSkills,
+      bossId: bossId.value || undefined,
+      bossPhase: bossPhase.value || undefined
     })
 
     battleId.value = response.battleId
@@ -66,12 +135,19 @@ async function startBattle() {
     turnCount.value = response.turnCount
     status.value = response.status
 
+    // Update boss info from server response
+    if (response.bossId) {
+      bossId.value = response.bossId
+      bossName.value = response.bossName || response.bossId
+      bossPhase.value = response.bossPhase || 1
+      bossTotalPhases.value = response.bossTotalPhases || 1
+    }
+
     addLog(t('battle.turn') + ' ' + turnCount.value)
     startTimer()
   } catch (error) {
     console.error('Failed to start battle:', error)
     addLog('Failed to start battle. Using offline mode.')
-    // Fallback to offline mode for testing
     battleId.value = -1
     startTimer()
   }
@@ -132,10 +208,20 @@ async function rollDice() {
     // Update enemy HP
     enemyHP.value = response.enemyHp
 
+    // Handle boss phase transition
+    if (response.bossPhaseTransition) {
+      await handlePhaseTransition(response.bossPhaseTransition)
+    }
+
     // Check for victory
     if (response.status === 'VICTORY') {
       status.value = 'VICTORY'
       addLog(t('battle.victory') + '!')
+
+      // Campaign: handle post-victory flow
+      if (isCampaignMode.value) {
+        await handleCampaignVictory()
+      }
       return
     }
 
@@ -163,6 +249,79 @@ async function rollDice() {
   } finally {
     isRolling.value = false
   }
+}
+
+// Handle boss phase transition
+async function handlePhaseTransition(transition: { bossId: string; newPhase: number; totalPhases: number; quote?: string; newPattern?: string }) {
+  // Show phase transition overlay
+  phaseTransitionQuote.value = transition.quote || ''
+  showPhaseTransition.value = true
+  bossPhase.value = transition.newPhase
+  bossTotalPhases.value = transition.totalPhases
+
+  // Update campaign store
+  campaignStore.handleBossPhaseTransition({
+    bossId: transition.bossId,
+    newPhase: transition.newPhase,
+    totalPhases: transition.totalPhases,
+    quote: transition.quote,
+    newPattern: transition.newPattern
+  })
+
+  // Wait for transition display
+  await new Promise(resolve => setTimeout(resolve, 3000))
+
+  // Reset enemy HP to 100 (new phase)
+  enemyHP.value = 100
+
+  // Hide transition overlay
+  showPhaseTransition.value = false
+
+  addLog(`${t('battle.phaseTransition')} - ${t('battle.bossPhase', { phase: bossPhase.value })}`)
+}
+
+// Handle campaign victory
+async function handleCampaignVictory() {
+  if (!campaignBattleId.value) return
+
+  try {
+    const completeResponse = await campaignStore.completeFloorBattle(
+      playerId.value,
+      campaignBattleId.value
+    )
+
+    if (completeResponse?.offeredSkills && completeResponse.offeredSkills.length > 0) {
+      offeredSkills.value = completeResponse.offeredSkills
+      showSkillReward.value = true
+    }
+  } catch (e) {
+    console.error('Failed to complete floor battle:', e)
+  }
+}
+
+// Handle skill reward selection
+async function onSkillSelected(skill: { id: number }) {
+  try {
+    await campaignStore.completeFloorBattle(playerId.value, campaignBattleId.value!)
+  } catch {
+    // already completed above
+  }
+
+  // Use campaign API to select skill reward
+  const { campaignApi } = await import('@/api/campaign')
+  try {
+    await campaignApi.selectSkillReward(playerId.value, campaignFloor.value, skill.id)
+  } catch (e) {
+    console.error('Failed to select skill reward:', e)
+  }
+
+  showSkillReward.value = false
+  navigateToCampaign()
+}
+
+function onSkillRewardClose() {
+  showSkillReward.value = false
+  navigateToCampaign()
 }
 
 // Process enemy turn
@@ -299,10 +458,21 @@ function evaluateHand(dice: [number, number, number]) {
   return { rank: 'NoHand', rankKR: '노 핸드', power: a + b + c }
 }
 
-// Return to home
+// Navigation
 function goHome() {
   stopTimer()
   router.push('/')
+}
+
+function navigateToCampaign() {
+  stopTimer()
+  router.push('/campaign')
+}
+
+function nextBattle() {
+  stopTimer()
+  // Navigate back to campaign which will handle starting the next battle
+  router.push('/campaign')
 }
 </script>
 
@@ -310,10 +480,30 @@ function goHome() {
   <div class="battle">
     <!-- Header -->
     <header class="battle-header">
-      <button class="nav-btn" @click="goHome">{{ t('common.home') }}</button>
-      <span class="floor-info">{{ t('floor') }} {{ floor }}</span>
+      <button class="nav-btn" @click="isCampaignMode ? navigateToCampaign() : goHome()">
+        {{ isCampaignMode ? t('campaign.returnToCampaign') : t('common.home') }}
+      </button>
+      <span class="floor-info">{{ headerText }}</span>
       <button class="nav-btn">{{ t('common.settings') }}</button>
     </header>
+
+    <!-- Boss Phase Indicator -->
+    <div v-if="bossId && phaseDots.length > 0" class="boss-phase-bar">
+      <span class="boss-name-label">{{ bossName }}</span>
+      <div class="phase-dots">
+        <span
+          v-for="dot in phaseDots"
+          :key="dot.index"
+          class="phase-dot"
+          :class="{
+            'dot-completed': dot.completed,
+            'dot-active': dot.active,
+            'dot-pending': dot.pending
+          }"
+        ></span>
+      </div>
+      <span class="phase-label">{{ t('battle.bossPhase', { phase: bossPhase }) }}</span>
+    </div>
 
     <!-- Turn Timer -->
     <div class="turn-timer" v-if="status === 'ONGOING'">
@@ -327,7 +517,7 @@ function goHome() {
       <div class="enemy-area">
         <div class="hp-bar">
           <div class="hp-fill enemy" :style="{ width: `${enemyHP}%` }"></div>
-          <span class="hp-text">{{ t('battle.enemyHP') }}: {{ enemyHP }}/100</span>
+          <span class="hp-text">{{ bossName || t('battle.enemyHP') }}: {{ enemyHP }}/100</span>
         </div>
         <div class="dice-area">
           <template v-if="enemyDice.length">
@@ -396,9 +586,47 @@ function goHome() {
         <h2 :class="status.toLowerCase()">
           {{ status === 'VICTORY' ? t('battle.victory') : status === 'DEFEAT' ? t('battle.defeat') : t('battle.draw') }}
         </h2>
-        <button class="nav-btn" @click="goHome">{{ t('common.home') }}</button>
+
+        <!-- Campaign mode post-battle buttons -->
+        <template v-if="isCampaignMode">
+          <button v-if="status === 'VICTORY' && !showSkillReward" class="nav-btn result-btn" @click="navigateToCampaign">
+            {{ t('campaign.returnToCampaign') }}
+          </button>
+          <button v-else-if="status === 'DEFEAT'" class="nav-btn result-btn" @click="navigateToCampaign">
+            {{ t('campaign.returnToCampaign') }}
+          </button>
+          <button v-else-if="status === 'DRAW'" class="nav-btn result-btn" @click="navigateToCampaign">
+            {{ t('campaign.returnToCampaign') }}
+          </button>
+        </template>
+
+        <!-- Default home button -->
+        <button v-if="!isCampaignMode" class="nav-btn result-btn" @click="goHome">{{ t('common.home') }}</button>
       </div>
     </div>
+
+    <!-- Boss Phase Transition Overlay -->
+    <Teleport to="body">
+      <div v-if="showPhaseTransition" class="phase-transition-overlay">
+        <div class="phase-transition-content">
+          <div class="phase-transition-title">{{ t('battle.phaseTransition') }}</div>
+          <div class="phase-transition-boss">{{ bossName }}</div>
+          <div v-if="phaseTransitionQuote" class="phase-transition-quote">
+            "{{ phaseTransitionQuote }}"
+          </div>
+          <div class="phase-transition-phase">{{ t('battle.bossPhase', { phase: bossPhase }) }}</div>
+        </div>
+      </div>
+    </Teleport>
+
+    <!-- Skill Reward Modal -->
+    <SkillSelectionView
+      v-if="showSkillReward && offeredSkills.length > 0"
+      :floor="campaignFloor"
+      :offered-skills="offeredSkills as any"
+      @skill-selected="onSkillSelected"
+      @close="onSkillRewardClose"
+    />
   </div>
 </template>
 
@@ -434,9 +662,66 @@ function goHome() {
   color: var(--color-bg);
 }
 
+.result-btn {
+  margin-top: 0.5rem;
+}
+
 .floor-info {
   font-family: var(--font-primary);
   color: var(--color-gold);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* Boss Phase Bar */
+.boss-phase-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: rgba(255, 138, 101, 0.1);
+  border-bottom: 1px solid rgba(255, 138, 101, 0.2);
+}
+
+.boss-name-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ff8a65;
+}
+
+.phase-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.phase-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #666;
+  transition: all 0.3s;
+}
+
+.dot-completed {
+  background: #4caf50;
+  border-color: #4caf50;
+}
+
+.dot-active {
+  background: #ff8a65;
+  border-color: #ff8a65;
+  box-shadow: 0 0 8px rgba(255, 138, 101, 0.6);
+}
+
+.dot-pending {
+  background: transparent;
+  border-color: #555;
+}
+
+.phase-label {
+  font-size: 12px;
+  color: #999;
 }
 
 /* Timer */
@@ -658,6 +943,68 @@ function goHome() {
   color: var(--color-gray);
 }
 
+/* Phase Transition Overlay */
+.phase-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  animation: fadeIn 0.5s ease;
+}
+
+.phase-transition-content {
+  text-align: center;
+  animation: slideUp 0.5s ease 0.3s both;
+}
+
+.phase-transition-title {
+  font-size: 16px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+}
+
+.phase-transition-boss {
+  font-size: 48px;
+  font-weight: bold;
+  color: #ff8a65;
+  margin-bottom: 24px;
+  letter-spacing: 2px;
+}
+
+.phase-transition-quote {
+  font-size: 20px;
+  color: #fffdd0;
+  font-style: italic;
+  margin-bottom: 24px;
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+.phase-transition-phase {
+  font-size: 24px;
+  color: #d4af37;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .die {
@@ -669,6 +1016,19 @@ function goHome() {
   .roll-btn {
     padding: 0.8rem 2rem;
     font-size: 1.1rem;
+  }
+
+  .floor-info {
+    font-size: 0.8rem;
+  }
+
+  .phase-transition-boss {
+    font-size: 32px;
+  }
+
+  .phase-transition-quote {
+    font-size: 16px;
+    padding: 0 20px;
   }
 }
 </style>

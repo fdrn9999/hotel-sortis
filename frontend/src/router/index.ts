@@ -15,6 +15,11 @@ const router = createRouter({
       component: () => import('@/views/CampaignView.vue')
     },
     {
+      path: '/campaign/loadout',
+      name: 'campaign-loadout',
+      component: () => import('@/views/SkillLoadoutView.vue')
+    },
+    {
       path: '/battle',
       name: 'battle',
       component: () => import('@/views/BattleView.vue')

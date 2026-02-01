@@ -7,6 +7,9 @@ export interface StartBattleRequest {
   battleType: 'PVE' | 'PVP'
   floor?: number
   equippedSkills?: number[]
+  bossId?: string
+  bossPhase?: number
+  enemySkills?: number[]
 }
 
 export interface StartBattleResponse {
@@ -18,6 +21,10 @@ export interface StartBattleResponse {
   enemyHp: number
   turnCount: number
   status: 'ONGOING' | 'VICTORY' | 'DEFEAT' | 'DRAW'
+  bossId?: string
+  bossPhase?: number
+  bossTotalPhases?: number
+  bossName?: string
 }
 
 export interface RollDiceRequest {
@@ -36,6 +43,14 @@ export interface EnemyTurnResult {
   damage: number
 }
 
+export interface BossPhaseTransitionResult {
+  bossId: string
+  newPhase: number
+  totalPhases: number
+  quote?: string
+  newPattern?: string
+}
+
 export interface RollDiceResponse {
   dice: [number, number, number]
   hash: string
@@ -46,6 +61,7 @@ export interface RollDiceResponse {
   currentTurn: 'PLAYER' | 'ENEMY'
   status: 'ONGOING' | 'VICTORY' | 'DEFEAT' | 'DRAW'
   enemyTurn?: EnemyTurnResult
+  bossPhaseTransition?: BossPhaseTransitionResult
 }
 
 export interface BattleStatus {

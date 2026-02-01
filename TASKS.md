@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-01-31 (Phase 5 스킬 시스템 완료)
+> 최종 업데이트: 2026-02-01 (Phase 6 캠페인 모드 완료)
 
 ---
 
@@ -116,6 +116,27 @@
   - [x] useSkillEffectNotifications.ts composable (알림 큐 관리)
   - [x] i18n 4개 언어 번역 (skillEffects.trigger 섹션)
 
+### Phase 6: 캠페인 모드
+- [x] Backend: Floor, Boss, CampaignProgress, PlayerSkill 엔티티 생성
+- [x] Backend: Battle.java에 bossId, bossPhase 필드 추가
+- [x] Backend: FloorRepository, BossRepository, CampaignProgressRepository, PlayerSkillRepository 생성
+- [x] Backend: BattleRepository에 countByPlayerIdAndFloorAndStatus 추가
+- [x] Backend: SkillRepository에 findUnownedByRarity 쿼리 추가
+- [x] Backend: CampaignDto.java (7개 DTO 클래스)
+- [x] Backend: BattleDto에 보스 관련 필드 추가
+- [x] Backend: CampaignService 구현 (진행도, 층 시작, 전투 완료, 스킬 보상)
+- [x] Backend: BattleService에 보스 페이즈 전환 로직 추가
+- [x] Backend: CampaignController (5개 엔드포인트, HATEOAS)
+- [x] Frontend: types/game.ts에 캠페인 관련 타입 추가
+- [x] Frontend: api/campaign.ts API 클라이언트 생성
+- [x] Frontend: stores/campaign.ts Pinia 스토어 생성 (오프라인 지원)
+- [x] Frontend: api/battle.ts에 보스 관련 필드 추가
+- [x] Frontend: CampaignView.vue 완전 재작성 (15층 타워, 진행도 표시)
+- [x] Frontend: BattleView.vue에 캠페인 모드 지원 (보스 페이즈, 스킬 보상)
+- [x] Frontend: SkillLoadoutView.vue에 캠페인 컨텍스트 추가
+- [x] Frontend: router/index.ts 캠페인 라우트 추가
+- [x] i18n: 4개 언어 파일에 campaign, floors, bosses 섹션 추가 (ko, en, ja, zh)
+
 ---
 
 ## 🔄 진행 중 (In Progress)
@@ -125,14 +146,6 @@
 ---
 
 ## 📋 예정된 작업 (Planned)
-
-### Phase 6: 캠페인 모드
-- [ ] 15층 구조 구현
-- [ ] 층별 적 AI 레벨 설정
-- [ ] 보스 페이즈 시스템 (Mammon, Eligor, Lucifuge)
-- [ ] 보스 컷신
-- [ ] 스킬 보상 시스템
-- [ ] 캠페인 진행도 저장
 
 ### Phase 7: PvP 시스템
 - [ ] ELO 매칭 시스템

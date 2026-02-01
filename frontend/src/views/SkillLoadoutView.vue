@@ -127,14 +127,21 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useSkillStore } from '@/stores/skill'
+import { useCampaignStore } from '@/stores/campaign'
 import type { Skill } from '@/types/game'
 
 const router = useRouter()
+const route = useRoute()
 const { t } = useI18n()
 const skillStore = useSkillStore()
+const campaignStore = useCampaignStore()
+
+// Campaign context from route query
+const isCampaignMode = computed(() => route.query.floor !== undefined)
+const campaignFloor = computed(() => Number(route.query.floor) || null)
 
 // State
 const selectedRarity = ref<string>('All')
@@ -197,18 +204,54 @@ function onSlotClick(index: number) {
   }
 }
 
-function startBattle() {
+async function startBattle() {
   if (!skillStore.validateLoadout()) {
     alert(t('skills.loadout.invalidLoadout'))  // TODO: 커스텀 모달로 교체
     return
   }
 
-  // 전투 화면으로 이동 (장착된 스킬 ID 전달)
   const equippedSkillIds = skillStore.getEquippedSkillIds()
-  router.push({
-    name: 'Battle',
-    query: { skills: equippedSkillIds.join(',') }
-  })
+
+  // Campaign mode: call campaign API to start floor
+  if (isCampaignMode.value && campaignFloor.value) {
+    try {
+      const playerId = 1 // TODO: Get from auth
+      const response = await campaignStore.startFloor(
+        playerId,
+        campaignFloor.value,
+        equippedSkillIds
+      )
+
+      if (!response) {
+        alert('Failed to start floor')
+        return
+      }
+
+      // Navigate to battle with campaign context
+      router.push({
+        name: 'battle',
+        query: {
+          campaignMode: 'true',
+          floor: campaignFloor.value.toString(),
+          battleIndex: response.battleIndex.toString(),
+          totalBattles: response.totalBattles.toString(),
+          battleId: response.battleId.toString(),
+          bossId: response.bossId || undefined,
+          bossName: response.bossName || undefined,
+          skills: equippedSkillIds.join(',')
+        }
+      })
+    } catch (e) {
+      console.error('Failed to start campaign floor:', e)
+      alert('Failed to start floor')
+    }
+  } else {
+    // Normal mode: direct to battle
+    router.push({
+      name: 'battle',
+      query: { skills: equippedSkillIds.join(',') }
+    })
+  }
 }
 
 // Lifecycle

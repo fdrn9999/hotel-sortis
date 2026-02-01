@@ -90,6 +90,70 @@ export interface FloorConfig {
   skillRewardRarity?: SkillRarity
 }
 
+// Campaign API Response Types
+export interface CampaignFloorStatus {
+  floor: number
+  floorType: string
+  battleCount: number
+  cleared: boolean
+  locked: boolean
+  description: string
+  aiLevel: number
+  bossId?: string
+  bossName?: string
+  skillRewardRarity?: string
+}
+
+export interface CampaignProgressResponse {
+  playerId: number
+  currentRunFloor: number
+  currentRunHp: number
+  floors: CampaignFloorStatus[]
+  bossesDefeated: Record<string, boolean>
+  totalRuns: number
+  totalVictories: number
+  totalDefeats: number
+}
+
+export interface StartFloorResponse {
+  battleId: number
+  floor: number
+  floorType: string
+  battleIndex: number
+  totalBattles: number
+  aiLevel: number
+  enemySkillIds: number[]
+  bossId?: string
+  bossName?: string
+  bossPhase?: number
+  bossTotalPhases?: number
+}
+
+export interface FloorCompleteResponse {
+  floor: number
+  cleared: boolean
+  nextFloor?: number
+  skillRewardAvailable: boolean
+  offeredSkills?: SkillRewardOption[]
+}
+
+export interface SkillRewardOption {
+  skillId: number
+  skillCode: string
+  name: string
+  description: string
+  rarity: string
+  triggerType: string
+}
+
+export interface BossPhaseTransition {
+  bossId: string
+  newPhase: number
+  totalPhases: number
+  quote?: string
+  newPattern?: string
+}
+
 // PvP
 export interface PvPMatch {
   matchId: number

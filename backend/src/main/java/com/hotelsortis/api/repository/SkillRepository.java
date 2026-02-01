@@ -1,5 +1,6 @@
 package com.hotelsortis.api.repository;
 
+import com.hotelsortis.api.entity.PlayerSkill;
 import com.hotelsortis.api.entity.Skill;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -41,4 +42,12 @@ public interface SkillRepository extends JpaRepository<Skill, Long> {
      */
     @Query("SELECT s FROM Skill s ORDER BY s.id ASC")
     List<Skill> findAllOrderById();
+
+    /**
+     * 특정 희귀도의 스킬 중 플레이어가 보유하지 않은 스킬 조회
+     */
+    @Query("SELECT s FROM Skill s WHERE s.rarity = :rarity AND s.id NOT IN " +
+            "(SELECT ps.skillId FROM PlayerSkill ps WHERE ps.playerId = :playerId)")
+    List<Skill> findUnownedByRarity(@Param("rarity") Skill.Rarity rarity,
+                                     @Param("playerId") Long playerId);
 }
