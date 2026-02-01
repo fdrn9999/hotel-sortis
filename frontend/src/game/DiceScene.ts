@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import * as CANNON from 'cannon-es'
+import type { DiceSkin } from '@/types/game'
 
 export interface DiceResult {
   die1: number
@@ -22,6 +23,8 @@ export class DiceScene {
   private isRolling = false
   private onRollComplete: ((result: DiceResult) => void) | null = null
   private targetResult: DiceResult | null = null
+
+  private currentSkin: DiceSkin | null = null
 
   constructor(container: HTMLElement) {
     this.container = container
@@ -88,9 +91,17 @@ export class DiceScene {
     this.scene.add(pointLight)
   }
 
-  private createDiceFaceTextures(): THREE.MeshStandardMaterial[] {
+  private createDiceFaceTextures(skin?: DiceSkin): THREE.MeshStandardMaterial[] {
     const materials: THREE.MeshStandardMaterial[] = []
     const faceIndices = [4, 2, 1, 6, 3, 5] // 각 면의 번호 순서 (right, left, top, bottom, front, back)
+
+    // 스킨 속성 (기본값 또는 스킨에서 가져옴)
+    const baseColor = skin?.baseColor || '#FFFDD0' // 기본: 상아색
+    const pipColor = skin?.pipColor || '#000000'   // 기본: 검은색
+    const roughness = skin?.roughness ?? 0.5
+    const metalness = skin?.metalness ?? 0.1
+    const emissiveColor = skin?.emissiveColor
+    const emissiveIntensity = skin?.emissiveIntensity ?? 0
 
     for (const faceValue of faceIndices) {
       // Canvas 생성 (256x256)
@@ -99,12 +110,12 @@ export class DiceScene {
       canvas.height = 256
       const ctx = canvas.getContext('2d')!
 
-      // 배경 (상아색)
-      ctx.fillStyle = '#FFFDD0'
+      // 배경 (스킨 색상)
+      ctx.fillStyle = baseColor
       ctx.fillRect(0, 0, 256, 256)
 
-      // 눈금 (검은색)
-      ctx.fillStyle = '#000000'
+      // 눈금 (스킨 색상)
+      ctx.fillStyle = pipColor
 
       const pipRadius = 16
       const pipPositions = this.getPipPositions(faceValue)
@@ -119,12 +130,20 @@ export class DiceScene {
       const texture = new THREE.CanvasTexture(canvas)
       texture.needsUpdate = true
 
-      // Material 생성
-      const material = new THREE.MeshStandardMaterial({
+      // Material 생성 (스킨 속성 적용)
+      const materialOptions: THREE.MeshStandardMaterialParameters = {
         map: texture,
-        roughness: 0.5,
-        metalness: 0.1
-      })
+        roughness,
+        metalness
+      }
+
+      // Emissive (발광) 효과 적용
+      if (emissiveColor && emissiveIntensity > 0) {
+        materialOptions.emissive = new THREE.Color(emissiveColor)
+        materialOptions.emissiveIntensity = emissiveIntensity
+      }
+
+      const material = new THREE.MeshStandardMaterial(materialOptions)
 
       materials.push(material)
     }
@@ -183,9 +202,9 @@ export class DiceScene {
     this.world.addBody(groundBody)
   }
 
-  private createDice(): void {
-    // 주사위 면 텍스처 생성
-    const diceMaterials = this.createDiceFaceTextures()
+  private createDice(skin?: DiceSkin): void {
+    // 주사위 면 텍스처 생성 (스킨 적용)
+    const diceMaterials = this.createDiceFaceTextures(skin)
 
     // 3개의 주사위 생성
     for (let i = 0; i < 3; i++) {
@@ -211,6 +230,9 @@ export class DiceScene {
       this.world.addBody(diceBody)
       this.diceBodies.push(diceBody)
     }
+
+    // 현재 스킨 저장
+    this.currentSkin = skin || null
   }
 
   private animate(): void {
@@ -422,6 +444,42 @@ export class DiceScene {
     this.camera.updateProjectionMatrix()
 
     this.renderer.setSize(width, height)
+  }
+
+  /**
+   * 주사위 스킨 변경 (런타임)
+   * CLAUDE.md Phase 9 - 코스메틱 시스템
+   */
+  public applySkin(skin: DiceSkin): void {
+    console.log(`Applying dice skin: ${skin.name} (${skin.skinCode})`)
+
+    // 새 재질 생성
+    const newMaterials = this.createDiceFaceTextures(skin)
+
+    // 각 주사위에 새 재질 적용
+    for (const dice of this.dice) {
+      // 기존 재질 정리
+      if (Array.isArray(dice.material)) {
+        dice.material.forEach(mat => mat.dispose())
+      } else {
+        dice.material.dispose()
+      }
+
+      // 새 재질 적용
+      dice.material = newMaterials
+    }
+
+    // 현재 스킨 저장
+    this.currentSkin = skin
+
+    console.log(`Dice skin applied: baseColor=${skin.baseColor}, pipColor=${skin.pipColor}, metalness=${skin.metalness}, roughness=${skin.roughness}`)
+  }
+
+  /**
+   * 현재 적용된 스킨 가져오기
+   */
+  public getCurrentSkin(): DiceSkin | null {
+    return this.currentSkin
   }
 
   public dispose(): void {
