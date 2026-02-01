@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-01 (Phase 8.1 완료: alert() 제거, CLAUDE.md 규칙 준수)
+> 최종 업데이트: 2026-02-01 (Phase 9 완료: 코스메틱 & 상점 시스템)
 
 ---
 
@@ -218,6 +218,46 @@
   - ProfileView.vue 로그아웃 확인 (1개)
   - PvPMatchmakingView.vue 매칭 취소 확인 (1개)
 
+### Phase 9: 코스메틱 & 상점 시스템
+
+- [x] Database Schema (docs/create.sql, docs/insert.sql)
+  - [x] dice_skins 테이블 생성 (4개 언어 + Three.js 재질 속성)
+  - [x] avatars 테이블 생성 (4개 언어)
+  - [x] player_cosmetics 테이블 생성 (소유/장착 추적)
+  - [x] players 테이블에 equipped_dice_skin_id, equipped_avatar_id 추가
+  - [x] 10개 주사위 스킨 데이터 삽입 (4개 언어 완전 번역)
+  - [x] 5개 아바타 데이터 삽입 (4개 언어 완전 번역)
+- [x] Backend Entities & Repositories
+  - [x] DiceSkin.java 엔티티 (Three.js 재질 속성 포함)
+  - [x] Avatar.java 엔티티
+  - [x] PlayerCosmetic.java 엔티티
+  - [x] Player.java에 cosmetic 필드 추가
+  - [x] DiceSkinRepository, AvatarRepository, PlayerCosmeticRepository
+- [x] Backend DTOs & Services
+  - [x] CosmeticDto.java (7개 DTO 클래스, i18n 지원)
+  - [x] ShopDto.java (5개 DTO 클래스, i18n 지원)
+  - [x] CosmeticService.java (컬렉션 조회, 장착/해제)
+  - [x] ShopService.java (상점 조회, 구매, 영혼석 관리)
+- [x] Backend Controllers (HATEOAS)
+  - [x] CosmeticController.java (5개 엔드포인트)
+  - [x] ShopController.java (3개 엔드포인트)
+- [x] Frontend Types & API Clients
+  - [x] types/game.ts에 cosmetic 타입 추가 (DiceSkin, Avatar, CosmeticType 등)
+  - [x] api/cosmetic.ts API 클라이언트
+  - [x] api/shop.ts API 클라이언트
+- [x] Frontend Stores (Pinia)
+  - [x] stores/cosmetic.ts (컬렉션 관리, 장착/해제)
+  - [x] stores/shop.ts (상점 아이템, 구매, 영혼석)
+- [x] 3D Dice Skin Integration
+  - [x] DiceScene.ts 수정 (createDiceFaceTextures에 skin 파라미터)
+  - [x] applySkin() 메서드 추가 (런타임 스킨 변경)
+  - [x] getCurrentSkin() getter 추가
+- [x] Frontend Views
+  - [x] ShopView.vue 스켈레톤 생성 (네비게이션 버튼, 로딩 상태, 밸런스 패널)
+- [x] i18n 번역 (4개 언어)
+  - [x] shop 섹션 추가 (ko, en, ja, zh)
+  - [x] cosmetics 섹션 추가 (ko, en, ja, zh)
+
 ---
 
 ## 🔄 진행 중 (In Progress)
@@ -227,12 +267,6 @@
 ---
 
 ## 📋 예정된 작업 (Planned)
-
-### Phase 9: 코스메틱 & 상점
-- [ ] 주사위 스킨 시스템
-- [ ] 아바타 시스템
-- [ ] 상점 UI
-- [ ] 영혼석 재화 시스템
 
 ### Phase 10: 폴리싱
 - [ ] 사운드 디자인 (BGM, SFX)
