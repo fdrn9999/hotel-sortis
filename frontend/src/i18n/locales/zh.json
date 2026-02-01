@@ -240,5 +240,53 @@
     "battleSkip": "战斗跳过",
     "saveSettings": "保存设置",
     "saved": "设置已保存。"
+  },
+  "pvp": {
+    "title": "PvP排位模式",
+    "elo": "ELO",
+    "tier": "段位",
+    "wins": "胜",
+    "losses": "负",
+    "draws": "平",
+    "winRate": "胜率",
+    "tiers": {
+      "bronze": "青铜",
+      "silver": "白银",
+      "gold": "黄金",
+      "platinum": "铂金",
+      "diamond": "钻石",
+      "master": "大师"
+    },
+    "matchmaking": {
+      "title": "排位匹配",
+      "description": "基于ELO的匹配系统，与实力相当的对手对战。",
+      "start": "开始匹配",
+      "starting": "匹配中...",
+      "cancel": "取消",
+      "searching": "正在寻找对手...",
+      "matchFound": "找到对手！",
+      "opponent": "对手",
+      "redirecting": "正在进入战斗...",
+      "waitTime": "等待时间",
+      "queueSize": "排队人数",
+      "eloRange": "ELO范围",
+      "errorJoin": "加入匹配失败",
+      "errorLeave": "取消匹配失败",
+      "confirmLeave": "取消匹配并离开？"
+    },
+    "battle": {
+      "yourTurn": "你的回合",
+      "opponentTurn": "对手回合",
+      "timeRemaining": "剩余时间",
+      "waiting": "等待对手..."
+    },
+    "result": {
+      "victory": "胜利！",
+      "defeat": "失败",
+      "draw": "平局",
+      "eloChange": "ELO变化",
+      "reward": "奖励",
+      "soulStones": "灵魂石"
+    }
   }
 }

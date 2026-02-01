@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-01 (Phase 6 캠페인 모드 완료)
+> 최종 업데이트: 2026-02-01 (Phase 7 PvP 시스템 완료)
 
 ---
 
@@ -142,6 +142,34 @@
   - [x] HandRank enum 비교 버그 수정 (PairMasterEffect, SafeBetEffect)
   - [x] BossIdTest.java 단위 테스트 추가
 
+### Phase 7: PvP 시스템
+- [x] Backend: MatchmakingService (Redis 기반 ELO 매칭)
+- [x] Backend: EloCalculator (ELO 계산, K-factor 32)
+- [x] Backend: PvPController (REST API, HATEOAS)
+  - [x] POST /api/v1/pvp/matchmaking/join
+  - [x] GET /api/v1/pvp/matchmaking/find/{playerId}
+  - [x] POST /api/v1/pvp/matchmaking/leave
+  - [x] GET /api/v1/pvp/rank/{playerId}
+- [x] Backend: PvPDto.java (13개 DTO 클래스)
+- [x] Backend: PvPWebSocketController (실시간 메시지 핸들러)
+  - [x] 주사위 결과 브로드캐스트
+  - [x] 턴 동기화
+  - [x] 전투 종료 처리 및 ELO 업데이트
+- [x] Backend: BattleService.createPvPBattle (PvP 전투 생성)
+- [x] Frontend: types/game.ts에 PvP 타입 추가 (13개 타입)
+- [x] Frontend: api/pvp.ts API 클라이언트
+- [x] Frontend: composables/usePvPWebSocket.ts (WebSocket composable)
+- [x] Frontend: views/PvPMatchmakingView.vue (매칭 대기 화면)
+  - [x] 실시간 대기 시간 표시
+  - [x] ELO 범위 확대 시각화
+  - [x] WebSocket 기반 매치 알림
+- [x] Frontend: views/RankView.vue (랭크 정보 화면)
+  - [x] 티어 배지 및 아이콘
+  - [x] ELO, 전적, 승률 표시
+  - [x] 티어별 색상 및 이펙트
+- [x] Frontend: router/index.ts PvP 라우트 추가
+- [x] i18n: 4개 언어 파일에 pvp 섹션 추가 (ko, en, ja, zh)
+
 ---
 
 ## 🔄 진행 중 (In Progress)
@@ -151,13 +179,6 @@
 ---
 
 ## 📋 예정된 작업 (Planned)
-
-### Phase 7: PvP 시스템
-- [ ] ELO 매칭 시스템
-- [ ] WebSocket 실시간 대전
-- [ ] PvP 전용 UI
-- [ ] 랭크 티어 시스템
-- [ ] 시즌 보상
 
 ### Phase 8: 사용자 시스템
 - [ ] 회원가입/로그인

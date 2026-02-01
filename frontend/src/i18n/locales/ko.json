@@ -240,5 +240,53 @@
     "battleSkip": "전투 스킵",
     "saveSettings": "설정 저장",
     "saved": "설정이 저장되었습니다."
+  },
+  "pvp": {
+    "title": "PvP 랭크 모드",
+    "elo": "ELO",
+    "tier": "티어",
+    "wins": "승",
+    "losses": "패",
+    "draws": "무",
+    "winRate": "승률",
+    "tiers": {
+      "bronze": "브론즈",
+      "silver": "실버",
+      "gold": "골드",
+      "platinum": "플래티넘",
+      "diamond": "다이아몬드",
+      "master": "마스터"
+    },
+    "matchmaking": {
+      "title": "랭크 매칭",
+      "description": "ELO 기반 매칭으로 실력이 비슷한 상대와 대결하세요.",
+      "start": "매칭 시작",
+      "starting": "매칭 중...",
+      "cancel": "매칭 취소",
+      "searching": "상대 찾는 중...",
+      "matchFound": "매치 찾음!",
+      "opponent": "상대",
+      "redirecting": "전투 화면으로 이동 중...",
+      "waitTime": "대기 시간",
+      "queueSize": "대기 인원",
+      "eloRange": "ELO 범위",
+      "errorJoin": "매칭 참가 실패",
+      "errorLeave": "매칭 취소 실패",
+      "confirmLeave": "매칭을 취소하고 나가시겠습니까?"
+    },
+    "battle": {
+      "yourTurn": "당신의 턴",
+      "opponentTurn": "상대 턴",
+      "timeRemaining": "남은 시간",
+      "waiting": "상대 대기 중..."
+    },
+    "result": {
+      "victory": "승리!",
+      "defeat": "패배",
+      "draw": "무승부",
+      "eloChange": "ELO 변화",
+      "reward": "보상",
+      "soulStones": "영혼석"
+    }
   }
 }

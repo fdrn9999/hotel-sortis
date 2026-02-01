@@ -30,6 +30,16 @@ const router = createRouter({
       component: () => import('@/views/PvPView.vue')
     },
     {
+      path: '/pvp/matchmaking',
+      name: 'pvp-matchmaking',
+      component: () => import('@/views/PvPMatchmakingView.vue')
+    },
+    {
+      path: '/pvp/rank',
+      name: 'pvp-rank',
+      component: () => import('@/views/RankView.vue')
+    },
+    {
       path: '/collection',
       name: 'collection',
       component: () => import('@/views/CollectionView.vue')

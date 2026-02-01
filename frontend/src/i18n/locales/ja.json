@@ -240,5 +240,53 @@
     "battleSkip": "戦闘スキップ",
     "saveSettings": "設定を保存",
     "saved": "設定が保存されました。"
+  },
+  "pvp": {
+    "title": "PvPランクモード",
+    "elo": "ELO",
+    "tier": "ティア",
+    "wins": "勝",
+    "losses": "負",
+    "draws": "引",
+    "winRate": "勝率",
+    "tiers": {
+      "bronze": "ブロンズ",
+      "silver": "シルバー",
+      "gold": "ゴールド",
+      "platinum": "プラチナ",
+      "diamond": "ダイヤモンド",
+      "master": "マスター"
+    },
+    "matchmaking": {
+      "title": "ランクマッチング",
+      "description": "ELOベースのマッチングで同等のスキルの対戦相手と戦います。",
+      "start": "マッチング開始",
+      "starting": "マッチング中...",
+      "cancel": "キャンセル",
+      "searching": "対戦相手を検索中...",
+      "matchFound": "マッチング成功！",
+      "opponent": "対戦相手",
+      "redirecting": "バトル画面に移動中...",
+      "waitTime": "待機時間",
+      "queueSize": "待機人数",
+      "eloRange": "ELO範囲",
+      "errorJoin": "マッチング参加失敗",
+      "errorLeave": "マッチングキャンセル失敗",
+      "confirmLeave": "マッチングをキャンセルして退出しますか？"
+    },
+    "battle": {
+      "yourTurn": "あなたのターン",
+      "opponentTurn": "相手のターン",
+      "timeRemaining": "残り時間",
+      "waiting": "相手を待っています..."
+    },
+    "result": {
+      "victory": "勝利！",
+      "defeat": "敗北",
+      "draw": "引き分け",
+      "eloChange": "ELO変化",
+      "reward": "報酬",
+      "soulStones": "魂の石"
+    }
   }
 }

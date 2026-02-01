@@ -155,6 +155,8 @@ export interface BossPhaseTransition {
 }
 
 // PvP
+export type RankTier = 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM' | 'DIAMOND' | 'MASTER'
+
 export interface PvPMatch {
   matchId: number
   player1Id: number
@@ -165,4 +167,60 @@ export interface PvPMatch {
   winnerId?: number
 }
 
-export type RankTier = 'Bronze' | 'Silver' | 'Gold' | 'Platinum' | 'Diamond' | 'Master'
+// PvP API 응답 타입들
+export interface JoinQueueResponse {
+  playerId: number
+  elo: number
+  queueSize: number
+  status: 'WAITING' | 'MATCH_FOUND'
+}
+
+export interface MatchFoundResponse {
+  battleId: number
+  player1Id: number
+  player2Id: number
+  player1Elo: number
+  player2Elo: number
+  status: 'MATCH_FOUND'
+}
+
+export interface RankInfoResponse {
+  playerId: number
+  elo: number
+  tier: RankTier
+  wins: number
+  losses: number
+  draws: number
+  winRate: number
+}
+
+export interface PvPRewardInfo {
+  eloChange: number     // +25, -25, 0
+  soulStones: number    // 20, 5, 10
+  result: 'VICTORY' | 'DEFEAT' | 'DRAW'
+}
+
+// WebSocket 메시지 타입들
+export interface TurnStartMessage {
+  battleId: number
+  currentTurn: TurnActor
+  turnNumber: number
+  timeRemaining: number  // 밀리초
+}
+
+export interface DiceResultMessage {
+  battleId: number
+  playerId: number
+  dice: number[]
+  handRank: string
+  handRankKR: string
+  handPower: number
+  damage: number
+  opponentHp: number
+}
+
+export interface BattleEndMessage {
+  battleId: number
+  result: 'VICTORY' | 'DEFEAT' | 'DRAW'
+  reward: PvPRewardInfo
+}

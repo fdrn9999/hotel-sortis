@@ -240,5 +240,53 @@
     "battleSkip": "Battle Skip",
     "saveSettings": "Save Settings",
     "saved": "Settings have been saved."
+  },
+  "pvp": {
+    "title": "PvP Ranked Mode",
+    "elo": "ELO",
+    "tier": "Tier",
+    "wins": "Wins",
+    "losses": "Losses",
+    "draws": "Draws",
+    "winRate": "Win Rate",
+    "tiers": {
+      "bronze": "Bronze",
+      "silver": "Silver",
+      "gold": "Gold",
+      "platinum": "Platinum",
+      "diamond": "Diamond",
+      "master": "Master"
+    },
+    "matchmaking": {
+      "title": "Ranked Matchmaking",
+      "description": "Face opponents of similar skill with ELO-based matchmaking.",
+      "start": "Start Matchmaking",
+      "starting": "Matching...",
+      "cancel": "Cancel",
+      "searching": "Searching for opponent...",
+      "matchFound": "Match Found!",
+      "opponent": "Opponent",
+      "redirecting": "Redirecting to battle...",
+      "waitTime": "Wait Time",
+      "queueSize": "Queue Size",
+      "eloRange": "ELO Range",
+      "errorJoin": "Failed to join matchmaking",
+      "errorLeave": "Failed to leave matchmaking",
+      "confirmLeave": "Cancel matchmaking and leave?"
+    },
+    "battle": {
+      "yourTurn": "Your Turn",
+      "opponentTurn": "Opponent's Turn",
+      "timeRemaining": "Time Remaining",
+      "waiting": "Waiting for opponent..."
+    },
+    "result": {
+      "victory": "Victory!",
+      "defeat": "Defeat",
+      "draw": "Draw",
+      "eloChange": "ELO Change",
+      "reward": "Reward",
+      "soulStones": "Soul Stones"
+    }
   }
 }

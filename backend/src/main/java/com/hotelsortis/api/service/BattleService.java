@@ -360,4 +360,62 @@ public class BattleService {
                 .status(battle.getStatus().name())
                 .build();
     }
+
+    /**
+     * Create a new PvP battle between two players
+     */
+    @Transactional
+    public Battle createPvPBattle(com.hotelsortis.api.entity.Player player1, com.hotelsortis.api.entity.Player player2) {
+        // Player 1의 장착 스킬
+        String player1SkillsJson = player1.getEquippedSkillIds();
+        List<Long> player1Skills = Collections.emptyList();
+        if (player1SkillsJson != null && !player1SkillsJson.isEmpty()) {
+            try {
+                player1Skills = objectMapper.readValue(player1SkillsJson, new TypeReference<List<Long>>() {});
+            } catch (Exception e) {
+                log.error("Failed to parse player1 skills JSON", e);
+            }
+        }
+
+        // Player 2의 장착 스킬
+        String player2SkillsJson = player2.getEquippedSkillIds();
+        List<Long> player2Skills = Collections.emptyList();
+        if (player2SkillsJson != null && !player2SkillsJson.isEmpty()) {
+            try {
+                player2Skills = objectMapper.readValue(player2SkillsJson, new TypeReference<List<Long>>() {});
+            } catch (Exception e) {
+                log.error("Failed to parse player2 skills JSON", e);
+            }
+        }
+
+        // Convert skills to JSON
+        String player1SkillsJsonStr = "[]";
+        String player2SkillsJsonStr = "[]";
+        try {
+            player1SkillsJsonStr = objectMapper.writeValueAsString(player1Skills);
+            player2SkillsJsonStr = objectMapper.writeValueAsString(player2Skills);
+        } catch (Exception e) {
+            log.error("Failed to convert skills to JSON", e);
+        }
+
+        Battle battle = Battle.builder()
+                .playerId(player1.getId())
+                .enemyId(player2.getId())
+                .battleType(Battle.BattleType.PVP)
+                .playerHp(100)
+                .enemyHp(100)
+                .turnCount(1)
+                .currentTurn(Battle.TurnActor.PLAYER)
+                .status(Battle.Status.ONGOING)
+                .playerEquippedSkills(player1SkillsJsonStr)
+                .enemyEquippedSkills(player2SkillsJsonStr)
+                .build();
+
+        battle = battleRepository.save(battle);
+
+        log.info("Created PvP battle: {} - Player {} (ELO: {}) vs Player {} (ELO: {})",
+                battle.getId(), player1.getId(), player1.getElo(), player2.getId(), player2.getElo());
+
+        return battle;
+    }
 }
