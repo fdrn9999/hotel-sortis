@@ -1,14 +1,12 @@
 <template>
   <div class="pvp-view">
-    <!-- 네비게이션 바 -->
-    <div class="nav-bar">
-      <button class="nav-btn" @click="goBack" aria-label="뒤로가기">
-        ← {{ t('common.back') }}
-      </button>
-      <button class="nav-btn" @click="goHome" aria-label="홈으로">
-        {{ t('common.home') }}
-      </button>
-    </div>
+    <!-- Navigation Bar -->
+    <AppNavigation
+      :title="t('pvp.title')"
+      :show-home="true"
+      :show-back="true"
+      :show-settings="true"
+    />
 
     <div class="pvp-container">
       <h1 class="title">{{ t('pvp.title') }}</h1>
@@ -84,6 +82,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { getRankInfo, getTierColor } from '@/api/pvp'
 import type { RankInfoResponse } from '@/types/game'
+import AppNavigation from '@/components/AppNavigation.vue'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -159,19 +158,6 @@ const viewRankDetails = () => {
   router.push({ name: 'pvp-rank' })
 }
 
-/**
- * 뒤로가기
- */
-const goBack = () => {
-  router.back()
-}
-
-/**
- * 홈으로
- */
-const goHome = () => {
-  router.push('/')
-}
 </script>
 
 <style scoped>

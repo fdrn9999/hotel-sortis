@@ -469,6 +469,10 @@ function navigateToCampaign() {
   router.push('/campaign')
 }
 
+function goToSettings() {
+  router.push('/settings')
+}
+
 function nextBattle() {
   stopTimer()
   // Navigate back to campaign which will handle starting the next battle
@@ -484,7 +488,7 @@ function nextBattle() {
         {{ isCampaignMode ? t('campaign.returnToCampaign') : t('common.home') }}
       </button>
       <span class="floor-info">{{ headerText }}</span>
-      <button class="nav-btn">{{ t('common.settings') }}</button>
+      <button class="nav-btn" @click="goToSettings">{{ t('common.settings') }}</button>
     </header>
 
     <!-- Boss Phase Indicator -->

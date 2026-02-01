@@ -1,5 +1,13 @@
 <template>
   <div class="profile-view">
+    <!-- Navigation Bar -->
+    <AppNavigation
+      :title="$t('profile.myProfile')"
+      :show-home="true"
+      :show-back="true"
+      :show-settings="false"
+    />
+
     <div class="profile-container">
       <h1 class="page-title">{{ $t('profile.myProfile') }}</h1>
 
@@ -122,6 +130,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useI18n } from 'vue-i18n'
 import { useNotification } from '@/composables/useNotification'
 import { useConfirmModal } from '@/composables/useConfirmModal'
+import AppNavigation from '@/components/AppNavigation.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()

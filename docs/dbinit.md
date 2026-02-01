@@ -141,7 +141,7 @@ redis-cli ping
 ### 방법 1: 환경 변수
 ```bash
 export DB_USERNAME=hotelsortis
-export DB_PASSWORD=your_password
+export DB_PASSWORD=1q2w3e4r!
 export REDIS_HOST=localhost
 export REDIS_PORT=6379
 ```

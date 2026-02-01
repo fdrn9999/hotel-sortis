@@ -1,11 +1,13 @@
 <template>
   <div class="pvp-matchmaking-view">
-    <!-- 네비게이션 바 -->
-    <div class="nav-bar">
-      <button class="nav-btn" @click="goHome" aria-label="홈으로">
-        ← {{ t('common.home') }}
-      </button>
-    </div>
+    <!-- Navigation Bar -->
+    <AppNavigation
+      :title="t('pvp.matchmaking.title')"
+      :show-home="true"
+      :show-back="true"
+      :show-settings="true"
+      :on-home="goHome"
+    />
 
     <div class="matchmaking-container">
       <h1 class="title">{{ t('pvp.matchmaking.title') }}</h1>
@@ -74,6 +76,7 @@ import { joinMatchmakingQueue, leaveMatchmakingQueue, findMatch, calculateTier, 
 import { usePvPWebSocket } from '@/composables/usePvPWebSocket'
 import { useConfirmModal } from '@/composables/useConfirmModal'
 import type { MatchFoundResponse } from '@/types/game'
+import AppNavigation from '@/components/AppNavigation.vue'
 
 const router = useRouter()
 const { t } = useI18n()
