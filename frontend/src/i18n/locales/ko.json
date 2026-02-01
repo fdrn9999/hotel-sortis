@@ -311,6 +311,7 @@
     "loginNow": "로그인하기",
     "createAccount": "계정 만들기",
     "confirmLogout": "로그아웃하시겠습니까?",
+    "logoutSuccess": "로그아웃되었습니다",
     "errors": {
       "fillAllFields": "모든 필드를 입력해주세요.",
       "invalidCredentials": "이메일 또는 비밀번호가 잘못되었습니다.",

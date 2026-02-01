@@ -311,6 +311,7 @@
     "loginNow": "ログイン",
     "createAccount": "アカウント作成",
     "confirmLogout": "ログアウトしますか？",
+    "logoutSuccess": "ログアウトしました",
     "errors": {
       "fillAllFields": "すべてのフィールドを入力してください。",
       "invalidCredentials": "メールアドレスまたはパスワードが間違っています。",

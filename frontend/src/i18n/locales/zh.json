@@ -311,6 +311,7 @@
     "loginNow": "立即登录",
     "createAccount": "创建账户",
     "confirmLogout": "确定要登出吗？",
+    "logoutSuccess": "已登出",
     "errors": {
       "fillAllFields": "请填写所有字段。",
       "invalidCredentials": "邮箱或密码错误。",

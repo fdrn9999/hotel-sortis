@@ -121,11 +121,13 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useI18n } from 'vue-i18n'
 import { useNotification } from '@/composables/useNotification'
+import { useConfirmModal } from '@/composables/useConfirmModal'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const { t } = useI18n()
 const { info, success, error } = useNotification()
+const { confirm } = useConfirmModal()
 
 const newUsername = ref('')
 const newLanguage = ref(authStore.user?.preferredLanguage || 'en')
@@ -199,11 +201,20 @@ async function handleChangePassword() {
   }
 }
 
-function handleLogout() {
-  // TODO: confirm() 대체 필요 (CLAUDE.md 3.3.1 규칙)
-  // 임시로 즉시 로그아웃 처리
-  authStore.logout()
-  router.push('/login')
+async function handleLogout() {
+  // CLAUDE.md 3.3.1 규칙 준수: confirm() 대체
+  const confirmed = await confirm({
+    title: t('auth.logout'),
+    message: t('auth.confirmLogout'),
+    confirmText: t('auth.logout'),
+    cancelText: t('common.cancel')
+  })
+
+  if (confirmed) {
+    authStore.logout()
+    success(t('auth.logoutSuccess'))
+    router.push('/login')
+  }
 }
 </script>
 

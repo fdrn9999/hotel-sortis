@@ -72,10 +72,12 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { joinMatchmakingQueue, leaveMatchmakingQueue, findMatch, calculateTier, getTierColor } from '@/api/pvp'
 import { usePvPWebSocket } from '@/composables/usePvPWebSocket'
+import { useConfirmModal } from '@/composables/useConfirmModal'
 import type { MatchFoundResponse } from '@/types/game'
 
 const router = useRouter()
 const { t } = useI18n()
+const { confirm } = useConfirmModal()
 
 // 플레이어 정보 (임시 - 실제로는 인증에서 가져와야 함)
 const playerId = ref(1)
@@ -240,12 +242,20 @@ const handleMatchFound = (match: MatchFoundResponse) => {
 /**
  * 홈으로
  */
-const goHome = () => {
+const goHome = async () => {
   if (isMatching.value) {
-    // TODO: confirm() 대체 필요 (CLAUDE.md 3.3.1 규칙) - 모달 컴포넌트 구현 후 교체
-    // 임시로 즉시 취소 처리
-    cancelMatching()
-    router.push('/')
+    // CLAUDE.md 3.3.1 규칙 준수: confirm() 대체
+    const confirmed = await confirm({
+      title: t('pvp.matchmaking.cancel'),
+      message: t('pvp.matchmaking.confirmLeave'),
+      confirmText: t('common.confirm'),
+      cancelText: t('common.cancel')
+    })
+
+    if (confirmed) {
+      cancelMatching()
+      router.push('/')
+    }
   } else {
     router.push('/')
   }
