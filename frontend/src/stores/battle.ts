@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Battle, BattleLog, HandResult, TurnActor } from '@/types/game'
+import type { Battle, BattleLog, HandResult } from '@/types/game'
 
 export const useBattleStore = defineStore('battle', () => {
   const currentBattle = ref<Battle | null>(null)

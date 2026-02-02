@@ -1,5 +1,4 @@
 import apiClient from './client'
-import type { HandRank } from '@/types/game'
 
 // Request/Response types matching backend DTOs
 export interface StartBattleRequest {

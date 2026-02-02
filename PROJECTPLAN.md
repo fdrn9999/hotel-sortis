@@ -23,7 +23,8 @@
 13. [기술 스택 및 아키텍처](#13-기술-스택-및-아키텍처-technical-stack--architecture)
 14. [수익 모델](#14-수익-모델-monetization-model)
 15. [개발 로드맵](#15-개발-로드맵-development-roadmap)
-16. [다국어 지원](#16-다국어-지원-multilingual-support)
+16. [튜토리얼 및 온보딩](#16-튜토리얼-및-온보딩-tutorial--onboarding)
+17. [다국어 지원](#17-다국어-지원-multilingual-support)
 
 ---
 
@@ -57,7 +58,9 @@ HOTEL SORTIS는 **친치로(Chinchiro) 주사위 게임**을 현대적 로그라
 2. **공정한 경쟁**: Pay-to-Win 없는 순수 실력 중심 PvP
 3. **즉시 접근성**: 웹 기반으로 설치 없이 바로 플레이
 4. **PvE ↔ PvP 연계**: 캠페인에서 획득한 스킬을 랭크전에서 활용
-5. **글로벌 서비스**: 4개 언어 지원으로 전 세계 동시 서비스
+4. **PvE ↔ PvP 연계**: 캠페인에서 획득한 스킬을 랭크전에서 활용
+5. **다양한 변수 (Roguelike Elements)**: 층별 룰 변형(Mutators)과 랜덤 이벤트
+6. **글로벌 서비스**: 4개 언어 지원으로 전 세계 동시 서비스
 
 ---
 
@@ -203,36 +206,42 @@ function evaluateHand(dice) {
 
 ## 3. 전투 시스템 (Combat System)
 
-### 3.1 턴제 구조 (Turn-based)
+### 3.1 턴제 및 인터랙션 구조 (Turn-based Interaction)
 
 **⚠️ 중요: 절대 동시에 주사위를 굴리지 않습니다!**
 
-#### 3.1.1 전투 흐름
+#### 3.1.1 상세 전투 및 스킬 발동 흐름
+플레이어의 개입 요소를 극대화하기 위해 각 단계별 인터랙션 윈도우를 제공합니다.
+
 ```
-[턴 1: 플레이어]
-1. BATTLE_START 스킬 발동
-2. 주사위 굴림 (서버에서 생성)
-3. DICE_ROLL 스킬 발동
-4. 족보 판정
-5. BEFORE_DAMAGE 스킬 발동
-6. 데미지 계산
-7. 적에게 데미지 적용
-8. AFTER_DAMAGE 스킬 발동
-9. 애니메이션 (2초)
+[턴 시작]
+1. 턴 개시 (Turn Start)
+   - PASSIVE 효과 적용
+   - TURN_START 스킬 발동 (예: "매 턴 체력 5 회복")
 
-[턴 2: 적]
-10. 적 AI 스킬 발동
-11. 적 주사위 굴림 (서버)
-12. 적 족보 판정
-13. 적 데미지 계산
-14. 플레이어에게 데미지 적용
-15. 애니메이션 (2초)
+[행동 단계]
+2. 프리캐스트 (Pre-cast)
+   - 플레이어가 '주사위 굴리기 전' 사용할 스킬 선택 (예: "다음 굴림에 주사위 1개 추가")
+3. 주사위 굴림 (Roll Dice)
+   - 서버에서 결과 생성 + 물리 애니메이션 (3초)
+   - 타이머 일시 정지 (애니메이션 중)
+4. 리액션 (Reaction) : DICE_ROLL 트리거
+   - 굴린 직후 발동하는 스킬 (예: "1을 6으로 변경", "전체 재굴림")
+   - 사용자가 결과 확인 후 개입 가능
 
-[턴 종료]
-16. HP 체크 (0 이하 → 전투 종료)
-17. 턴 카운트 증가
-18. 10턴 초과 → 무승부
-19. 다음 턴으로
+[판정 단계]
+5. 족보 확정 (Hand Evaluation)
+   - 최종 주사위 값으로 족보 및 기본 공격력 계산
+6. 카운터/방어 (Counter/Defense) : BEFORE_DAMAGE 트리거
+   - 데미지 계산 전 스킬 발동 (예: "방어력 증가", "상대 족보 무효화")
+
+[결과 단계]
+7. 데미지 계산 및 적용
+   - 쉴드(Shield) 우선 소모 → 남은 데미지 HP 차감
+8. 포스트 효과 (Post Effect) : AFTER_DAMAGE 트리거
+   - 피격 후 발동 (예: "받은 피해의 30% 반사", "스킬 쿨타임 감소")
+9. 턴 종료 체크
+   - 상태이상 처리, 턴 카운트 증가
 ```
 
 #### 3.1.2 전투 종료 조건
@@ -266,11 +275,13 @@ if (timeRemaining <= 0 && currentTurn === 'player') {
 }
 ```
 
-### 3.2 HP 시스템
+### 3.2 HP 및 방어 시스템
 
-#### 3.2.1 기본 규칙
+#### 3.2.1 기본 규칙 (Fixed HP)
 
 **모든 캐릭터의 HP는 100으로 고정됩니다.**
+이는 직관적인 데미지 계산과 벨런싱을 위함입니다. 단, 단순함을 보완하기 위해 **쉴드(Shield)** 시스템을 도입합니다.
+
 ```javascript
 const HP_CONSTANTS = {
   PLAYER: 100,        // 플레이어 (전투당)
@@ -278,6 +289,22 @@ const HP_CONSTANTS = {
   ELITE_ENEMY: 100,   // 엘리트 적
   BOSS_PER_PHASE: 100 // 보스 (페이즈당)
 };
+```
+
+#### 3.2.2 쉴드 시스템 (Shield Mechanic)
+HP 외에 임시 생명력을 제공하여 전략적 깊이를 더합니다.
+- **기능**: 데미지를 입을 때 HP보다 먼저 소모됩니다.
+- **지속**: 해당 전투 동안만 유지되거나, 턴 종료 시 소멸될 수 있습니다 (스킬에 따라 다름).
+- **최대치**: 제한 없음 (이론상).
+
+```javascript
+// 스킬 예시: Iron Will
+{
+  name: "Iron Will",
+  effect: (state) => {
+    state.player.shield += 20; // 쉴드 20 획득
+  }
+}
 ```
 
 #### 3.2.2 난이도 조절 방식
@@ -299,27 +326,36 @@ const enemy = {
 };
 ```
 
-### 3.3 데미지 계산
+### 3.3 데미지 계산 공식
 ```javascript
-function calculateDamage(hand, attackerSkills, defenderSkills) {
-  let baseDamage = hand.power;
+function calculateDamage(hand, attackerSkills, defenderSkills, defenderState) {
+  let finalDamage = hand.power;
   
-  // 1. 공격자 스킬 적용
+  // 1. 공격자 스킬 적용 (BEFORE_DAMAGE)
   for (const skill of attackerSkills) {
     if (skill.trigger === 'BEFORE_DAMAGE') {
-      baseDamage = skill.effect(baseDamage, hand);
+      finalDamage = skill.effect(finalDamage, hand);
     }
   }
   
-  // 2. 방어자 스킬 적용
+  // 2. 방어자 스킬 적용 (Resistance/Defense)
   for (const skill of defenderSkills) {
     if (skill.type === 'DAMAGE_REDUCTION') {
-      baseDamage *= (1 - skill.reduction);
+      finalDamage *= (1 - skill.reduction);
     }
   }
+
+  // 3. 쉴드 차감 로직
+  let remainingDamage = Math.floor(finalDamage);
   
-  // 3. 최소 데미지 보장
-  return Math.max(1, Math.floor(baseDamage));
+  if (defenderState.shield > 0) {
+    const shieldDamage = Math.min(defenderState.shield, remainingDamage);
+    defenderState.shield -= shieldDamage;
+    remainingDamage -= shieldDamage;
+  }
+  
+  // 4. 최소 데미지 보장 (쉴드로 막혔으면 0 가능)
+  return Math.max(0, remainingDamage);
 }
 ```
 
@@ -819,6 +855,17 @@ class BossPhaseManager {
 ---
 
 ## 7. 캠페인 구조 (Campaign Structure)
+
+### 7.0 층별 룰 변형 (Floor Mutators)
+게임플레이의 단조로움을 막기 위해 층마다 랜덤한 '변형 룰(Anomaly)'이 적용될 수 있습니다. (4층 이상부터 등장)
+
+| 룰 이름 | 효과 | 분위기 |
+|---------|------|--------|
+| **Heavy Gravity** | 주사위가 무거워져 잘 구르지 않음 (물리 엔진 조정) | 압박감 |
+| **Foggy Room** | 상대의 주사위 1개가 보이지 않음 (`?`) | 미스터리 |
+| **Silence** | `BATTLE_START` 스킬 발동 불가 | 정적 |
+| **Inflated Economy** | 상점 가격 50% 증가하지만 보상 골드도 증가 | 탐욕 |
+| **Mirror Room** | `Pair` 족보의 공격력이 2배 | 환각 |
 
 ### 7.1 15층 구조 (변경 불가)
 
@@ -1348,6 +1395,8 @@ Phase 3: "Behold... the true nature of fate."
 
 ## 11. 사운드 디자인 (Sound Design)
 
+> **⚠️ Critical Requirement**: 사운드는 본 게임의 '타격감'과 '분위기'를 결정하는 핵심 요소이므로, 선택 사항이 아닌 **필수 사항**으로 개발합니다.
+
 ### 11.1 BGM 구성
 
 | 구간 | 분위기 | 악기 구성 | BPM | 참고 |
@@ -1375,6 +1424,10 @@ dice_land.wav
 dice_select.wav
 - 주사위 선택 시 (스킬 사용)
 - 부드러운 클릭
+
+**Interactive Audio Feedback**:
+- 주사위를 드래그할 때 덜그럭거리는 소리 (Shake)
+- 강하게 던지면 강한 충돌음, 약하게 던지면 약한 소리 (Velocity-based)
 ```
 
 #### 11.2.2 족보 완성
@@ -1482,6 +1535,11 @@ skill_activate_legendary.wav
 일본어: "スキル発動" / "役完成：エース" / "勝利"
 중국어: "技能发动" / "手牌完成：Ace" / "胜利"
 ```
+
+### 11.4 사운드 구현 체크리스트
+- [ ] Howler.js 등 오디오 라이브러리 도입
+- [ ] 볼륨 조절 (BGM, SFX, Voice) 및 음소거 기능
+- [ ] 3D 오디오 (Three.js PositionalAudio) 적용 - 주사위 위치에 따른 소리 방향감
 
 ---
 
@@ -2122,4 +2180,62 @@ export function useWebSocket() {
 - 독점 주사위 스킨 5개
 - 독점 아바타 2개
 - 전투 승리 시 영혼석 +50% (코스메틱 화폐)
--
+- 프리미엄 이모트 팩
+
+---
+
+## 15. 개발 로드맵 (Development Roadmap)
+
+### Phase 1-9 (완료)
+- 핵심 시스템, 전투, 3D 주사위, 스킬 엔진, PvP 매칭, 코스메틱 상점 구현 완료.
+
+### Phase 10: 폴리싱 & 사운드 (현재)
+- **사운드 시스템**: BGM, SFX, 3D 오디오
+- **UI/UX 개선**: 트랜지션, 반응형 레이아웃
+
+### Phase 11: 튜토리얼 & 온보딩 (New)
+- **Floor 0**: 튜토리얼 매치
+- **가이드북**: 인게임 도감
+
+### Phase 12: 콘텐츠 확장 (Future)
+- **Floor Mutators**: 층별 룰 변형
+- **Shield System**: 방어 메커니즘 심화
+
+---
+
+## 16. 튜토리얼 및 온보딩 (Tutorial & Onboarding)
+
+### 16.1 진입 장벽 완화 전략
+게임의 독특한 규칙(System A)을 플레이어가 자연스럽게 익히도록 설계합니다.
+
+#### 16.1.1 0층: 더 로비 (Floor 0: The Lobby)
+- **개요**: 실제 게임 시작 전, 호텔 지배인(Lucifuge)과 진행하는 튜토리얼 매치.
+- **구성**:
+    1. **기본 굴리기**: 주사위 3개를 굴려 족보가 만들어지는 과정 시각적으로 강조.
+    2. **족보 교육**: `Strike`, `Slash` 등 특수 족보가 떴을 때 "이것이 스트라이크입니다!" 팝업 설명.
+    3. **스킬 사용**: 강제로 스킬 카드를 쥐어주고 사용해보게 함.
+    4. **승리 보장**: 어떻게 해도 플레이어가 이기도록 설계.
+
+#### 16.1.2 족보 가이드북 (Hand Guide)
+- **접근성**: 인게임 전투 화면 어디서든 `?` 버튼이나 `Tab` 키로 호출 가능.
+- **내용**: 8개 족보의 구성과 공격력, 확률을 한눈에 볼 수 있는 표.
+- **동적 표시**: 현재 내 주사위로 만들 수 있는 족보를 하이라이트.
+
+#### 16.1.3 연습 모드 (Practice Mode)
+- **시간 제한 없음**: 30초 룰이 적용되지 않는 AI 대전.
+- **샌드박스**: 원하는 스킬을 장착해보고 데미지를 실험할 수 있는 공간.
+
+---
+
+## 17. 다국어 지원 (Multilingual Support)
+
+### 17.1 지원 언어
+- **한국어 (Korean)**: 기본 개발 언어
+- **영어 (English)**: 글로벌 표준
+- **일본어 (Japanese)**: 로그라이크/TCG 주요 시장
+- **중국어 (Simplified Chinese)**: 최대 시장
+
+### 17.2 구현 방식
+- **Frontend**: `vue-i18n` 사용 (JSON 기반 키 관리)
+- **Backend**: DB 컬럼 분리 (`name_ko`, `name_en`...) 및 클라이언트 `Accept-Language` 헤더에 따른 동적 DTO 변환
+- **Font**: Noto Sans CJK (모든 언어 대응)

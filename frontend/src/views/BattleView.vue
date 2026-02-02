@@ -5,6 +5,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { battleApi, type RollDiceResponse, type EnemyTurnResult } from '@/api/battle'
 import { useDiceScene } from '@/composables/useDiceScene'
 import { useCampaignStore } from '@/stores/campaign'
+import { SFX, BGM } from '@/composables/useSound'
 import SkillSelectionView from '@/views/SkillSelectionView.vue'
 import type { SkillRewardOption } from '@/types/game'
 
@@ -89,6 +90,18 @@ const phaseDots = computed(() => {
 
 // Start battle on mount
 onMounted(async () => {
+  // Start BGM based on floor
+  const floorNum = campaignFloor.value || 1
+  if (campaignBossId.value) {
+    BGM.play('boss')
+  } else if (floorNum <= 5) {
+    BGM.play('floor-1-5')
+  } else if (floorNum <= 10) {
+    BGM.play('floor-6-10')
+  } else {
+    BGM.play('floor-11-15')
+  }
+
   // Set campaign context
   if (isCampaignMode.value) {
     floor.value = campaignFloor.value
@@ -111,6 +124,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
   stopTimer()
+  BGM.stop()
 })
 
 // Start a new battle
@@ -160,6 +174,7 @@ async function rollDice() {
 
   isRolling.value = true
   stopTimer()
+  SFX.diceRoll()
 
   // Clear previous results
   playerHand.value = null
@@ -199,13 +214,16 @@ async function rollDice() {
 
     // Update player dice with animation delay
     await animateDiceRoll(response.dice, 'player')
+    SFX.diceLand()
 
     // Show player result
     playerDice.value = [...response.dice]
     playerHand.value = response.hand
+    SFX.handComplete(response.hand.rank)
     addLog(`${t('battle.playerHP')}: ${response.hand.rankKR} (${response.hand.power} ${t('battle.damage') || 'damage'})`)
 
     // Update enemy HP
+    if (response.enemyHp < enemyHP.value) SFX.damageDealt()
     enemyHP.value = response.enemyHp
 
     // Handle boss phase transition
@@ -216,6 +234,7 @@ async function rollDice() {
     // Check for victory
     if (response.status === 'VICTORY') {
       status.value = 'VICTORY'
+      SFX.victory()
       addLog(t('battle.victory') + '!')
 
       // Campaign: handle post-victory flow
@@ -227,7 +246,9 @@ async function rollDice() {
 
     // Process enemy turn if exists
     if (response.enemyTurn) {
+      SFX.turnChange()
       await processEnemyTurn(response.enemyTurn)
+      if (response.playerHp < playerHP.value) SFX.damageTaken()
       playerHP.value = response.playerHp
     }
 
@@ -236,6 +257,7 @@ async function rollDice() {
     turnCount.value++
 
     if (status.value === 'DEFEAT') {
+      SFX.defeat()
       addLog(t('battle.defeat') + '!')
     } else if (status.value === 'DRAW') {
       addLog(t('battle.draw') + '!')
@@ -253,6 +275,7 @@ async function rollDice() {
 
 // Handle boss phase transition
 async function handlePhaseTransition(transition: { bossId: string; newPhase: number; totalPhases: number; quote?: string; newPattern?: string }) {
+  SFX.phaseTransition()
   // Show phase transition overlay
   phaseTransitionQuote.value = transition.quote || ''
   showPhaseTransition.value = true
@@ -371,6 +394,8 @@ function startTimer() {
   timeRemaining.value = TURN_TIME_LIMIT
   timerInterval.value = setInterval(() => {
     timeRemaining.value--
+    if (timeRemaining.value === 10) SFX.timerWarning()
+    if (timeRemaining.value <= 5 && timeRemaining.value > 0) SFX.timerWarning()
     if (timeRemaining.value <= 0) {
       onTimeout()
     }
@@ -473,11 +498,6 @@ function goToSettings() {
   router.push('/settings')
 }
 
-function nextBattle() {
-  stopTimer()
-  // Navigate back to campaign which will handle starting the next battle
-  router.push('/campaign')
-}
 </script>
 
 <template>

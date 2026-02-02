@@ -57,7 +57,7 @@ const props = defineProps<{
 }>()
 
 const router = useRouter()
-const { t } = useI18n()
+useI18n()
 
 // 뒤로가기 가능 여부
 const canGoBack = computed(() => {

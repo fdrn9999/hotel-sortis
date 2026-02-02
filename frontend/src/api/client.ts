@@ -5,6 +5,10 @@ interface ApiResponse<T> {
   _links?: Record<string, { href: string }>
 }
 
+interface RequestOptions {
+  params?: Record<string, string | number | boolean>
+}
+
 class ApiClient {
   private baseUrl: string
 
@@ -12,11 +16,22 @@ class ApiClient {
     this.baseUrl = baseUrl
   }
 
+  private buildUrl(endpoint: string, params?: Record<string, string | number | boolean>): string {
+    const url = `${this.baseUrl}${endpoint}`
+    if (!params || Object.keys(params).length === 0) return url
+    const query = new URLSearchParams()
+    for (const [key, value] of Object.entries(params)) {
+      query.append(key, String(value))
+    }
+    return `${url}?${query.toString()}`
+  }
+
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
+    params?: Record<string, string | number | boolean>
   ): Promise<ApiResponse<T>> {
-    const url = `${this.baseUrl}${endpoint}`
+    const url = this.buildUrl(endpoint, params)
 
     // JWT 토큰 가져오기
     const token = localStorage.getItem('auth_token')
@@ -46,8 +61,8 @@ class ApiClient {
     }
   }
 
-  async get<T>(endpoint: string): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, { method: 'GET' })
+  async get<T>(endpoint: string, options?: RequestOptions): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, { method: 'GET' }, options?.params)
   }
 
   async post<T>(endpoint: string, body?: unknown): Promise<ApiResponse<T>> {
@@ -64,8 +79,8 @@ class ApiClient {
     })
   }
 
-  async delete<T>(endpoint: string): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, { method: 'DELETE' })
+  async delete<T>(endpoint: string, options?: RequestOptions): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, { method: 'DELETE' }, options?.params)
   }
 }
 

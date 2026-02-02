@@ -113,7 +113,7 @@ const tierName = computed(() => t(`pvp.tiers.${tier.value.toLowerCase()}`))
 
 // WebSocket
 const {
-  connected,
+  connected: _connected,
   subscribePvP,
   unsubscribeAll,
   onMatchFound: wsOnMatchFound

@@ -11,8 +11,6 @@ HOTEL SORTIS is a turn-based strategy roguelike game featuring a Chinchiro dice 
 
 ## Development Commands
 
-### Frontend (Vue 3 + Vite)
-```bash
 cd frontend
 npm install          # Install dependencies
 npm run dev          # Start dev server (localhost:5173)
@@ -20,7 +18,8 @@ npm run build        # Build for production
 npm run preview      # Preview production build
 npm run lint         # Run ESLint
 npm run format       # Run Prettier
-```
+# 사운드 에셋 관리: /public/sounds 디렉토리 사용
+
 
 ### Backend (Spring Boot 3.2 + Gradle)
 ```bash

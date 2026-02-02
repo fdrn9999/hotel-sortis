@@ -37,7 +37,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+useI18n()
 
 export interface ConfirmModalOptions {
   title: string
