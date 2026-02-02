@@ -20,7 +20,9 @@
     "collection": "コレクション",
     "shop": "ショップ",
     "skillLoadout": "スキル装備",
-    "profile": "プロフィール"
+    "profile": "プロフィール",
+    "tutorial": "チュートリアル",
+    "practice": "練習モード"
   },
   "battle": {
     "rollDice": "サイコロを振る",
@@ -40,7 +42,8 @@
     "heal": "回復",
     "phaseTransition": "フェーズ移行",
     "bossPhase": "フェーズ {phase}",
-    "maxTurnsReached": "最大ターンに到達（10ターン）"
+    "maxTurnsReached": "最大ターンに到達（10ターン）",
+    "rolling": "サイコロ中..."
   },
   "hands": {
     "ace": "エース",
@@ -396,5 +399,56 @@
     "goToShop": "ショップへ",
     "currentSkin": "現在のスキン",
     "default": "デフォルト"
+  },
+  "tutorial": {
+    "title": "チュートリアル",
+    "floor0": "0階",
+    "theLobby": "ロビー",
+    "player": "プレイヤー",
+    "skip": "スキップ",
+    "tapToContinue": "タップして続ける",
+    "enemyTurnLog": "敵のターン...",
+    "complete": "チュートリアル完了！",
+    "lucifuge": {
+      "welcome": "HOTEL SORTISへようこそ。\n私はこのホテルの支配人、ルシフジ・ロフォカレです。",
+      "explainHotel": "このホテルでは、すべてがサイコロで決まります。\n3つのサイコロを振って役を作り、相手にダメージを与えましょう。",
+      "explainDice": "サイコロの結果は運命が決めるもの。\nしかし賢者は運命すらも支配する。",
+      "firstReaction": "面白い…悪くない出だしだ。",
+      "skillIntro": "このホテルには特別な能力、スキルが存在します。\nスキルは戦闘の流れを変えることができます。",
+      "defeat": "サイコロはあなたの味方をしたようだ。\nまだ先は長いが…興味深い放浪者だ。",
+      "farewell": "1階から15階まで、HOTEL SORTISの真の試練があなたを待っています。\n幸運を、放浪者よ。"
+    },
+    "guide": {
+      "name": "ガイド",
+      "rollInstruction": "サイコロを振るボタンを押してサイコロを振りましょう。",
+      "rollNow": "サイコロを振ってみましょう！",
+      "handExplanation": "'{hand}'です！{power}ダメージを与えました。",
+      "enemyTurnExplain": "今度は相手のターンです。相手もサイコロを振って攻撃します。\nターン制バトルなので交互に行動します。",
+      "handGuideIntro": "?ボタンを押すと役一覧を確認できます。\n（Tabキーでも開けます）",
+      "handRankings": "役一覧には8つの役と確率が表示されます。\nエース(1-1-1)が最も強く、ノーハンドが最も弱いです。",
+      "rollAgain": "もう一度サイコロを振りましょう！",
+      "finalRoll": "最後の一投です。強力な役で決めましょう！",
+      "useSkill": "戦闘でスキルを使うと有利に戦えます。\nキャンペーンを進めて様々なスキルを獲得しましょう。"
+    }
+  },
+  "handGuide": {
+    "title": "役一覧",
+    "hand": "役",
+    "dice": "サイコロ",
+    "power": "ダメージ",
+    "probability": "確率",
+    "currentDice": "現在のサイコロ",
+    "tip": "ヒント: エース[1-1-1]は確率が低いですが最も強力です。ペアとノーハンドが最も一般的です。"
+  },
+  "practice": {
+    "title": "練習モード",
+    "description": "時間制限なしで自由にサイコロを振りましょう。\n役と確率を学ぶ練習スペースです。",
+    "noTimer": "タイマーなし",
+    "unlimited": "無制限ロール",
+    "stats": "統計",
+    "totalRolls": "総ロール数",
+    "reset": "リセット",
+    "history": "ロール履歴",
+    "damage": "ダメージ"
   }
 }

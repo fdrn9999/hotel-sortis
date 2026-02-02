@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-02 (Phase 10 Part 1 완료: 네비게이션 시스템)
+> 최종 업데이트: 2026-02-02 (Phase 11 완료: 튜토리얼 및 온보딩)
 
 ---
 
@@ -214,7 +214,7 @@
 - [x] SkillLoadoutView.vue alert() 제거 (5개)
 - [x] PvPMatchmakingView.vue confirm() TODO 주석 추가
 - [x] 총 20개 alert() 호출 제거 완료
-- [ ] **TODO (Phase 10)**: confirm() 대체 모달 시스템 구현
+- [x] **TODO (Phase 10)**: confirm() 대체 모달 시스템 구현 ✅
   - ProfileView.vue 로그아웃 확인 (1개)
   - PvPMatchmakingView.vue 매칭 취소 확인 (1개)
 
@@ -258,40 +258,175 @@
   - [x] shop 섹션 추가 (ko, en, ja, zh)
   - [x] cosmetics 섹션 추가 (ko, en, ja, zh)
 
----
+### Phase 10: 폴리싱 (Polishing & Sound)
 
-## 🔄 진행 중 (In Progress)
-
-### Phase 10: 폴리싱
 - [x] confirm() 모달 시스템 (CLAUDE.md 3.3.1 규칙 준수)
-  - ConfirmModal.vue, useConfirmModal.ts 이미 구현됨
+  - ConfirmModal.vue, useConfirmModal.ts 구현
   - ProfileView.vue, PvPMatchmakingView.vue에서 사용 중
 - [x] 네비게이션 시스템 (CLAUDE.md 3.3.2 규칙 100% 준수)
   - AppNavigation.vue 공통 컴포넌트 생성
   - 7개 화면 수정 (ProfileView, CollectionView, RankView, PvPView, PvPMatchmakingView, BattleView, HomeView)
   - 모든 화면에 홈/뒤로가기/설정 버튼 추가
-- [ ] UI/UX 개선
-  - [ ] 로딩 애니메이션 통일
-  - [ ] 트랜지션/애니메이션 개선
-  - [ ] 버튼 hover/active 상태 일관성
-- [ ] 반응형 모바일 최적화
-  - [ ] 터치 제스처 지원 강화
-  - [ ] 모바일 화면 레이아웃 검증
-  - [ ] 성능 최적화 (모바일)
-- [ ] 성능 최적화
-  - [ ] 이미지/리소스 최적화
-  - [ ] 코드 스플리팅
-  - [ ] 렌더링 최적화
-- [ ] 사운드 디자인 (선택적)
-  - [ ] BGM 추가
-  - [ ] 효과음 (주사위, 버튼 등)
-- [ ] 버그 수정
+- [x] 설정 화면 (CLAUDE.md 3.3.3 규칙 100% 준수)
+  - SettingsView.vue 생성 (사운드, 진동, 그래픽, 게임플레이, 언어 설정)
+  - settings Pinia store 생성 (localStorage 저장)
+  - /settings 라우트 추가
+- [x] UI/UX 개선
+  - [x] LoadingSpinner.vue 공통 로딩 컴포넌트 생성 (주사위 애니메이션)
+  - [x] Vue Router 페이지 전환 트랜지션 (page-fade)
+  - [x] 버튼 hover/active/disabled/focus-visible 상태 일관성 (main.css)
+  - [x] 커스텀 스크롤바 스타일링
+  - [x] 텍스트 선택 색상 통일
+- [x] 반응형 모바일 최적화
+  - [x] 터치 제스처 지원 (useGestures.ts - 좌측 엣지 스와이프 뒤로가기)
+  - [x] SettingsView 모바일 레이아웃 최적화
+- [x] 키보드 단축키 (CLAUDE.md 3.3.5 규칙 준수)
+  - [x] useKeyboardShortcuts.ts (ESC, H, Backspace, M)
+- [x] 코드 스플리팅 (모든 라우트 lazy-loaded 확인)
+- [x] **사운드 시스템 구현 (Howler.js + Web Audio API)**
+  - [x] Howler.js 의존성 추가
+  - [x] useSound.ts composable 생성 (SFX, BGM 매니저)
+  - [x] Web Audio API 합성음 SFX 구현 (에셋 파일 없이 즉시 동작)
+    - 주사위: diceRoll, diceLand
+    - 족보: aceComplete, tripleComplete, straightComplete, stormComplete, pairComplete, noHandComplete
+    - 전투: damageDealt, damageTaken, victory, defeat, phaseTransition
+    - 스킬: skillActivate (희귀도별 4종)
+    - UI: buttonClick, buttonHover, turnChange, timerWarning
+  - [x] BGM 플레이어 (Howler.js, 크로스페이드, 루핑, 에셋 없으면 silent fail)
+  - [x] BattleView.vue 사운드 통합 (14개 SFX 포인트)
+  - [x] HomeView.vue 메뉴 BGM + 버튼 클릭 SFX
+  - [x] SettingsView.vue 볼륨 조절 연동 (watch 기반)
+  - [x] App.vue 전역 사운드 초기화 (useSound)
+  - [x] public/sounds/bgm, public/sounds/sfx 디렉토리 생성 (에셋 준비)
+- [x] **버그 수정 (14개 TypeScript 에러 전부 해결)**
+  - [x] ApiClient에 query params 지원 추가 (get, delete에 options 파라미터)
+  - [x] api/cosmetic.ts, api/shop.ts, api/skill.ts 인자 불일치 해결 (7개)
+  - [x] 미사용 import/변수 정리: battle.ts, AppNavigation.vue, ConfirmModal.vue, router, BattleView.vue, PvPMatchmakingView.vue (7개)
+  - [x] vue-tsc --noEmit 0 에러, npm run build 성공
+
+### Phase 11: 튜토리얼 및 온보딩
+
+- [x] **Floor 0: The Lobby (튜토리얼 매치)**
+  - [x] useTutorial.ts composable 구현 (스텝 엔진, 대화, 스크립트된 주사위)
+    - 22단계 튜토리얼 스크립트 (대화, 하이라이트, 주사위 굴림, 적 턴 등)
+    - TUTORIAL_DICE_SCRIPTS: 3개 스크립트된 주사위 (플레이어 승리 보장)
+    - localStorage 기반 진행도 저장
+  - [x] TutorialOverlay.vue (화살표 가이드, 말풍선, 하이라이트)
+    - Teleport-to-body 오버레이, 타이프라이터 효과, ResizeObserver
+    - z-index 9000-9003 레이어링, box-shadow cutout 기법
+  - [x] TutorialView.vue (Floor 0 전투 화면)
+    - 3D + 2D 주사위 표시, Lucifuge 대사, 스크립트된 전투 진행
+    - evaluateHand() 로컬 구현 (오프라인 모드)
+    - Tab 키로 HandGuide 열기
+  - [x] Lucifuge 대사 연동 (4개 언어 번역)
+- [x] **가이드북 시스템**
+  - [x] HandGuide.vue 컴포넌트 (족보표 8종, 확률, 주사위 예시)
+    - 현재 주사위에 매칭되는 족보 하이라이트
+    - 희귀도별 색상 코딩
+    - 반응형: 모바일에서 확률 컬럼 숨김
+  - [x] 인게임 오버레이/팝업 (? 버튼 및 Tab 키로 토글)
+- [x] **연습 모드 (Practice Mode)**
+  - [x] PracticeView.vue (시간 제한 없는 샌드박스 모드)
+    - 무제한 주사위 굴림, 족보별 통계 추적
+    - 최근 10회 히스토리, 관찰 빈도 퍼센트 계산
+    - Space 키 단축키, Tab 키 HandGuide 토글
+    - 리셋 버튼으로 통계 초기화
+- [x] **i18n 4개 언어 지원 (ko, en, ja, zh)**
+  - [x] tutorial 섹션 (lucifuge 대사 7개 + guide 텍스트 9개)
+  - [x] handGuide 섹션 (7개 키)
+  - [x] practice 섹션 (9개 키)
+  - [x] menu.tutorial, menu.practice 키 추가
+  - [x] battle.rolling 키 추가
+- [x] **라우팅 및 네비게이션**
+  - [x] /tutorial, /practice 라우트 추가 (requiresAuth: false)
+  - [x] HomeView.vue에 서브 메뉴 (튜토리얼, 연습 모드 버튼)
+- [x] vue-tsc --noEmit 0 에러, npm run build 성공
+
+---
+
+## 🔄 진행 중 (In Progress)
+
+_현재 진행 중인 작업 없음_
 
 ---
 
 ## 📋 예정된 작업 (Planned)
 
-_현재 예정된 작업 없음_
+### Phase 12: 콘텐츠 확장 (Content Expansion)
+- [ ] **쉴드(Shield) 시스템**
+  - [ ] BattleStore/Entities에 `shield` 필드 추가
+  - [ ] 데미지 계산 로직 업데이트 (쉴드 우선 소모)
+  - [ ] 쉴드 관련 신규 스킬 구현 (Iron Will, Barrier 등)
+- [ ] **층별 룰 변형 (Floor Mutators)**
+  - [ ] Mutator 시스템 설계 및 엔티티 구현
+  - [ ] 5가지 기본 Mutator (Gravity, Fog, Silence, etc.) 구현
+  - [ ] UI에 현재 층 Mutator 표시
+- [ ] **Draft Mode (PvP)**
+  - [ ] 스킬 드래프트 시스템 기획 및 구현
+
+### Phase 13: 2차 폴리싱 (2nd Polishing)
+
+- [ ] **i18n 정합성 수정 (CRITICAL)**
+  - [ ] ko.json `pvp` 키 중복 병합 (line 202 vs 244 — 두 번째가 첫 번째 덮어씀)
+  - [ ] en.json, ja.json, zh.json 동일하게 `pvp` 키 구조 통일
+  - [ ] 4개 locale 파일 전체 키 diff 검증 (누락/불일치 찾기)
+  - [ ] `soulStones` 키 네스팅 위치 4개 파일 일관성 맞추기
+- [ ] **하드코딩 문자열 i18n 전환**
+  - [ ] SettingsView.vue: ON/OFF 토글 텍스트 → `t('common.on')` / `t('common.off')`
+  - [ ] SignupView.vue: 언어 선택 드롭다운 라벨 → i18n 키 사용
+  - [ ] ProfileView.vue: 언어 선택 드롭다운 라벨 → i18n 키 사용
+  - [ ] i18n locale 4개 파일에 `common.on`, `common.off` 키 추가
+- [ ] **console.log/error 정리 (40+ 건)**
+  - [ ] `stores/skill.ts` — 8건 제거 또는 `import.meta.env.DEV` 가드
+  - [ ] `stores/cosmetic.ts` — 12건 제거
+  - [ ] `stores/shop.ts` — 10건 제거
+  - [ ] `stores/auth.ts` — console.error 1건 정리
+  - [ ] `api/client.ts` — console.error 1건 정리
+  - [ ] `game/DiceScene.ts` — console.log 2건 제거
+  - [ ] `composables/usePvPWebSocket.ts` — WebSocket 디버그 로그 정리
+  - [ ] `views/BattleView.vue` — 전투 디버그 로그 정리
+- [ ] **UI/UX 빈 상태(Empty State) 및 에러 상태 보강**
+  - [ ] ShopView.vue: 에러 상태 UI 추가 (현재 없음)
+  - [ ] ShopView.vue: 빈 상점 상태 UI 개선 (현재 placeholder 텍스트)
+  - [ ] CollectionView.vue: 빈 컬렉션 상태 메시지 추가
+  - [ ] RankView.vue: 빈 랭크 데이터 상태 메시지 추가
+  - [ ] PvPView.vue: 에러/로딩 상태 점검
+- [ ] **접근성(Accessibility) 개선**
+  - [ ] ShopView.vue: 이모지 전용 버튼에 aria-label 추가
+  - [ ] HomeView.vue: 이모지 전용 아이콘 버튼에 aria-label 보강
+  - [ ] 모든 form input에 연결된 label 또는 aria-label 확인
+  - [ ] 키보드 탭 순서(tab order) 전 화면 점검
+- [ ] **CSS 일관성 개선**
+  - [ ] 하드코딩 색상 → CSS 변수 전환 (LoginView, SignupView, ProfileView 등 30~40%)
+  - [ ] AppNavigation.vue: `#d4af37` → `var(--color-gold)` 통일
+  - [ ] 매직 넘버 정리 (의미 있는 CSS 변수 또는 주석 추가)
+- [ ] **반응형 태블릿 브레이크포인트 추가**
+  - [ ] LoginView.vue: 태블릿(768px~1024px) 레이아웃 최적화
+  - [ ] SignupView.vue: 태블릿 레이아웃 최적화
+  - [ ] ShopView.vue: 태블릿 레이아웃 최적화
+  - [ ] BattleView.vue: 태블릿 가로 모드 최적화
+- [ ] **성능 최적화**
+  - [ ] BattleView.vue 청크 분리 (현재 556KB — Three.js/Cannon-es 별도 vendor chunk)
+  - [ ] `vite.config.ts`에 `manualChunks` 설정 (three, cannon-es, howler 분리)
+  - [ ] BattleView.vue 전투 로직 composable 추출 (`useBattleLogic.ts`)
+  - [ ] 이미지/아이콘 lazy loading 적용
+  - [ ] 로딩 스켈레톤 UI (LoadingSpinner 대체용 SkeletonLoader 컴포넌트)
+- [ ] **코드 품질 정리**
+  - [ ] TODO/FIXME 주석 전수 조사 및 해결 (BattleView, SkillLoadoutView, CampaignView)
+  - [ ] 한국어 코드 주석 → 영어로 통일 (SettingsView, SignupView, ProfileView 등)
+  - [ ] 미사용 CSS 클래스 정리
+- [ ] **사운드 에셋 적용**
+  - [ ] Pixabay/Wavbvkery에서 주사위 굴림 WAV/MP3 다운로드 → `public/sounds/sfx/`
+  - [ ] Silverman Sound/FMA에서 1920s 재즈 BGM 다운로드 → `public/sounds/bgm/`
+  - [ ] Pixabay/ZapSplat에서 타격음 다운로드 → `public/sounds/sfx/`
+  - [ ] `useSound.ts` BGM_MAP 경로와 실제 파일 매칭 확인
+  - [ ] 합성음 SFX를 실제 에셋으로 교체 (옵션: 합성음 fallback 유지)
+  - [ ] 라이선스 표기 파일 작성 (`public/sounds/LICENSES.md`)
+- [ ] **테스트**
+  - [ ] 족보 판정 단위 테스트 (evaluateHand — 프론트엔드 `battle.ts`)
+  - [ ] 스킬 슬롯 검증 단위 테스트 (최대 4개, 중복 방지)
+  - [ ] i18n 키 일관성 자동 검증 스크립트 (4개 파일 키 비교)
+  - [ ] 크로스 브라우저 수동 테스트 (Chrome, Firefox, Safari, 모바일)
 
 ---
 
@@ -328,6 +463,23 @@ _현재 예정된 작업 없음_
 - **Frontend**: Vue 3.4+, Vite 5+, Pinia, Vue Router 4, Vue I18n 9+, Three.js, Cannon-es
 - **Backend**: Spring Boot 3.2+, Java 17+, MariaDB 11.x, Redis 7.x
 - **Protocol**: REST (HATEOAS), WebSocket (STOMP)
+
+### 사운드 에셋 소스 (무료/로열티 프리)
+
+**BGM (1920년대 재즈풍)**:
+
+- [Silverman Sound "Speakeasy" (CC BY)](https://www.silvermansound.com/free-music/speakeasy)
+- [Free Music Archive Jazz](https://freemusicarchive.org/genre/Jazz/)
+- [Audionautix Jazz (CC BY 4.0)](https://audionautix.com/free-music/jazz)
+- [Chosic Jazz](https://www.chosic.com/free-music/jazz/)
+
+**SFX (주사위, 타격음)**:
+
+- [Pixabay Dice SFX (무료, 저작자 표시 불필요)](https://pixabay.com/sound-effects/search/dice/)
+- [Wavbvkery Dice Sounds (무료, 로열티 프리)](https://wavbvkery.com/dice-rolling-sound/)
+- [Pixabay Impact SFX](https://pixabay.com/sound-effects/search/impact/)
+- [ZapSplat Impacts (무료, 저작자 표시 필요)](https://www.zapsplat.com/sound-effect-category/impacts/)
+- [Mixkit Impact SFX (무료)](https://mixkit.co/free-sound-effects/impact/)
 
 ### 핵심 규칙 (CLAUDE.md 참조)
 - ❌ 클라이언트에서 주사위 생성 금지

@@ -76,12 +76,30 @@ const router = createRouter({
       name: 'shop',
       component: () => import('@/views/ShopView.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('@/views/SettingsView.vue'),
+      meta: { requiresAuth: false }
+    },
+    {
+      path: '/tutorial',
+      name: 'tutorial',
+      component: () => import('@/views/TutorialView.vue'),
+      meta: { requiresAuth: false }
+    },
+    {
+      path: '/practice',
+      name: 'practice',
+      component: () => import('@/views/PracticeView.vue'),
+      meta: { requiresAuth: false }
     }
   ]
 })
 
 // 네비게이션 가드
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _from, next) => {
   const authStore = useAuthStore()
 
   // 인증이 필요한 라우트

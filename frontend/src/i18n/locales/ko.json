@@ -20,7 +20,9 @@
     "collection": "컬렉션",
     "shop": "상점",
     "skillLoadout": "스킬 장착",
-    "profile": "프로필"
+    "profile": "프로필",
+    "tutorial": "튜토리얼",
+    "practice": "연습 모드"
   },
   "battle": {
     "rollDice": "주사위 굴리기",
@@ -40,7 +42,8 @@
     "heal": "회복",
     "phaseTransition": "페이즈 전환",
     "bossPhase": "페이즈 {phase}",
-    "maxTurnsReached": "최대 턴 도달 (10턴)"
+    "maxTurnsReached": "최대 턴 도달 (10턴)",
+    "rolling": "굴리는 중..."
   },
   "hands": {
     "ace": "에이스",
@@ -396,5 +399,56 @@
     "goToShop": "상점으로 가기",
     "currentSkin": "현재 스킨",
     "default": "기본"
+  },
+  "tutorial": {
+    "title": "튜토리얼",
+    "floor0": "0층",
+    "theLobby": "로비",
+    "player": "플레이어",
+    "skip": "건너뛰기",
+    "tapToContinue": "탭하여 계속",
+    "enemyTurnLog": "적의 턴...",
+    "complete": "튜토리얼 완료!",
+    "lucifuge": {
+      "welcome": "HOTEL SORTIS에 오신 것을 환영합니다.\n저는 이 호텔의 지배인, 루시푸지 로포칼레입니다.",
+      "explainHotel": "이 호텔에서는 주사위로 모든 것이 결정됩니다.\n3개의 주사위를 굴려 족보를 만들고, 상대에게 데미지를 입히세요.",
+      "explainDice": "주사위의 결과는 운명이 결정합니다.\n하지만 현명한 자는 운명마저 다스리지요.",
+      "firstReaction": "흥미롭군요... 괜찮은 시작입니다.",
+      "skillIntro": "이 호텔에는 특별한 능력, 스킬이 존재합니다.\n스킬은 전투의 흐름을 바꿀 수 있습니다.",
+      "defeat": "주사위는 당신의 편을 들었군요.\n아직 갈 길이 멀지만... 흥미로운 방랑자입니다.",
+      "farewell": "1층부터 15층까지, HOTEL SORTIS의 진정한 시험이 당신을 기다립니다.\n행운을 빕니다, 방랑자여."
+    },
+    "guide": {
+      "name": "가이드",
+      "rollInstruction": "주사위 굴리기 버튼을 눌러 주사위를 굴리세요.",
+      "rollNow": "주사위를 굴려보세요!",
+      "handExplanation": "'{hand}' 족보입니다! {power} 데미지를 입혔습니다.",
+      "enemyTurnExplain": "이제 상대의 차례입니다. 상대도 주사위를 굴려 공격합니다.\n턴제 전투이므로 번갈아가며 진행됩니다.",
+      "handGuideIntro": "? 버튼을 눌러 족보표를 확인할 수 있습니다.\n(Tab 키로도 열 수 있습니다)",
+      "handRankings": "족보표에는 8가지 족보와 확률이 표시됩니다.\n에이스(1-1-1)가 가장 강력하고, 노 핸드가 가장 약합니다.",
+      "rollAgain": "다시 주사위를 굴려보세요!",
+      "finalRoll": "마지막 굴림입니다. 강력한 족보로 마무리하세요!",
+      "useSkill": "전투에서 스킬을 사용하면 유리하게 싸울 수 있습니다.\n캠페인을 진행하며 다양한 스킬을 획득해보세요."
+    }
+  },
+  "handGuide": {
+    "title": "족보표",
+    "hand": "족보",
+    "dice": "주사위",
+    "power": "데미지",
+    "probability": "확률",
+    "currentDice": "현재 주사위",
+    "tip": "팁: 에이스[1-1-1]는 확률이 낮지만 가장 강력합니다. 페어와 노 핸드가 가장 흔합니다."
+  },
+  "practice": {
+    "title": "연습 모드",
+    "description": "시간 제한 없이 자유롭게 주사위를 굴려보세요.\n족보와 확률을 익히는 연습 공간입니다.",
+    "noTimer": "타이머 없음",
+    "unlimited": "무제한 굴림",
+    "stats": "통계",
+    "totalRolls": "총 굴림",
+    "reset": "초기화",
+    "history": "굴림 기록",
+    "damage": "데미지"
   }
 }

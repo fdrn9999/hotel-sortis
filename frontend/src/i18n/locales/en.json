@@ -20,7 +20,9 @@
     "collection": "Collection",
     "shop": "Shop",
     "skillLoadout": "Skill Loadout",
-    "profile": "Profile"
+    "profile": "Profile",
+    "tutorial": "Tutorial",
+    "practice": "Practice"
   },
   "battle": {
     "rollDice": "Roll Dice",
@@ -40,7 +42,8 @@
     "heal": "Heal",
     "phaseTransition": "Phase Transition",
     "bossPhase": "Phase {phase}",
-    "maxTurnsReached": "Max turns reached (10 turns)"
+    "maxTurnsReached": "Max turns reached (10 turns)",
+    "rolling": "Rolling..."
   },
   "hands": {
     "ace": "Ace",
@@ -396,5 +399,56 @@
     "goToShop": "Go to Shop",
     "currentSkin": "Current Skin",
     "default": "Default"
+  },
+  "tutorial": {
+    "title": "Tutorial",
+    "floor0": "Floor 0",
+    "theLobby": "The Lobby",
+    "player": "Player",
+    "skip": "Skip",
+    "tapToContinue": "Tap to continue",
+    "enemyTurnLog": "Enemy turn...",
+    "complete": "Tutorial Complete!",
+    "lucifuge": {
+      "welcome": "Welcome to HOTEL SORTIS.\nI am the manager of this hotel, Lucifuge Rofocale.",
+      "explainHotel": "In this hotel, everything is decided by dice.\nRoll 3 dice to form hands and deal damage to your opponent.",
+      "explainDice": "The dice are governed by fate.\nBut the wise learn to master even fate itself.",
+      "firstReaction": "Interesting... Not a bad start.",
+      "skillIntro": "In this hotel, there are special abilities called Skills.\nSkills can turn the tide of battle.",
+      "defeat": "The dice have spoken in your favor.\nYou still have a long way to go... but you are an interesting wanderer.",
+      "farewell": "From Floor 1 to Floor 15, the true trials of HOTEL SORTIS await you.\nGood luck, wanderer."
+    },
+    "guide": {
+      "name": "Guide",
+      "rollInstruction": "Press the Roll Dice button to roll the dice.",
+      "rollNow": "Roll the dice!",
+      "handExplanation": "It's a '{hand}'! You dealt {power} damage.",
+      "enemyTurnExplain": "Now it's the enemy's turn. They also roll dice to attack.\nThis is a turn-based battle, so you take turns.",
+      "handGuideIntro": "Press the ? button to view the hand rankings.\n(You can also press Tab)",
+      "handRankings": "The hand guide shows 8 hands with their probabilities.\nAce (1-1-1) is the strongest, No Hand is the weakest.",
+      "rollAgain": "Roll the dice again!",
+      "finalRoll": "Final roll! Finish with a powerful hand!",
+      "useSkill": "Using skills in battle gives you an advantage.\nProgress through the campaign to acquire various skills."
+    }
+  },
+  "handGuide": {
+    "title": "Hand Guide",
+    "hand": "Hand",
+    "dice": "Dice",
+    "power": "Power",
+    "probability": "Probability",
+    "currentDice": "Current Dice",
+    "tip": "Tip: Ace [1-1-1] has low probability but deals the most damage. Pair and No Hand are the most common."
+  },
+  "practice": {
+    "title": "Practice Mode",
+    "description": "Roll dice freely without time limits.\nA sandbox to learn hands and probabilities.",
+    "noTimer": "No Timer",
+    "unlimited": "Unlimited Rolls",
+    "stats": "Statistics",
+    "totalRolls": "Total Rolls",
+    "reset": "Reset",
+    "history": "Roll History",
+    "damage": "Damage"
   }
 }

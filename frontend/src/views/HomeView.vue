@@ -1,19 +1,30 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { SFX, BGM } from '@/composables/useSound'
 
 const { t } = useI18n()
 const router = useRouter()
+
+function navigate(path: string) {
+  SFX.buttonClick()
+  router.push(path)
+}
+
+onMounted(() => {
+  BGM.play('menu')
+})
 </script>
 
 <template>
   <div class="home">
     <!-- 우측 상단 버튼들 -->
     <div class="top-buttons">
-      <button class="icon-btn" @click="router.push('/profile')" :title="t('profile.myProfile')">
+      <button class="icon-btn" @click="navigate('/profile')" :title="t('profile.myProfile')">
         👤
       </button>
-      <button class="icon-btn" @click="router.push('/settings')" :title="t('common.settings')">
+      <button class="icon-btn" @click="navigate('/settings')" :title="t('common.settings')">
         ⚙️
       </button>
     </div>
@@ -24,17 +35,27 @@ const router = useRouter()
     </header>
 
     <nav class="menu">
-      <button class="menu-btn" @click="router.push('/campaign')">
+      <button class="menu-btn" @click="navigate('/campaign')">
         {{ t('menu.campaign') }}
       </button>
-      <button class="menu-btn" @click="router.push('/pvp')">
+      <button class="menu-btn" @click="navigate('/pvp')">
         {{ t('menu.pvp') }}
       </button>
-      <button class="menu-btn" @click="router.push('/collection')">
+      <button class="menu-btn" @click="navigate('/collection')">
         {{ t('menu.collection') }}
       </button>
-      <button class="menu-btn" @click="router.push('/shop')">
+      <button class="menu-btn" @click="navigate('/shop')">
         {{ t('menu.shop') }}
+      </button>
+    </nav>
+
+    <!-- Secondary menu -->
+    <nav class="sub-menu">
+      <button class="sub-menu-btn" @click="navigate('/tutorial')">
+        {{ t('menu.tutorial') }}
+      </button>
+      <button class="sub-menu-btn" @click="navigate('/practice')">
+        {{ t('menu.practice') }}
       </button>
     </nav>
   </div>
@@ -127,5 +148,31 @@ const router = useRouter()
 .menu-btn:hover {
   background: var(--color-gold);
   color: var(--color-bg);
+}
+
+.sub-menu {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+.sub-menu-btn {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: transparent;
+  color: rgba(212, 175, 55, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sub-menu-btn:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+  background: rgba(212, 175, 55, 0.1);
 }
 </style>

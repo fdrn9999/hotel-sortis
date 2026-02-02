@@ -20,7 +20,9 @@
     "collection": "收藏",
     "shop": "商店",
     "skillLoadout": "技能装备",
-    "profile": "个人资料"
+    "profile": "个人资料",
+    "tutorial": "教程",
+    "practice": "练习模式"
   },
   "battle": {
     "rollDice": "掷骰子",
@@ -40,7 +42,8 @@
     "heal": "回复",
     "phaseTransition": "阶段转换",
     "bossPhase": "阶段 {phase}",
-    "maxTurnsReached": "达到最大回合数（10回合）"
+    "maxTurnsReached": "达到最大回合数（10回合）",
+    "rolling": "投掷中..."
   },
   "hands": {
     "ace": "Ace",
@@ -396,5 +399,56 @@
     "goToShop": "前往商店",
     "currentSkin": "当前皮肤",
     "default": "默认"
+  },
+  "tutorial": {
+    "title": "教程",
+    "floor0": "0层",
+    "theLobby": "大厅",
+    "player": "玩家",
+    "skip": "跳过",
+    "tapToContinue": "点击继续",
+    "enemyTurnLog": "敌方回合...",
+    "complete": "教程完成！",
+    "lucifuge": {
+      "welcome": "欢迎来到HOTEL SORTIS。\n我是这家酒店的经理，路西法吉·罗弗卡莱。",
+      "explainHotel": "在这家酒店里，一切由骰子决定。\n投掷3个骰子组成牌型，对对手造成伤害。",
+      "explainDice": "骰子的结果由命运决定。\n但智者能够掌控命运。",
+      "firstReaction": "有趣……不错的开始。",
+      "skillIntro": "在这家酒店里，存在着名为技能的特殊能力。\n技能可以改变战斗的走势。",
+      "defeat": "骰子站在了你这边。\n前路还很漫长……但你是个有趣的流浪者。",
+      "farewell": "从1层到15层，HOTEL SORTIS的真正试炼等待着你。\n祝你好运，流浪者。"
+    },
+    "guide": {
+      "name": "向导",
+      "rollInstruction": "按下投掷骰子按钮来投掷骰子。",
+      "rollNow": "投掷骰子吧！",
+      "handExplanation": "这是'{hand}'！造成了{power}点伤害。",
+      "enemyTurnExplain": "现在是敌人的回合。敌人也会投掷骰子进行攻击。\n这是回合制战斗，双方轮流行动。",
+      "handGuideIntro": "按下?按钮查看牌型表。\n（也可以按Tab键打开）",
+      "handRankings": "牌型表展示了8种牌型及其概率。\nAce(1-1-1)最强，无牌型最弱。",
+      "rollAgain": "再次投掷骰子吧！",
+      "finalRoll": "最后一投！用强力牌型结束战斗！",
+      "useSkill": "在战斗中使用技能可以获得优势。\n通过推进战役来获取各种技能。"
+    }
+  },
+  "handGuide": {
+    "title": "牌型表",
+    "hand": "牌型",
+    "dice": "骰子",
+    "power": "伤害",
+    "probability": "概率",
+    "currentDice": "当前骰子",
+    "tip": "提示：Ace[1-1-1]概率低但伤害最高。对子和无牌型最常见。"
+  },
+  "practice": {
+    "title": "练习模式",
+    "description": "无时间限制，自由投掷骰子。\n学习牌型和概率的练习空间。",
+    "noTimer": "无计时",
+    "unlimited": "无限投掷",
+    "stats": "统计",
+    "totalRolls": "总投掷次数",
+    "reset": "重置",
+    "history": "投掷记录",
+    "damage": "伤害"
   }
 }
