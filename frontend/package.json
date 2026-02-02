@@ -12,11 +12,9 @@
   },
   "dependencies": {
     "@stomp/stompjs": "^7.0.0",
-    "cannon-es": "^0.20.0",
     "howler": "^2.2.4",
     "pinia": "^2.1.0",
     "sockjs-client": "^1.6.1",
-    "three": "^0.160.0",
     "vue": "^3.4.0",
     "vue-i18n": "^9.10.0",
     "vue-router": "^4.3.0"
@@ -24,7 +22,6 @@
   "devDependencies": {
     "@types/howler": "^2.2.12",
     "@types/sockjs-client": "^1.5.4",
-    "@types/three": "^0.160.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "@vitejs/plugin-vue": "^5.0.0",

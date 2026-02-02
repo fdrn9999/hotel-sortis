@@ -75,3 +75,7 @@ mysql -u root -p hotel_sortis < insert.sql
 - Verify HP=100 and Skill Slots=4.
 
 See `CLAUDE.md` for high-level overview.
+
+### 6. Check-list
+- Commit-Push after Tasks
+- Before Token limit reached, write summary of completed tasks and commit-push.

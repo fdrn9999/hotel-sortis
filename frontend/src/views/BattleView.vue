@@ -3,9 +3,11 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
 import { battleApi, type RollDiceResponse, type EnemyTurnResult } from '@/api/battle'
-import { useDiceScene } from '@/composables/useDiceScene'
+import { useDiceRoller, type DiceResult } from '@/composables/useDiceRoller'
 import { useCampaignStore } from '@/stores/campaign'
+import { useCosmeticStore } from '@/stores/cosmetic'
 import { SFX, BGM } from '@/composables/useSound'
+import DiceRoller from '@/components/DiceRoller.vue'
 import SkillSelectionView from '@/views/SkillSelectionView.vue'
 import type { SkillRewardOption } from '@/types/game'
 
@@ -13,10 +15,11 @@ const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const campaignStore = useCampaignStore()
+const cosmeticStore = useCosmeticStore()
 
-// 3D Dice Scene
-const diceContainer = ref<HTMLElement | null>(null)
-const { rollTo: rollTo3D } = useDiceScene(diceContainer)
+// Vue-based Dice Roller
+const diceRoller = useDiceRoller()
+const diceResult = ref<DiceResult | null>(null)
 
 // Campaign context from route query
 const isCampaignMode = computed(() => route.query.campaignMode === 'true')
@@ -191,30 +194,22 @@ async function rollDice() {
     if (battleId.value === -1) {
       // Offline mode for testing
       response = simulateRoll()
-
-      // Start 3D dice animation with target result (synchronize with server)
-      if (rollTo3D) {
-        await rollTo3D({
-          die1: response.dice[0],
-          die2: response.dice[1],
-          die3: response.dice[2]
-        })
-      }
     } else {
       // Call server API first - dice generated SERVER-SIDE!
       response = await battleApi.rollDice(battleId.value, {
         playerId: playerId.value
       })
-
-      // Start 3D dice animation with server result (synchronize)
-      if (rollTo3D) {
-        await rollTo3D({
-          die1: response.dice[0],
-          die2: response.dice[1],
-          die3: response.dice[2]
-        })
-      }
     }
+
+    // Set result for Vue dice roller animation
+    diceResult.value = {
+      die1: response.dice[0],
+      die2: response.dice[1],
+      die3: response.dice[2]
+    }
+
+    // Start Vue dice animation with result (synchronize with server)
+    await diceRoller.rollTo(diceResult.value)
 
     // Update player dice with animation delay
     await animateDiceRoll(response.dice, 'player')
@@ -586,10 +581,15 @@ function goToSettings() {
           {{ playerHand.rankKR }} ({{ playerHand.power }})
         </div>
 
-        <!-- 3D Dice Scene -->
-        <div ref="diceContainer" class="dice-3d-container"></div>
+        <!-- Vue Dice Roller -->
+        <DiceRoller
+          :is-rolling="diceRoller.isRolling.value"
+          :result="diceResult"
+          :skin="cosmeticStore.equippedDiceSkin"
+          class="dice-roller-container"
+        />
 
-        <!-- 2D Dice (fallback / result display) -->
+        <!-- 2D Dice Display (result confirmation) -->
         <div class="dice-area">
           <template v-if="playerDice.length">
             <span v-for="(d, i) in playerDice" :key="'p'+i" class="die player-die" :class="{ rolling: isRolling }">
@@ -875,10 +875,10 @@ function goToSettings() {
   z-index: 1;
 }
 
-/* 3D Dice Container */
-.dice-3d-container {
+/* Vue Dice Roller Container */
+.dice-roller-container {
   width: 100%;
-  height: 300px;
+  min-height: 120px;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   margin: 0.5rem 0;

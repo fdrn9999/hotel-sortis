@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-02 (Phase 11 완료: 튜토리얼 및 온보딩)
+> 최종 업데이트: 2026-02-03 (Phase 12 Part 2 완료: Vue 기반 주사위 리팩토링)
 
 ---
 
@@ -70,16 +70,16 @@
 - [x] 모든 문서 업데이트 (PROJECTPLAN, CLAUDE, README, TASKS, dbinit)
 - [x] i18n 4개 언어 파일 업데이트
 
-### Phase 4: 3D 주사위 시스템
-- [x] Three.js 씬 설정
-- [x] 3D 주사위 모델 생성 (BoxGeometry)
-- [x] Cannon-es 물리 엔진 연동
-- [x] 주사위 굴림 애니메이션
-- [x] BattleView.vue에 3D 씬 통합
+### Phase 4: 주사위 시스템
+- [x] ~~Three.js 씬 설정~~ (Phase 12 Part 2에서 Vue UI로 대체)
+- [x] ~~3D 주사위 모델 생성 (BoxGeometry)~~ (Phase 12 Part 2에서 Vue UI로 대체)
+- [x] ~~Cannon-es 물리 엔진 연동~~ (Phase 12 Part 2에서 Vue UI로 대체)
+- [x] 주사위 굴림 애니메이션 (Vue CSS 기반)
+- [x] BattleView.vue에 주사위 컴포넌트 통합
 - [x] 주사위 결과 감지 로직
-- [x] **주사위 눈금(Pip) 텍스처 구현** - Canvas Texture로 1-6 눈금 표시
-- [x] **서버 결과 동기화** - `rollTo()` 메서드로 서버 주사위 값과 3D 애니메이션 일치
-- [x] BattleView.vue에서 `rollTo()` 호출로 변경 (서버 API 먼저 → 3D 동기화)
+- [x] **주사위 눈금(Pip) 표시** - CSS 기반 pip 렌더링
+- [x] **서버 결과 동기화** - `rollTo()` 메서드로 서버 주사위 값과 애니메이션 일치
+- [x] BattleView.vue에서 `rollTo()` 호출 (서버 API 먼저 → 애니메이션 동기화)
 
 ### Phase 5: 스킬 시스템
 
@@ -378,6 +378,22 @@
     - endurance: HP 150으로 시작
   - [x] 층별 Mutator 할당 (4층, 6층, 8층, 9층, 11층, 12층, 13층, 14층)
 - [x] vue-tsc --noEmit 0 에러, npm run build 성공
+
+### Phase 12 Part 2: Vue 기반 주사위 리팩토링 (2026-02-03)
+
+- [x] **Three.js + Cannon-es → Vue UI 마이그레이션**
+  - [x] DiceRoller.vue 컴포넌트 생성 (CSS 애니메이션 기반)
+  - [x] useDiceRoller.ts composable 생성 (기존 useDiceScene API 호환)
+  - [x] BattleView.vue 업데이트 (DiceRoller 사용)
+  - [x] TutorialView.vue 업데이트 (DiceRoller 사용)
+  - [x] PracticeView.vue 업데이트 (DiceRoller 사용)
+  - [x] 코스메틱 스킨 지원 (baseColor, pipColor, emissiveColor 적용)
+- [x] **의존성 정리**
+  - [x] three, cannon-es, @types/three 패키지 제거
+  - [x] DiceScene.ts, useDiceScene.ts 삭제
+  - [x] game/ 디렉토리 삭제
+- [x] **번들 크기 약 700KB 감소** (Three.js ~500KB + Cannon-es ~200KB)
+- [x] vue-tsc --noEmit 0 에러, 타입 체크 성공
 
 ---
 

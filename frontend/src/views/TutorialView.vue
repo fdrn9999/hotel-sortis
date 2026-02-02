@@ -3,8 +3,9 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useTutorial, TUTORIAL_DICE_SCRIPTS } from '@/composables/useTutorial'
-import { useDiceScene } from '@/composables/useDiceScene'
+import { useDiceRoller, type DiceResult } from '@/composables/useDiceRoller'
 import { SFX, BGM } from '@/composables/useSound'
+import DiceRoller from '@/components/DiceRoller.vue'
 import TutorialOverlay from '@/components/TutorialOverlay.vue'
 import HandGuide from '@/components/HandGuide.vue'
 import AppNavigation from '@/components/AppNavigation.vue'
@@ -15,9 +16,9 @@ const router = useRouter()
 // Tutorial manager
 const tutorial = useTutorial()
 
-// 3D Dice
-const diceContainer = ref<HTMLElement | null>(null)
-const { rollTo: rollTo3D } = useDiceScene(diceContainer)
+// Vue Dice Roller
+const diceRoller = useDiceRoller()
+const diceResult = ref<DiceResult | null>(null)
 
 // Hand guide ref
 const handGuideRef = ref<InstanceType<typeof HandGuide> | null>(null)
@@ -238,14 +239,15 @@ async function rollDice() {
   enemyHand.value = null
   enemyDice.value = []
 
-  // 3D dice animation
-  if (rollTo3D) {
-    await rollTo3D({
-      die1: script.playerDice[0],
-      die2: script.playerDice[1],
-      die3: script.playerDice[2]
-    })
+  // Set result for Vue dice roller
+  diceResult.value = {
+    die1: script.playerDice[0],
+    die2: script.playerDice[1],
+    die3: script.playerDice[2]
   }
+
+  // Vue dice animation
+  await diceRoller.rollTo(diceResult.value)
 
   // Animate 2D dice
   await animateDiceRoll(script.playerDice, 'player')
@@ -414,8 +416,12 @@ function goHome() {
           {{ playerHand.rankKR }} ({{ playerHand.power }})
         </div>
 
-        <!-- 3D Dice Scene -->
-        <div ref="diceContainer" class="dice-3d-container"></div>
+        <!-- Vue Dice Roller -->
+        <DiceRoller
+          :is-rolling="diceRoller.isRolling.value"
+          :result="diceResult"
+          class="dice-roller-container"
+        />
 
         <!-- 2D Dice -->
         <div class="dice-area">
@@ -618,10 +624,10 @@ function goHome() {
   75% { transform: translateX(2px) rotate(2deg); }
 }
 
-/* 3D Dice container */
-.dice-3d-container {
+/* Vue Dice Roller container */
+.dice-roller-container {
   width: 100%;
-  height: 120px;
+  min-height: 100px;
   margin: 4px 0;
 }
 

@@ -2,17 +2,20 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { useDiceScene } from '@/composables/useDiceScene'
+import { useDiceRoller, type DiceResult } from '@/composables/useDiceRoller'
+import { useCosmeticStore } from '@/stores/cosmetic'
 import { SFX, BGM } from '@/composables/useSound'
+import DiceRoller from '@/components/DiceRoller.vue'
 import HandGuide from '@/components/HandGuide.vue'
 import AppNavigation from '@/components/AppNavigation.vue'
 
 const { t } = useI18n()
 const router = useRouter()
+const cosmeticStore = useCosmeticStore()
 
-// 3D Dice
-const diceContainer = ref<HTMLElement | null>(null)
-const { rollTo: rollTo3D } = useDiceScene(diceContainer)
+// Vue Dice Roller
+const diceRoller = useDiceRoller()
+const diceResult = ref<DiceResult | null>(null)
 
 // Hand guide ref
 const handGuideRef = ref<InstanceType<typeof HandGuide> | null>(null)
@@ -74,14 +77,15 @@ async function rollDice() {
     Math.floor(Math.random() * 6) + 1
   ]
 
-  // 3D animation
-  if (rollTo3D) {
-    await rollTo3D({
-      die1: dice[0],
-      die2: dice[1],
-      die3: dice[2]
-    })
+  // Set result for Vue dice roller
+  diceResult.value = {
+    die1: dice[0],
+    die2: dice[1],
+    die3: dice[2]
   }
+
+  // Vue dice animation
+  await diceRoller.rollTo(diceResult.value)
 
   // 2D animation
   await animateDiceRoll(dice)
@@ -196,8 +200,13 @@ function goHome() {
 
       <!-- Dice Area -->
       <div class="dice-section">
-        <!-- 3D Dice Scene -->
-        <div ref="diceContainer" class="dice-3d-container"></div>
+        <!-- Vue Dice Roller -->
+        <DiceRoller
+          :is-rolling="diceRoller.isRolling.value"
+          :result="diceResult"
+          :skin="cosmeticStore.equippedDiceSkin"
+          class="dice-roller-container"
+        />
 
         <!-- 2D Dice Display -->
         <div class="dice-area">
@@ -344,9 +353,9 @@ function goHome() {
   margin-bottom: 20px;
 }
 
-.dice-3d-container {
+.dice-roller-container {
   width: 100%;
-  height: 140px;
+  min-height: 100px;
   margin-bottom: 8px;
 }
 
