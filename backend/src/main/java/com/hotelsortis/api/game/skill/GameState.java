@@ -50,6 +50,16 @@ public class GameState {
     private int enemyHp;
 
     /**
+     * 현재 플레이어 쉴드
+     */
+    private int playerShield;
+
+    /**
+     * 현재 적 쉴드
+     */
+    private int enemyShield;
+
+    /**
      * 현재 턴 수
      */
     private int turnCount;

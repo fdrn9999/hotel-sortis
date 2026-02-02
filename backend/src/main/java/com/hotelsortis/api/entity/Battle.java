@@ -53,6 +53,14 @@ public class Battle {
     @Builder.Default
     private Integer enemyHp = 100;
 
+    @Column(name = "player_shield", nullable = false)
+    @Builder.Default
+    private Integer playerShield = 0;
+
+    @Column(name = "enemy_shield", nullable = false)
+    @Builder.Default
+    private Integer enemyShield = 0;
+
     @Column(name = "turn_count", nullable = false)
     @Builder.Default
     private Integer turnCount = 1;

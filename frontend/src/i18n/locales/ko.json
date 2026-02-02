@@ -28,6 +28,7 @@
     "rollDice": "주사위 굴리기",
     "playerHP": "플레이어 HP",
     "enemyHP": "적 HP",
+    "shield": "쉴드",
     "turn": "턴",
     "victory": "승리",
     "defeat": "패배",

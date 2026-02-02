@@ -346,23 +346,59 @@
 
 ## 🔄 진행 중 (In Progress)
 
-_현재 진행 중인 작업 없음_
+### Phase 12 Part 2: Mutator/Draft Mode 완성
+
+- [ ] Backend Mutator 엔티티 및 BattleService 로직 통합
+- [ ] Frontend Mutator UI (BattleView, CampaignView)
+- [ ] PvP 드래프트 모드 기획 및 구현
+
+---
+
+## ✅ 완료된 작업 (최근)
+
+### Phase 12 Part 1: 쉴드 시스템 및 Mutator 데이터 (2026-02-02)
+
+- [x] **쉴드(Shield) 시스템**
+  - [x] Backend: Battle.java에 playerShield, enemyShield 필드 추가
+  - [x] Backend: BattleService.java 데미지 계산 로직 수정 (쉴드 우선 소모)
+  - [x] Backend: BattleDto.java, GameState.java에 shield 필드 추가
+  - [x] Database: battles 테이블에 player_shield, enemy_shield 컬럼 추가
+  - [x] Frontend: types/game.ts, api/battle.ts에 shield 타입 추가
+  - [x] Frontend: BattleView.vue에 shield UI 추가 (Art Deco 스타일 쉴드 바)
+  - [x] 쉴드 관련 스킬 6개 추가 (iron_will, shield_bash, reflective_barrier, barrier_master, shield_surge, fortify)
+  - [x] i18n: 4개 언어에 battle.shield 키 추가
+- [x] **층별 룰 변형 (Floor Mutators) - 데이터 계층**
+  - [x] Database: mutators 테이블 생성 (4개 언어 지원)
+  - [x] Database: floors 테이블에 mutator_id 컬럼 추가
+  - [x] 5가지 기본 Mutator 데이터 추가:
+    - gravity: 주사위 1-2를 3으로 변환
+    - fog: 족보 이름 숨김
+    - silence: 스킬 발동 확률 50% 감소
+    - chaos: 매 턴 주사위 1개 랜덤 재굴림
+    - endurance: HP 150으로 시작
+  - [x] 층별 Mutator 할당 (4층, 6층, 8층, 9층, 11층, 12층, 13층, 14층)
+- [x] vue-tsc --noEmit 0 에러, npm run build 성공
 
 ---
 
 ## 📋 예정된 작업 (Planned)
 
-### Phase 12: 콘텐츠 확장 (Content Expansion)
-- [ ] **쉴드(Shield) 시스템**
-  - [ ] BattleStore/Entities에 `shield` 필드 추가
-  - [ ] 데미지 계산 로직 업데이트 (쉴드 우선 소모)
-  - [ ] 쉴드 관련 신규 스킬 구현 (Iron Will, Barrier 등)
-- [ ] **층별 룰 변형 (Floor Mutators)**
-  - [ ] Mutator 시스템 설계 및 엔티티 구현
-  - [ ] 5가지 기본 Mutator (Gravity, Fog, Silence, etc.) 구현
-  - [ ] UI에 현재 층 Mutator 표시
+### Phase 12 Part 2: 콘텐츠 확장 완성 (Content Expansion)
+
+- [ ] **Mutator 백엔드 로직**
+  - [x] Floor.java에 mutatorId 필드 추가 (2026-02-02)
+  - [ ] Mutator 엔티티 및 Repository 생성
+  - [ ] MutatorService 생성 (BattleService 분리)
+  - [ ] Floor API에 mutator 정보 포함
+- [ ] **Mutator 프론트엔드 UI**
+  - [ ] BattleView.vue에 현재 Mutator 표시
+  - [ ] CampaignView.vue에 층별 Mutator 아이콘 표시
+  - [ ] i18n: mutators 섹션 4개 언어 번역
 - [ ] **Draft Mode (PvP)**
   - [ ] 스킬 드래프트 시스템 기획 및 구현
+- [ ] **코드 리팩토링 (권장)**
+  - [ ] BattleView.vue 분리: useBattleState.ts composable 추출 (~1100줄 감소)
+  - [ ] BattleService.java 분리: MutatorService, BattleEffectProcessor 추출
 
 ### Phase 13: 2차 폴리싱 (2nd Polishing)
 

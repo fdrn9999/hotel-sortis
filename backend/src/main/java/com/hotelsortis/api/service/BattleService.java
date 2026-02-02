@@ -119,10 +119,16 @@ public class BattleService {
         int playerDamage = state.getDamage();  // Get modified damage
         log.info("After BEFORE_DAMAGE skills: damage={}", playerDamage);
 
-        // 5. Apply damage to enemy
-        int newEnemyHp = Math.max(0, battle.getEnemyHp() - playerDamage);
+        // 5. Apply damage to enemy (shield absorbs first)
+        int shieldAbsorbed = Math.min(playerDamage, battle.getEnemyShield());
+        int actualDamage = playerDamage - shieldAbsorbed;
+        int newEnemyShield = battle.getEnemyShield() - shieldAbsorbed;
+        int newEnemyHp = Math.max(0, battle.getEnemyHp() - actualDamage);
+        battle.setEnemyShield(newEnemyShield);
         battle.setEnemyHp(newEnemyHp);
+        state.setEnemyShield(newEnemyShield);
         state.setEnemyHp(newEnemyHp);
+        log.info("Damage to enemy: total={}, shieldAbsorbed={}, actualDamage={}", playerDamage, shieldAbsorbed, actualDamage);
 
         // 6. AFTER_DAMAGE trigger - skills can have post-damage effects
         state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.AFTER_DAMAGE, equippedSkills, state);
@@ -204,10 +210,16 @@ public class BattleService {
         int enemyDamage = state.getDamage();  // Get modified damage
         log.info("After enemy BEFORE_DAMAGE skills: damage={}", enemyDamage);
 
-        // 5. Apply damage to player
-        int newPlayerHp = Math.max(0, battle.getPlayerHp() - enemyDamage);
+        // 5. Apply damage to player (shield absorbs first)
+        int playerShieldAbsorbed = Math.min(enemyDamage, battle.getPlayerShield());
+        int actualDamageToPlayer = enemyDamage - playerShieldAbsorbed;
+        int newPlayerShield = battle.getPlayerShield() - playerShieldAbsorbed;
+        int newPlayerHp = Math.max(0, battle.getPlayerHp() - actualDamageToPlayer);
+        battle.setPlayerShield(newPlayerShield);
         battle.setPlayerHp(newPlayerHp);
+        state.setPlayerShield(newPlayerShield);
         state.setPlayerHp(newPlayerHp);
+        log.info("Damage to player: total={}, shieldAbsorbed={}, actualDamage={}", enemyDamage, playerShieldAbsorbed, actualDamageToPlayer);
 
         // 6. AFTER_DAMAGE trigger - enemy skills can have post-damage effects
         state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.AFTER_DAMAGE, enemySkills, state);
@@ -290,6 +302,8 @@ public class BattleService {
                 .damage(damage)
                 .playerHp(battle.getPlayerHp())
                 .enemyHp(battle.getEnemyHp())
+                .playerShield(battle.getPlayerShield())
+                .enemyShield(battle.getEnemyShield())
                 .currentTurn(battle.getCurrentTurn().name())
                 .status(battle.getStatus().name())
                 .enemyTurn(enemyTurn)
@@ -336,6 +350,8 @@ public class BattleService {
                 .damage(damage)
                 .playerHp(battle.getPlayerHp())
                 .enemyHp(battle.getEnemyHp())
+                .playerShield(battle.getPlayerShield())
+                .enemyShield(battle.getEnemyShield())
                 .turnCount(battle.getTurnCount())
                 .currentTurn(battle.getCurrentTurn().name())
                 .battleId(battle.getId())
@@ -355,6 +371,8 @@ public class BattleService {
                 .battleId(battle.getId())
                 .playerHp(battle.getPlayerHp())
                 .enemyHp(battle.getEnemyHp())
+                .playerShield(battle.getPlayerShield())
+                .enemyShield(battle.getEnemyShield())
                 .turnCount(battle.getTurnCount())
                 .currentTurn(battle.getCurrentTurn().name())
                 .status(battle.getStatus().name())

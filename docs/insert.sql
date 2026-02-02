@@ -568,25 +568,131 @@ INSERT INTO skills (skill_code, name_en, name_ko, name_ja, name_zh, rarity, desc
  '{"type": "advantage", "rolls": 2}',
  15);
 
+-- -----------------------------------------------------
+-- 1.5 Shield Skills (Phase 12)
+-- 쉴드 관련 스킬 (페이즈 12)
+-- -----------------------------------------------------
+INSERT INTO skills (skill_code, name_en, name_ko, name_ja, name_zh, rarity, description_en, description_ko, description_ja, description_zh, trigger_type, effect_json, unlock_floor) VALUES
+
+('iron_will', 'Iron Will', '철의 의지', '鉄の意志', '钢铁意志', 'Common',
+ 'Start battle with 5 shield.',
+ '전투 시작 시 쉴드 5 획득.',
+ '戦闘開始時にシールド5獲得。',
+ '战斗开始时获得5护盾。',
+ 'BATTLE_START',
+ '{"type": "shield", "amount": 5}',
+ NULL),
+
+('shield_bash', 'Shield Bash', '쉴드 배시', 'シールドバッシュ', '盾击', 'Rare',
+ 'Deal +5 damage while you have shield.',
+ '쉴드가 있는 동안 데미지 +5.',
+ 'シールドがある間、ダメージ+5。',
+ '有护盾时伤害+5。',
+ 'BEFORE_DAMAGE',
+ '{"type": "damage_bonus", "condition": "has_shield", "bonus": 5}',
+ 3),
+
+('reflective_barrier', 'Reflective Barrier', '반사 장벽', '反射バリア', '反射屏障', 'Rare',
+ 'When shield breaks, deal 8 damage to enemy.',
+ '쉴드가 파괴될 때 적에게 8 데미지.',
+ 'シールドが破壊された時、敵に8ダメージ。',
+ '护盾破碎时对敌人造成8伤害。',
+ 'PASSIVE',
+ '{"type": "shield_break_damage", "damage": 8}',
+ 5),
+
+('barrier_master', 'Barrier Master', '장벽의 대가', 'バリアマスター', '屏障大师', 'Epic',
+ 'Gain 10 shield when you get a Pair.',
+ '페어 완성 시 쉴드 10 획득.',
+ 'ペア完成時にシールド10獲得。',
+ '完成对子时获得10护盾。',
+ 'AFTER_DAMAGE',
+ '{"type": "shield_on_hand", "condition": "Pair", "amount": 10}',
+ 8),
+
+('shield_surge', 'Shield Surge', '쉴드 서지', 'シールドサージ', '护盾涌动', 'Epic',
+ 'Convert 50% of damage dealt into shield.',
+ '입힌 데미지의 50%를 쉴드로 전환.',
+ '与えたダメージの50%をシールドに変換。',
+ '将造成伤害的50%转化为护盾。',
+ 'AFTER_DAMAGE',
+ '{"type": "damage_to_shield", "ratio": 0.5}',
+ 10),
+
+('fortify', 'Fortify', '요새화', 'フォーティファイ', '强化防御', 'Legendary',
+ 'Regenerate 20% of your shield at the end of each turn.',
+ '매 턴 종료 시 쉴드의 20% 회복.',
+ '毎ターン終了時にシールドの20%回復。',
+ '每回合结束时回复20%护盾。',
+ 'TURN_END',
+ '{"type": "shield_regen", "ratio": 0.2}',
+ 12);
+
 -- =====================================================
--- 2. 층 정보 데이터 (Floors)
+-- 2. Mutator 데이터 (Mutators)
+-- 층별 특수 규칙
 -- =====================================================
-INSERT INTO floors (id, floor_type, battle_count, boss_id, ai_level, enemy_skill_count, skill_reward_rarity, description_ko, description_en, description_ja, description_zh) VALUES
-(1,  'NORMAL', 3, NULL,       0, 0, NULL,        '로비 - 첫 번째 시험',        'Lobby - First Trial',                   'ロビー - 最初の試練',             '大堂 - 第一场试炼'),
-(2,  'NORMAL', 3, NULL,       0, 0, NULL,        '카지노 홀',                   'Casino Hall',                           'カジノホール',                    '赌场大厅'),
-(3,  'NORMAL', 4, NULL,       0, 0, NULL,        'VIP 라운지',                  'VIP Lounge',                            'VIPラウンジ',                     'VIP休息室'),
-(4,  'ELITE',  1, NULL,       1, 1, NULL,        '경비실 - 엘리트 경비원',      'Security Room - Elite Guard',           '警備室 - エリート警備員',         '警卫室 - 精英警卫'),
-(5,  'BOSS',   1, 'mammon',   1, 2, 'Rare',      '금고 - 탐욕의 마몬',          'Vault - Mammon the Greedy',             '金庫 - 強欲のマモン',             '金库 - 贪婪的玛门'),
-(6,  'NORMAL', 3, NULL,       1, 1, NULL,        '균열의 복도',                 'Cracked Corridor',                      '亀裂の廊下',                      '裂缝走廊'),
-(7,  'NORMAL', 4, NULL,       1, 1, NULL,        '거울의 방',                   'Hall of Mirrors',                       '鏡の間',                          '镜之厅'),
-(8,  'NORMAL', 3, NULL,       1, 1, NULL,        '왜곡된 객실',                 'Distorted Rooms',                       '歪んだ客室',                      '扭曲的客房'),
-(9,  'ELITE',  1, NULL,       2, 2, NULL,        '경비대장실 - 엘리트 대장',    'Captain''s Quarters - Elite Captain',    '警備隊長室 - エリート隊長',       '队长室 - 精英队长'),
-(10, 'BOSS',   1, 'eligor',   2, 3, 'Epic',      '방어의 탑 - 철벽의 엘리고르', 'Tower of Defense - Eligor the Ironclad', '防御の塔 - 鉄壁のエリゴール',     '防御之塔 - 铁壁埃力格'),
-(11, 'NORMAL', 4, NULL,       2, 2, NULL,        '차원의 틈',                   'Dimensional Rift',                      '次元の裂け目',                    '维度裂缝'),
-(12, 'ELITE',  1, NULL,       2, 3, NULL,        '공허의 감시자',               'Void Watcher',                          '虚空の監視者',                    '虚空监视者'),
-(13, 'NORMAL', 4, NULL,       2, 2, NULL,        '무한의 계단',                 'Infinite Stairway',                     '無限の階段',                      '无限阶梯'),
-(14, 'ELITE',  1, NULL,       3, 3, NULL,        '운명의 심판관',               'Judge of Fate',                         '運命の審判者',                    '命运审判官'),
-(15, 'BOSS',   1, 'lucifuge', 3, 4, 'Legendary', '펜트하우스 - 루시푸지',       'Penthouse - Lucifuge Rofocale',         'ペントハウス - ルシフージュ',     '顶层 - 路西弗格·罗佛卡勒');
+INSERT INTO mutators (id, name_en, name_ko, name_ja, name_zh, description_en, description_ko, description_ja, description_zh, effect_json, icon) VALUES
+
+('gravity', 'Gravity', '중력', '重力', '重力',
+ 'All dice showing 1-2 are converted to 3.',
+ '1-2가 나온 주사위는 모두 3으로 변환됩니다.',
+ '1-2が出たサイコロはすべて3に変換されます。',
+ '所有显示1-2的骰子转换为3。',
+ '{"type": "dice_floor", "min": 3}',
+ '⬇️'),
+
+('fog', 'Fog of War', '전쟁의 안개', '戦場の霧', '战争迷雾',
+ 'Hand names are hidden until damage is dealt.',
+ '데미지가 적용될 때까지 족보 이름이 숨겨집니다.',
+ 'ダメージが適用されるまで役名が隠されます。',
+ '直到造成伤害前，手牌名称将被隐藏。',
+ '{"type": "hide_hand_name"}',
+ '🌫️'),
+
+('silence', 'Silence', '침묵', '沈黙', '沉默',
+ 'Skill activation chance reduced by 50%.',
+ '스킬 발동 확률이 50% 감소합니다.',
+ 'スキル発動確率が50%減少します。',
+ '技能发动概率降低50%。',
+ '{"type": "skill_reduction", "ratio": 0.5}',
+ '🔇'),
+
+('chaos', 'Chaos', '혼돈', '混沌', '混沌',
+ 'One random die is re-rolled after each roll.',
+ '매 굴림 후 주사위 1개가 무작위로 다시 굴려집니다.',
+ '毎ロール後、サイコロ1個がランダムに振り直されます。',
+ '每次投掷后，1个骰子随机重掷。',
+ '{"type": "random_reroll", "count": 1}',
+ '🎲'),
+
+('endurance', 'Endurance', '지구력', '持久力', '耐力',
+ 'Both players start with 150 HP instead of 100.',
+ '양쪽 플레이어 모두 HP 150으로 시작합니다.',
+ '両プレイヤーともHP150でスタートします。',
+ '双方玩家以150HP开始而非100。',
+ '{"type": "hp_modifier", "hp": 150}',
+ '💪');
+
+-- =====================================================
+-- 3. 층 정보 데이터 (Floors)
+-- =====================================================
+INSERT INTO floors (id, floor_type, battle_count, boss_id, mutator_id, ai_level, enemy_skill_count, skill_reward_rarity, description_ko, description_en, description_ja, description_zh) VALUES
+(1,  'NORMAL', 3, NULL,       NULL,        0, 0, NULL,        '로비 - 첫 번째 시험',        'Lobby - First Trial',                   'ロビー - 最初の試練',             '大堂 - 第一场试炼'),
+(2,  'NORMAL', 3, NULL,       NULL,        0, 0, NULL,        '카지노 홀',                   'Casino Hall',                           'カジノホール',                    '赌场大厅'),
+(3,  'NORMAL', 4, NULL,       NULL,        0, 0, NULL,        'VIP 라운지',                  'VIP Lounge',                            'VIPラウンジ',                     'VIP休息室'),
+(4,  'ELITE',  1, NULL,       'gravity',   1, 1, NULL,        '경비실 - 엘리트 경비원',      'Security Room - Elite Guard',           '警備室 - エリート警備員',         '警卫室 - 精英警卫'),
+(5,  'BOSS',   1, 'mammon',   NULL,        1, 2, 'Rare',      '금고 - 탐욕의 마몬',          'Vault - Mammon the Greedy',             '金庫 - 強欲のマモン',             '金库 - 贪婪的玛门'),
+(6,  'NORMAL', 3, NULL,       'fog',       1, 1, NULL,        '균열의 복도',                 'Cracked Corridor',                      '亀裂の廊下',                      '裂缝走廊'),
+(7,  'NORMAL', 4, NULL,       NULL,        1, 1, NULL,        '거울의 방',                   'Hall of Mirrors',                       '鏡の間',                          '镜之厅'),
+(8,  'NORMAL', 3, NULL,       'silence',   1, 1, NULL,        '왜곡된 객실',                 'Distorted Rooms',                       '歪んだ客室',                      '扭曲的客房'),
+(9,  'ELITE',  1, NULL,       'chaos',     2, 2, NULL,        '경비대장실 - 엘리트 대장',    'Captain''s Quarters - Elite Captain',    '警備隊長室 - エリート隊長',       '队长室 - 精英队长'),
+(10, 'BOSS',   1, 'eligor',   NULL,        2, 3, 'Epic',      '방어의 탑 - 철벽의 엘리고르', 'Tower of Defense - Eligor the Ironclad', '防御の塔 - 鉄壁のエリゴール',     '防御之塔 - 铁壁埃力格'),
+(11, 'NORMAL', 4, NULL,       'endurance', 2, 2, NULL,        '차원의 틈',                   'Dimensional Rift',                      '次元の裂け目',                    '维度裂缝'),
+(12, 'ELITE',  1, NULL,       'fog',       2, 3, NULL,        '공허의 감시자',               'Void Watcher',                          '虚空の監視者',                    '虚空监视者'),
+(13, 'NORMAL', 4, NULL,       'chaos',     2, 2, NULL,        '무한의 계단',                 'Infinite Stairway',                     '無限の階段',                      '无限阶梯'),
+(14, 'ELITE',  1, NULL,       'silence',   3, 3, NULL,        '운명의 심판관',               'Judge of Fate',                         '運命の審判者',                    '命运审判官'),
+(15, 'BOSS',   1, 'lucifuge', NULL,        3, 4, 'Legendary', '펜트하우스 - 루시푸지',       'Penthouse - Lucifuge Rofocale',         'ペントハウス - ルシフージュ',     '顶层 - 路西弗格·罗佛卡勒');
 
 -- =====================================================
 -- 3. 보스 정보 데이터 (Bosses)

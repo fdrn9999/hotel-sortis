@@ -35,6 +35,8 @@ public class BattleDto {
         private String currentTurn;
         private Integer playerHp;
         private Integer enemyHp;
+        private Integer playerShield;
+        private Integer enemyShield;
         private Integer turnCount;
         private String status;
         private String bossId;
@@ -62,6 +64,8 @@ public class BattleDto {
         private Integer damage;
         private Integer playerHp;
         private Integer enemyHp;
+        private Integer playerShield;
+        private Integer enemyShield;
         private String currentTurn;
         private String status;
         private EnemyTurnResult enemyTurn; // AI의 턴 결과 (PvE)
@@ -108,6 +112,8 @@ public class BattleDto {
         private Long battleId;
         private Integer playerHp;
         private Integer enemyHp;
+        private Integer playerShield;
+        private Integer enemyShield;
         private Integer turnCount;
         private String currentTurn;
         private String status;
@@ -121,6 +127,8 @@ public class BattleDto {
                 .currentTurn(battle.getCurrentTurn().name())
                 .playerHp(battle.getPlayerHp())
                 .enemyHp(battle.getEnemyHp())
+                .playerShield(battle.getPlayerShield())
+                .enemyShield(battle.getEnemyShield())
                 .turnCount(battle.getTurnCount())
                 .status(battle.getStatus().name())
                 .bossId(battle.getBossId())

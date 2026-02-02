@@ -43,6 +43,8 @@ export interface Battle {
   status: BattleStatus
   playerHP: number
   enemyHP: number
+  playerShield: number
+  enemyShield: number
   turnCount: number
   currentTurn: TurnActor
   playerEquippedSkills: number[]

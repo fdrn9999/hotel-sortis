@@ -28,6 +28,7 @@
     "rollDice": "サイコロを振る",
     "playerHP": "プレイヤーHP",
     "enemyHP": "敵HP",
+    "shield": "シールド",
     "turn": "ターン",
     "victory": "勝利",
     "defeat": "敗北",

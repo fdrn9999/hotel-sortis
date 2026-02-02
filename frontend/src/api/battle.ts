@@ -18,6 +18,8 @@ export interface StartBattleResponse {
   currentTurn: 'PLAYER' | 'ENEMY'
   playerHp: number
   enemyHp: number
+  playerShield: number
+  enemyShield: number
   turnCount: number
   status: 'ONGOING' | 'VICTORY' | 'DEFEAT' | 'DRAW'
   bossId?: string
@@ -57,6 +59,8 @@ export interface RollDiceResponse {
   damage: number
   playerHp: number
   enemyHp: number
+  playerShield: number
+  enemyShield: number
   currentTurn: 'PLAYER' | 'ENEMY'
   status: 'ONGOING' | 'VICTORY' | 'DEFEAT' | 'DRAW'
   enemyTurn?: EnemyTurnResult
@@ -67,6 +71,8 @@ export interface BattleStatus {
   battleId: number
   playerHp: number
   enemyHp: number
+  playerShield: number
+  enemyShield: number
   turnCount: number
   currentTurn: 'PLAYER' | 'ENEMY'
   status: 'ONGOING' | 'VICTORY' | 'DEFEAT' | 'DRAW'

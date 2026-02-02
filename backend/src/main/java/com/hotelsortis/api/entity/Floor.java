@@ -27,6 +27,9 @@ public class Floor {
     @Column(name = "boss_id", length = 50)
     private String bossId;
 
+    @Column(name = "mutator_id", length = 50)
+    private String mutatorId;
+
     @Column(name = "ai_level", nullable = false)
     @Builder.Default
     private Integer aiLevel = 0;

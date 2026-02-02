@@ -33,6 +33,8 @@ const playerId = ref(1) // TODO: Get from auth
 const floor = ref(1)
 const playerHP = ref(100)
 const enemyHP = ref(100)
+const playerShield = ref(0)
+const enemyShield = ref(0)
 const turnCount = ref(1)
 const status = ref<'ONGOING' | 'VICTORY' | 'DEFEAT' | 'DRAW'>('ONGOING')
 
@@ -146,6 +148,8 @@ async function startBattle() {
     battleId.value = response.battleId
     playerHP.value = response.playerHp
     enemyHP.value = response.enemyHp
+    playerShield.value = response.playerShield || 0
+    enemyShield.value = response.enemyShield || 0
     turnCount.value = response.turnCount
     status.value = response.status
 
@@ -222,9 +226,10 @@ async function rollDice() {
     SFX.handComplete(response.hand.rank)
     addLog(`${t('battle.playerHP')}: ${response.hand.rankKR} (${response.hand.power} ${t('battle.damage') || 'damage'})`)
 
-    // Update enemy HP
+    // Update enemy HP and Shield
     if (response.enemyHp < enemyHP.value) SFX.damageDealt()
     enemyHP.value = response.enemyHp
+    enemyShield.value = response.enemyShield ?? 0
 
     // Handle boss phase transition
     if (response.bossPhaseTransition) {
@@ -250,6 +255,7 @@ async function rollDice() {
       await processEnemyTurn(response.enemyTurn)
       if (response.playerHp < playerHP.value) SFX.damageTaken()
       playerHP.value = response.playerHp
+      playerShield.value = response.playerShield ?? 0
     }
 
     // Update battle state
@@ -455,6 +461,8 @@ function simulateRoll(): RollDiceResponse {
     damage: hand.power,
     playerHp: newPlayerHp,
     enemyHp: newEnemyHp,
+    playerShield: playerShield.value,
+    enemyShield: enemyShield.value,
     currentTurn: 'PLAYER',
     status: newStatus,
     enemyTurn: newEnemyHp > 0 ? {
@@ -539,9 +547,15 @@ function goToSettings() {
     <div class="battle-arena">
       <!-- Enemy Area -->
       <div class="enemy-area">
-        <div class="hp-bar">
-          <div class="hp-fill enemy" :style="{ width: `${enemyHP}%` }"></div>
-          <span class="hp-text">{{ bossName || t('battle.enemyHP') }}: {{ enemyHP }}/100</span>
+        <div class="stat-bars">
+          <div class="hp-bar">
+            <div class="hp-fill enemy" :style="{ width: `${enemyHP}%` }"></div>
+            <span class="hp-text">{{ bossName || t('battle.enemyHP') }}: {{ enemyHP }}/100</span>
+          </div>
+          <div v-if="enemyShield > 0" class="shield-bar">
+            <div class="shield-fill" :style="{ width: `${Math.min(enemyShield, 100)}%` }"></div>
+            <span class="shield-text">{{ t('battle.shield') }}: {{ enemyShield }}</span>
+          </div>
         </div>
         <div class="dice-area">
           <template v-if="enemyDice.length">
@@ -589,9 +603,15 @@ function goToSettings() {
           </template>
         </div>
 
-        <div class="hp-bar">
-          <div class="hp-fill player" :style="{ width: `${playerHP}%` }"></div>
-          <span class="hp-text">{{ t('battle.playerHP') }}: {{ playerHP }}/100</span>
+        <div class="stat-bars">
+          <div class="hp-bar">
+            <div class="hp-fill player" :style="{ width: `${playerHP}%` }"></div>
+            <span class="hp-text">{{ t('battle.playerHP') }}: {{ playerHP }}/100</span>
+          </div>
+          <div v-if="playerShield > 0" class="shield-bar">
+            <div class="shield-fill" :style="{ width: `${Math.min(playerShield, 100)}%` }"></div>
+            <span class="shield-text">{{ t('battle.shield') }}: {{ playerShield }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -815,6 +835,41 @@ function goToSettings() {
   top: 50%;
   transform: translate(-50%, -50%);
   font-size: 0.85rem;
+  color: var(--color-cream);
+  text-shadow: 0 0 4px rgba(0,0,0,0.8);
+  z-index: 1;
+}
+
+/* Stat Bars Container */
+.stat-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Shield Bar */
+.shield-bar {
+  height: 20px;
+  background: #1a1a2e;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(192, 192, 192, 0.3);
+}
+
+.shield-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #c0c0c0 0%, #e8e8e8 50%, #c0c0c0 100%);
+  transition: width 0.5s ease;
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.shield-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.75rem;
   color: var(--color-cream);
   text-shadow: 0 0 4px rgba(0,0,0,0.8);
   z-index: 1;

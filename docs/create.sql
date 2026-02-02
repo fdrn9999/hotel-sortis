@@ -120,6 +120,8 @@ CREATE TABLE battles (
     status ENUM('ONGOING', 'VICTORY', 'DEFEAT', 'DRAW') NOT NULL DEFAULT 'ONGOING',
     player_hp INT NOT NULL DEFAULT 100,
     enemy_hp INT NOT NULL DEFAULT 100,
+    player_shield INT NOT NULL DEFAULT 0 COMMENT '플레이어 쉴드',
+    enemy_shield INT NOT NULL DEFAULT 0 COMMENT '적 쉴드',
     turn_count INT NOT NULL DEFAULT 1,
     current_turn ENUM('PLAYER', 'ENEMY') NOT NULL DEFAULT 'PLAYER',
     player_equipped_skills JSON COMMENT '플레이어 장착 스킬',
@@ -199,6 +201,7 @@ CREATE TABLE floors (
     floor_type ENUM('NORMAL', 'ELITE', 'BOSS') NOT NULL,
     battle_count INT NOT NULL COMMENT '전투 횟수',
     boss_id VARCHAR(50) COMMENT '보스 ID (보스층인 경우)',
+    mutator_id VARCHAR(50) COMMENT '층 변형 규칙 ID',
     ai_level INT NOT NULL DEFAULT 0 COMMENT 'AI 레벨 (0-3)',
     enemy_skill_count INT NOT NULL DEFAULT 0 COMMENT '적 스킬 개수',
     skill_reward_rarity ENUM('Common', 'Rare', 'Epic', 'Legendary') COMMENT '보상 스킬 등급',
@@ -227,7 +230,27 @@ CREATE TABLE bosses (
 COMMENT='보스 정보';
 
 -- =====================================================
--- 10. PvP 시즌 테이블 (pvp_seasons)
+-- 10. Mutator 테이블 (mutators)
+-- 층별 특수 규칙 변형
+-- =====================================================
+CREATE TABLE mutators (
+    id VARCHAR(50) PRIMARY KEY,
+    name_en VARCHAR(100) NOT NULL,
+    name_ko VARCHAR(100) NOT NULL,
+    name_ja VARCHAR(100) NOT NULL,
+    name_zh VARCHAR(100) NOT NULL,
+    description_en TEXT NOT NULL,
+    description_ko TEXT NOT NULL,
+    description_ja TEXT NOT NULL,
+    description_zh TEXT NOT NULL,
+    effect_json JSON NOT NULL COMMENT 'Mutator 효과 정의',
+    icon VARCHAR(50) COMMENT '아이콘 이모지 또는 클래스',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+COMMENT='층별 변형 규칙 (Mutators)';
+
+-- =====================================================
+-- 11. PvP 시즌 테이블 (pvp_seasons)
 -- =====================================================
 CREATE TABLE pvp_seasons (
     id INT PRIMARY KEY AUTO_INCREMENT,
