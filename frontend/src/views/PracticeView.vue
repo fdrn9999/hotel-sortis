@@ -39,6 +39,18 @@ const handStats = ref<Record<string, number>>({
   NoHand: 0
 })
 
+// Mapping rank names to i18n keys (preserves camelCase for NoHand)
+const rankToI18nKey: Record<string, string> = {
+  'Ace': 'ace',
+  'Triple': 'triple',
+  'Straight': 'straight',
+  'Strike': 'strike',
+  'Slash': 'slash',
+  'Storm': 'storm',
+  'Pair': 'pair',
+  'NoHand': 'noHand'
+}
+
 // Keyboard listener for Tab key (HandGuide)
 function handleKeyDown(e: KeyboardEvent) {
   if (e.key === 'Tab') {
@@ -258,7 +270,7 @@ function goHome() {
             class="stat-item"
             :class="{ active: playerHand?.rank === hand }"
           >
-            <span class="stat-name">{{ t(`hands.${hand.toLowerCase()}`) }}</span>
+            <span class="stat-name">{{ t(`hands.${rankToI18nKey[hand]}`) }}</span>
             <span class="stat-count">{{ handStats[hand] || 0 }}</span>
             <span class="stat-pct">{{ getPercentage(hand) }}</span>
           </div>

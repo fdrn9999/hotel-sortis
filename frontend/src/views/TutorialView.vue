@@ -35,6 +35,18 @@ const turnCount = ref(1)
 const battleOver = ref(false)
 const battleLog = ref<string[]>([])
 
+// Mapping rank names to i18n keys (preserves camelCase for NoHand)
+const rankToI18nKey: Record<string, string> = {
+  'Ace': 'ace',
+  'Triple': 'triple',
+  'Straight': 'straight',
+  'Strike': 'strike',
+  'Slash': 'slash',
+  'Storm': 'storm',
+  'Pair': 'pair',
+  'NoHand': 'noHand'
+}
+
 // Tutorial overlay state
 const overlayVisible = ref(false)
 const overlayDialogue = ref('')
@@ -140,7 +152,7 @@ function showHandResult() {
     return
   }
 
-  const handKey = playerHand.value.rank.toLowerCase()
+  const handKey = rankToI18nKey[playerHand.value.rank] || playerHand.value.rank.toLowerCase()
   overlayVisible.value = true
   overlayDialogue.value = t('tutorial.guide.handExplanation', {
     hand: t(`hands.${handKey}`),
