@@ -117,6 +117,7 @@ CREATE TABLE battles (
     floor INT COMMENT 'PvE 층 번호',
     boss_id VARCHAR(50) COMMENT '보스 ID (보스전인 경우)',
     boss_phase INT DEFAULT 1 COMMENT '현재 보스 페이즈',
+    mutator_id VARCHAR(50) COMMENT '층 변형 규칙 ID',
     status ENUM('ONGOING', 'VICTORY', 'DEFEAT', 'DRAW') NOT NULL DEFAULT 'ONGOING',
     player_hp INT NOT NULL DEFAULT 100,
     enemy_hp INT NOT NULL DEFAULT 100,

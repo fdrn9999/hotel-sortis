@@ -201,7 +201,8 @@
     "startFloor": "开始楼层",
     "replayFloor": "重新挑战",
     "returnToCampaign": "返回战役",
-    "battleProgress": "战斗 {current}/{total}"
+    "battleProgress": "战斗 {current}/{total}",
+    "mutator": "变异规则"
   },
   "ranks": {
     "bronze": "青铜",

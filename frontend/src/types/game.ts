@@ -104,6 +104,11 @@ export interface CampaignFloorStatus {
   bossId?: string
   bossName?: string
   skillRewardRarity?: string
+  // Mutator fields
+  mutatorId?: string
+  mutatorName?: string
+  mutatorDescription?: string
+  mutatorIcon?: string
 }
 
 export interface CampaignProgressResponse {
@@ -129,6 +134,11 @@ export interface StartFloorResponse {
   bossName?: string
   bossPhase?: number
   bossTotalPhases?: number
+  // Mutator fields
+  mutatorId?: string
+  mutatorName?: string
+  mutatorDescription?: string
+  mutatorIcon?: string
 }
 
 export interface FloorCompleteResponse {

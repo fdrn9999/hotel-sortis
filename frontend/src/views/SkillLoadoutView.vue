@@ -240,6 +240,10 @@ async function startBattle() {
           battleId: response.battleId.toString(),
           bossId: response.bossId || undefined,
           bossName: response.bossName || undefined,
+          mutatorId: response.mutatorId || undefined,
+          mutatorName: response.mutatorName || undefined,
+          mutatorDescription: response.mutatorDescription || undefined,
+          mutatorIcon: response.mutatorIcon || undefined,
           skills: equippedSkillIds.join(',')
         }
       })

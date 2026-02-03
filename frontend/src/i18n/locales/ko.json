@@ -201,7 +201,8 @@
     "startFloor": "층 시작",
     "replayFloor": "재도전",
     "returnToCampaign": "캠페인으로",
-    "battleProgress": "전투 {current}/{total}"
+    "battleProgress": "전투 {current}/{total}",
+    "mutator": "변형 규칙"
   },
   "ranks": {
     "bronze": "브론즈",

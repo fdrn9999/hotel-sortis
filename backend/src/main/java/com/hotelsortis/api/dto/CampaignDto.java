@@ -40,6 +40,11 @@ public class CampaignDto {
         private String bossId;
         private String bossName;
         private String skillRewardRarity;
+        // Mutator fields
+        private String mutatorId;
+        private String mutatorName;
+        private String mutatorDescription;
+        private String mutatorIcon;
     }
 
     @Data
@@ -67,6 +72,11 @@ public class CampaignDto {
         private String bossName;
         private Integer bossPhase;
         private Integer bossTotalPhases;
+        // Mutator fields
+        private String mutatorId;
+        private String mutatorName;
+        private String mutatorDescription;
+        private String mutatorIcon;
     }
 
     @Data

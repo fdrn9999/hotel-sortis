@@ -201,7 +201,8 @@
     "startFloor": "階を開始",
     "replayFloor": "再挑戦",
     "returnToCampaign": "キャンペーンへ",
-    "battleProgress": "戦闘 {current}/{total}"
+    "battleProgress": "戦闘 {current}/{total}",
+    "mutator": "特殊ルール"
   },
   "ranks": {
     "bronze": "ブロンズ",

@@ -9,6 +9,7 @@ export interface StartBattleRequest {
   bossId?: string
   bossPhase?: number
   enemySkills?: number[]
+  mutatorId?: string
 }
 
 export interface StartBattleResponse {
@@ -26,6 +27,8 @@ export interface StartBattleResponse {
   bossPhase?: number
   bossTotalPhases?: number
   bossName?: string
+  mutatorId?: string
+  fogActive?: boolean
 }
 
 export interface RollDiceRequest {
@@ -65,6 +68,8 @@ export interface RollDiceResponse {
   status: 'ONGOING' | 'VICTORY' | 'DEFEAT' | 'DRAW'
   enemyTurn?: EnemyTurnResult
   bossPhaseTransition?: BossPhaseTransitionResult
+  fogActive?: boolean
+  skillsSilenced?: boolean
 }
 
 export interface BattleStatus {

@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-03 (Phase 12 Part 2 완료: Vue 기반 주사위 리팩토링)
+> 최종 업데이트: 2026-02-03 (Phase 12 Part 2 완료: Mutator 효과 로직 구현)
 
 ---
 
@@ -348,8 +348,29 @@
 
 ### Phase 12 Part 2: Mutator/Draft Mode 완성
 
-- [ ] Backend Mutator 엔티티 및 BattleService 로직 통합
-- [ ] Frontend Mutator UI (BattleView, CampaignView)
+- [x] **Mutator UI 표시 구현 완료** (2026-02-03)
+  - [x] Backend: Mutator.java 엔티티 생성 (4개 언어 지원)
+  - [x] Backend: MutatorRepository.java 생성
+  - [x] Backend: CampaignDto.java에 mutator 필드 추가 (FloorStatus, StartFloorResponse)
+  - [x] Backend: CampaignService.java에 mutator 조회 로직 추가
+  - [x] Frontend: types/game.ts에 mutator 타입 추가
+  - [x] Frontend: CampaignView.vue에 mutator 배지 및 상세 표시
+  - [x] Frontend: SkillLoadoutView.vue에서 BattleView로 mutator 정보 전달
+  - [x] Frontend: BattleView.vue에 mutator 배너 추가
+  - [x] i18n: 4개 언어에 campaign.mutator 키 추가
+- [x] **Mutator 효과 로직 구현 완료** (2026-02-03)
+  - [x] Backend: MutatorService.java 생성 (5개 효과 처리)
+  - [x] Backend: Battle.java에 mutatorId 필드 추가
+  - [x] Backend: BattleDto.java에 mutatorId, fogActive, skillsSilenced 필드 추가
+  - [x] Backend: BattleService.java에 MutatorService 통합
+    - gravity: 주사위 1-2를 3으로 변환
+    - fog: 족보 이름 숨김 (fogActive 플래그)
+    - silence: 50% 확률로 스킬 발동 차단
+    - chaos: 매 턴 주사위 1개 랜덤 재굴림
+    - endurance: HP 150으로 시작
+  - [x] Database: battles 테이블에 mutator_id 컬럼 추가
+  - [x] Frontend: api/battle.ts 타입 업데이트
+  - [x] Frontend: BattleView.vue fog 처리 (족보명 "???" 표시)
 - [ ] PvP 드래프트 모드 기획 및 구현
 
 ---
@@ -401,15 +422,22 @@
 
 ### Phase 12 Part 2: 콘텐츠 확장 완성 (Content Expansion)
 
-- [ ] **Mutator 백엔드 로직**
+- [x] **Mutator 백엔드 데이터 계층** ✅ 2026-02-03
   - [x] Floor.java에 mutatorId 필드 추가 (2026-02-02)
-  - [ ] Mutator 엔티티 및 Repository 생성
-  - [ ] MutatorService 생성 (BattleService 분리)
-  - [ ] Floor API에 mutator 정보 포함
-- [ ] **Mutator 프론트엔드 UI**
-  - [ ] BattleView.vue에 현재 Mutator 표시
-  - [ ] CampaignView.vue에 층별 Mutator 아이콘 표시
-  - [ ] i18n: mutators 섹션 4개 언어 번역
+  - [x] Mutator.java 엔티티 생성 (4개 언어 지원)
+  - [x] MutatorRepository.java 생성
+  - [x] CampaignDto.java에 mutator 필드 추가
+  - [x] CampaignService.java에 mutator 조회 로직 추가
+- [x] **Mutator 프론트엔드 UI** ✅ 2026-02-03
+  - [x] types/game.ts에 mutator 타입 추가
+  - [x] BattleView.vue에 현재 Mutator 배너 표시
+  - [x] CampaignView.vue에 층별 Mutator 배지/상세 표시
+  - [x] SkillLoadoutView.vue에서 BattleView로 mutator 전달
+  - [x] i18n: 4개 언어에 campaign.mutator 키 추가
+- [x] **Mutator 효과 로직** ✅ 2026-02-03
+  - [x] MutatorService.java 생성 (BattleService 분리)
+  - [x] gravity, fog, silence, chaos, endurance 효과 구현
+  - [x] BattleService 통합 및 Frontend fog 처리
 - [ ] **Draft Mode (PvP)**
   - [ ] 스킬 드래프트 시스템 기획 및 구현
 - [x] **코드 리팩토링 (일부 완료)** ✅ 2026-02-03
@@ -424,6 +452,7 @@
 - [x] **i18n 정합성 수정 (CRITICAL)** ✅ 2026-02-03
   - [x] ko.json `pvp` 키 중복 병합 완료
   - [x] en.json, ja.json, zh.json 동일하게 `pvp` 키 구조 통일 완료
+  - [x] campaign.mutator 키 4개 언어 추가 완료
   - [ ] 4개 locale 파일 전체 키 diff 검증 (누락/불일치 찾기)
   - [ ] `soulStones` 키 네스팅 위치 4개 파일 일관성 맞추기
 - [ ] **하드코딩 문자열 i18n 전환**

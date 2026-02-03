@@ -83,6 +83,9 @@
                 <span class="battle-count">
                   {{ $t('campaign.battles', { count: floorData.battleCount }) }}
                 </span>
+                <span v-if="floorData.mutatorId" class="mutator-badge" :title="floorData.mutatorDescription">
+                  {{ floorData.mutatorIcon }} {{ floorData.mutatorName }}
+                </span>
                 <span v-if="floorData.skillRewardRarity" class="reward-badge" :class="`reward-${floorData.skillRewardRarity.toLowerCase()}`">
                   {{ floorData.skillRewardRarity }}
                 </span>
@@ -120,6 +123,13 @@
               <div class="detail-stat">
                 <span class="detail-stat-label">{{ $t('campaign.difficulty') }}</span>
                 <span class="detail-stat-value">{{ getDifficultyLabel(selectedFloorData.aiLevel) }}</span>
+              </div>
+              <div v-if="selectedFloorData.mutatorId" class="detail-stat mutator-detail">
+                <span class="detail-stat-label">{{ $t('campaign.mutator') }}</span>
+                <span class="detail-stat-value mutator-value">
+                  {{ selectedFloorData.mutatorIcon }} {{ selectedFloorData.mutatorName }}
+                </span>
+                <p class="mutator-description">{{ selectedFloorData.mutatorDescription }}</p>
               </div>
               <div v-if="selectedFloorData.skillRewardRarity" class="detail-stat">
                 <span class="detail-stat-label">{{ $t('campaign.reward') }}</span>
@@ -614,6 +624,34 @@ onMounted(async () => {
   background: rgba(255, 152, 0, 0.2);
   color: #ffb74d;
   border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+/* Mutator Badge */
+.mutator-badge {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  background: rgba(138, 43, 226, 0.2);
+  color: #bb86fc;
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  cursor: help;
+}
+
+.mutator-detail {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mutator-value {
+  color: #bb86fc;
+  font-size: 16px;
+}
+
+.mutator-description {
+  font-size: 12px;
+  color: #999;
+  margin: 4px 0 0 0;
+  font-style: italic;
 }
 
 /* Floor Status */

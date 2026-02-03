@@ -33,6 +33,7 @@ public class BattleService {
     private final BossRepository bossRepository;
     private final HandEvaluator handEvaluator;
     private final SkillEffectEngine skillEffectEngine;
+    private final MutatorService mutatorService;
     private final ObjectMapper objectMapper;
 
     /**
@@ -45,14 +46,19 @@ public class BattleService {
             throw new IllegalArgumentException("Maximum 4 skills allowed");
         }
 
+        // Get initial HP based on mutator (endurance = 150, default = 100)
+        String mutatorId = request.getMutatorId();
+        int initialHp = mutatorService.getInitialHp(mutatorId);
+
         Battle battle = Battle.builder()
                 .playerId(request.getPlayerId())
                 .battleType(Battle.BattleType.valueOf(request.getBattleType()))
                 .floor(request.getFloor())
                 .bossId(request.getBossId())
                 .bossPhase(request.getBossPhase() != null ? request.getBossPhase() : 1)
-                .playerHp(100)  // HP is always 100
-                .enemyHp(100)   // HP is always 100
+                .mutatorId(mutatorId)
+                .playerHp(initialHp)
+                .enemyHp(initialHp)
                 .turnCount(1)
                 .currentTurn(Battle.TurnActor.PLAYER)
                 .status(Battle.Status.ONGOING)
@@ -63,8 +69,8 @@ public class BattleService {
                 .build();
 
         battle = battleRepository.save(battle);
-        log.info("Battle started: id={}, playerId={}, floor={}",
-                battle.getId(), battle.getPlayerId(), battle.getFloor());
+        log.info("Battle started: id={}, playerId={}, floor={}, mutator={}, hp={}",
+                battle.getId(), battle.getPlayerId(), battle.getFloor(), mutatorId, initialHp);
 
         return BattleDto.fromEntity(battle);
     }
@@ -90,8 +96,12 @@ public class BattleService {
         List<Long> equippedSkills = parseEquippedSkills(battle.getPlayerEquippedSkills());
         log.debug("Player equipped skills: {}", equippedSkills);
 
+        // Check if silence mutator blocks skills this turn
+        String mutatorId = battle.getMutatorId();
+        boolean skillsSilenced = !mutatorService.shouldSkillsExecute(mutatorId);
+
         // 0. BATTLE_START trigger (first turn only)
-        if (battle.getTurnCount() == 1) {
+        if (battle.getTurnCount() == 1 && !skillsSilenced) {
             log.info("First turn - executing BATTLE_START skills");
             GameState initialState = buildGameState(battle, new int[]{0, 0, 0}, null, 0);
             skillEffectEngine.executeSkillsByTrigger(SkillTrigger.BATTLE_START, equippedSkills, initialState);
@@ -102,22 +112,29 @@ public class BattleService {
         String hash = generateDiceHash(playerDice);
         log.info("Player rolled dice: {}", Arrays.toString(playerDice));
 
-        // 2. DICE_ROLL trigger - skills can modify dice
+        // 1.5. Apply mutator dice effects (gravity: 1-2 -> 3, chaos: re-roll one)
+        playerDice = mutatorService.applyDiceRollMutator(mutatorId, playerDice);
+
+        // 2. DICE_ROLL trigger - skills can modify dice (if not silenced)
         GameState state = buildGameState(battle, playerDice, null, 0);
-        state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.DICE_ROLL, equippedSkills, state);
-        playerDice = state.getDice();  // Get modified dice
-        log.debug("After DICE_ROLL skills: dice={}", Arrays.toString(playerDice));
+        if (!skillsSilenced) {
+            state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.DICE_ROLL, equippedSkills, state);
+            playerDice = state.getDice();  // Get modified dice
+            log.debug("After DICE_ROLL skills: dice={}", Arrays.toString(playerDice));
+        }
 
         // 3. Evaluate hand
         HandEvaluator.HandResult handResult = handEvaluator.evaluate(playerDice);
         log.info("Player hand: {} (power={})", handResult.getRank(), handResult.getPower());
 
-        // 4. BEFORE_DAMAGE trigger - skills can modify damage
+        // 4. BEFORE_DAMAGE trigger - skills can modify damage (if not silenced)
         state.setHand(handResult);
         state.setDamage(handResult.getPower());
-        state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.BEFORE_DAMAGE, equippedSkills, state);
+        if (!skillsSilenced) {
+            state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.BEFORE_DAMAGE, equippedSkills, state);
+        }
         int playerDamage = state.getDamage();  // Get modified damage
-        log.info("After BEFORE_DAMAGE skills: damage={}", playerDamage);
+        log.info("After BEFORE_DAMAGE: damage={}, silenced={}", playerDamage, skillsSilenced);
 
         // 5. Apply damage to enemy (shield absorbs first)
         int shieldAbsorbed = Math.min(playerDamage, battle.getEnemyShield());
@@ -130,11 +147,13 @@ public class BattleService {
         state.setEnemyHp(newEnemyHp);
         log.info("Damage to enemy: total={}, shieldAbsorbed={}, actualDamage={}", playerDamage, shieldAbsorbed, actualDamage);
 
-        // 6. AFTER_DAMAGE trigger - skills can have post-damage effects
-        state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.AFTER_DAMAGE, equippedSkills, state);
+        // 6. AFTER_DAMAGE trigger - skills can have post-damage effects (if not silenced)
+        if (!skillsSilenced) {
+            state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.AFTER_DAMAGE, equippedSkills, state);
+        }
 
-        log.info("Player turn complete: dice={}, hand={}, damage={}, enemyHp={}",
-                Arrays.toString(playerDice), handResult.getRank(), playerDamage, newEnemyHp);
+        log.info("Player turn complete: dice={}, hand={}, damage={}, enemyHp={}, silenced={}",
+                Arrays.toString(playerDice), handResult.getRank(), playerDamage, newEnemyHp, skillsSilenced);
 
         // 5. Check if enemy defeated
         if (newEnemyHp <= 0) {
@@ -144,7 +163,7 @@ public class BattleService {
                 // Boss has more phases - reset HP, advance phase
                 battleRepository.save(battle);
                 BattleDto.RollResponse response = buildRollResponse(
-                        battle, playerDice, hash, handResult, playerDamage, null);
+                        battle, playerDice, hash, handResult, playerDamage, null, skillsSilenced);
                 response.setBossPhaseTransition(phaseTransition);
                 return response;
             }
@@ -154,7 +173,7 @@ public class BattleService {
             battle.setEndedAt(LocalDateTime.now());
             battleRepository.save(battle);
 
-            return buildRollResponse(battle, playerDice, hash, handResult, playerDamage, null);
+            return buildRollResponse(battle, playerDice, hash, handResult, playerDamage, null, skillsSilenced);
         }
 
         // 6. Enemy turn (PvE AI)
@@ -178,7 +197,7 @@ public class BattleService {
 
         battleRepository.save(battle);
 
-        return buildRollResponse(battle, playerDice, hash, handResult, playerDamage, enemyTurnResult);
+        return buildRollResponse(battle, playerDice, hash, handResult, playerDamage, enemyTurnResult, skillsSilenced);
     }
 
     /**
@@ -189,26 +208,37 @@ public class BattleService {
         List<Long> enemySkills = parseEquippedSkills(battle.getEnemyEquippedSkills());
         log.debug("Enemy equipped skills: {}", enemySkills);
 
+        // Check if silence mutator blocks skills this turn (enemy gets own roll)
+        String mutatorId = battle.getMutatorId();
+        boolean enemySkillsSilenced = !mutatorService.shouldSkillsExecute(mutatorId);
+
         // 1. Roll dice for enemy (SERVER-SIDE!)
         int[] enemyDice = handEvaluator.rollDice();
         log.info("Enemy rolled dice: {}", Arrays.toString(enemyDice));
 
-        // 2. DICE_ROLL trigger - enemy skills can modify dice
+        // 1.5. Apply mutator dice effects
+        enemyDice = mutatorService.applyDiceRollMutator(mutatorId, enemyDice);
+
+        // 2. DICE_ROLL trigger - enemy skills can modify dice (if not silenced)
         GameState state = buildGameState(battle, enemyDice, null, 0);
-        state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.DICE_ROLL, enemySkills, state);
-        enemyDice = state.getDice();  // Get modified dice
-        log.debug("After enemy DICE_ROLL skills: dice={}", Arrays.toString(enemyDice));
+        if (!enemySkillsSilenced) {
+            state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.DICE_ROLL, enemySkills, state);
+            enemyDice = state.getDice();  // Get modified dice
+            log.debug("After enemy DICE_ROLL skills: dice={}", Arrays.toString(enemyDice));
+        }
 
         // 3. Evaluate enemy hand
         HandEvaluator.HandResult enemyHand = handEvaluator.evaluate(enemyDice);
         log.info("Enemy hand: {} (power={})", enemyHand.getRank(), enemyHand.getPower());
 
-        // 4. BEFORE_DAMAGE trigger - enemy skills can modify damage
+        // 4. BEFORE_DAMAGE trigger - enemy skills can modify damage (if not silenced)
         state.setHand(enemyHand);
         state.setDamage(enemyHand.getPower());
-        state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.BEFORE_DAMAGE, enemySkills, state);
+        if (!enemySkillsSilenced) {
+            state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.BEFORE_DAMAGE, enemySkills, state);
+        }
         int enemyDamage = state.getDamage();  // Get modified damage
-        log.info("After enemy BEFORE_DAMAGE skills: damage={}", enemyDamage);
+        log.info("After enemy BEFORE_DAMAGE: damage={}, silenced={}", enemyDamage, enemySkillsSilenced);
 
         // 5. Apply damage to player (shield absorbs first)
         int playerShieldAbsorbed = Math.min(enemyDamage, battle.getPlayerShield());
@@ -221,11 +251,13 @@ public class BattleService {
         state.setPlayerHp(newPlayerHp);
         log.info("Damage to player: total={}, shieldAbsorbed={}, actualDamage={}", enemyDamage, playerShieldAbsorbed, actualDamageToPlayer);
 
-        // 6. AFTER_DAMAGE trigger - enemy skills can have post-damage effects
-        state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.AFTER_DAMAGE, enemySkills, state);
+        // 6. AFTER_DAMAGE trigger - enemy skills can have post-damage effects (if not silenced)
+        if (!enemySkillsSilenced) {
+            state = skillEffectEngine.executeSkillsByTrigger(SkillTrigger.AFTER_DAMAGE, enemySkills, state);
+        }
 
-        log.info("Enemy turn complete: dice={}, hand={}, damage={}, playerHp={}",
-                Arrays.toString(enemyDice), enemyHand.getRank(), enemyDamage, newPlayerHp);
+        log.info("Enemy turn complete: dice={}, hand={}, damage={}, playerHp={}, silenced={}",
+                Arrays.toString(enemyDice), enemyHand.getRank(), enemyDamage, newPlayerHp, enemySkillsSilenced);
 
         return BattleDto.EnemyTurnResult.builder()
                 .dice(enemyDice)
@@ -289,7 +321,8 @@ public class BattleService {
             String hash,
             HandEvaluator.HandResult handResult,
             int damage,
-            BattleDto.EnemyTurnResult enemyTurn
+            BattleDto.EnemyTurnResult enemyTurn,
+            boolean skillsSilenced
     ) {
         return BattleDto.RollResponse.builder()
                 .dice(playerDice)
@@ -307,6 +340,8 @@ public class BattleService {
                 .currentTurn(battle.getCurrentTurn().name())
                 .status(battle.getStatus().name())
                 .enemyTurn(enemyTurn)
+                .fogActive(mutatorService.shouldHideHandName(battle.getMutatorId()))
+                .skillsSilenced(skillsSilenced)
                 .build();
     }
 

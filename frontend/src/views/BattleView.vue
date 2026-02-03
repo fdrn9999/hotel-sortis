@@ -32,6 +32,12 @@ const campaignBattleId = computed(() => Number(route.query.battleId) || null)
 const campaignBossId = computed(() => (route.query.bossId as string) || null)
 const campaignBossName = computed(() => (route.query.bossName as string) || null)
 
+// Mutator context from route query
+const campaignMutatorId = computed(() => (route.query.mutatorId as string) || null)
+const campaignMutatorName = computed(() => (route.query.mutatorName as string) || null)
+const campaignMutatorDescription = computed(() => (route.query.mutatorDescription as string) || null)
+const campaignMutatorIcon = computed(() => (route.query.mutatorIcon as string) || null)
+
 // Battle state
 const battleId = ref<number | null>(null)
 const playerId = ref(1) // TODO: Get from auth
@@ -50,6 +56,14 @@ const bossPhase = ref(1)
 const bossTotalPhases = ref(1)
 const showPhaseTransition = ref(false)
 const phaseTransitionQuote = ref('')
+
+// Mutator state
+const mutatorId = ref<string | null>(null)
+const mutatorName = ref<string | null>(null)
+const mutatorDescription = ref<string | null>(null)
+const mutatorIcon = ref<string | null>(null)
+const fogActive = ref(false)
+const skillsSilenced = ref(false)
 
 // Skill reward state
 const showSkillReward = ref(false)
@@ -136,6 +150,11 @@ onMounted(async () => {
     if (campaignStore.bossTotalPhases) {
       bossTotalPhases.value = campaignStore.bossTotalPhases
     }
+    // Mutator info from route query
+    mutatorId.value = campaignMutatorId.value
+    mutatorName.value = campaignMutatorName.value
+    mutatorDescription.value = campaignMutatorDescription.value
+    mutatorIcon.value = campaignMutatorIcon.value
   }
 
   await startBattle()
@@ -159,7 +178,8 @@ async function startBattle() {
       floor: floor.value,
       equippedSkills,
       bossId: bossId.value || undefined,
-      bossPhase: bossPhase.value || undefined
+      bossPhase: bossPhase.value || undefined,
+      mutatorId: mutatorId.value || undefined
     })
 
     battleId.value = response.battleId
@@ -169,6 +189,9 @@ async function startBattle() {
     enemyShield.value = response.enemyShield || 0
     turnCount.value = response.turnCount
     status.value = response.status
+
+    // Update mutator fog state from server
+    fogActive.value = response.fogActive || false
 
     // Update boss info from server response
     if (response.bossId) {
@@ -235,11 +258,16 @@ async function rollDice() {
     await animateDiceRoll(response.dice, 'player')
     SFX.diceLand()
 
+    // Update fog/silence state from response
+    if (response.fogActive !== undefined) fogActive.value = response.fogActive
+    if (response.skillsSilenced !== undefined) skillsSilenced.value = response.skillsSilenced
+
     // Show player result
     playerDice.value = [...response.dice]
     playerHand.value = response.hand
     SFX.handComplete(response.hand.rank)
-    addLog(`${t('battle.playerHP')}: ${response.hand.rankKR} (${response.hand.power} ${t('battle.damage') || 'damage'})`)
+    const handDisplay = fogActive.value ? '???' : response.hand.rankKR
+    addLog(`${t('battle.playerHP')}: ${handDisplay} (${response.hand.power} ${t('battle.damage') || 'damage'})`)
 
     // Update enemy HP and Shield
     if (response.enemyHp < enemyHP.value) SFX.damageDealt()
@@ -491,6 +519,13 @@ function goToSettings() {
       <span class="phase-label">{{ t('battle.bossPhase', { phase: bossPhase }) }}</span>
     </div>
 
+    <!-- Mutator Banner -->
+    <div v-if="mutatorId" class="mutator-banner">
+      <span class="mutator-icon">{{ mutatorIcon }}</span>
+      <span class="mutator-name">{{ mutatorName }}</span>
+      <span class="mutator-desc">{{ mutatorDescription }}</span>
+    </div>
+
     <!-- Turn Timer -->
     <div class="turn-timer" v-if="status === 'ONGOING'">
       <div class="timer-bar" :class="{ warning: timerWarning }" :style="{ width: timerPercentage + '%' }"></div>
@@ -522,7 +557,7 @@ function goToSettings() {
           </template>
         </div>
         <div v-if="enemyHand" class="hand-result enemy-hand">
-          {{ enemyHand.rankKR }} ({{ enemyHand.power }})
+          {{ fogActive ? '???' : enemyHand.rankKR }} ({{ enemyHand.power }})
         </div>
       </div>
 
@@ -537,7 +572,7 @@ function goToSettings() {
       <!-- Player Area -->
       <div class="player-area">
         <div v-if="playerHand" class="hand-result player-hand">
-          {{ playerHand.rankKR }} ({{ playerHand.power }})
+          {{ fogActive ? '???' : playerHand.rankKR }} ({{ playerHand.power }})
         </div>
 
         <!-- Vue Dice Roller -->
@@ -711,6 +746,33 @@ function goToSettings() {
 .phase-label {
   font-size: 12px;
   color: #999;
+}
+
+/* Mutator Banner */
+.mutator-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: rgba(138, 43, 226, 0.15);
+  border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+}
+
+.mutator-icon {
+  font-size: 18px;
+}
+
+.mutator-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #bb86fc;
+}
+
+.mutator-desc {
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
 }
 
 /* Timer */

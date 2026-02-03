@@ -201,7 +201,8 @@
     "startFloor": "Start Floor",
     "replayFloor": "Replay",
     "returnToCampaign": "Return to Campaign",
-    "battleProgress": "Battle {current}/{total}"
+    "battleProgress": "Battle {current}/{total}",
+    "mutator": "Floor Mutator"
   },
   "ranks": {
     "bronze": "Bronze",

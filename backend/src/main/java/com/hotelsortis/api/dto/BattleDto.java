@@ -22,6 +22,7 @@ public class BattleDto {
         private String bossId;
         private Integer bossPhase;
         private List<Long> enemySkills;
+        private String mutatorId; // Floor mutator ID
     }
 
     @Data
@@ -43,6 +44,8 @@ public class BattleDto {
         private Integer bossPhase;
         private Integer bossTotalPhases;
         private String bossName;
+        private String mutatorId;
+        private Boolean fogActive; // true if fog mutator hides hand names
     }
 
     @Data
@@ -70,6 +73,8 @@ public class BattleDto {
         private String status;
         private EnemyTurnResult enemyTurn; // AI의 턴 결과 (PvE)
         private BossPhaseTransition bossPhaseTransition; // 보스 페이즈 전환 정보
+        private Boolean fogActive; // true if fog mutator hides hand names
+        private Boolean skillsSilenced; // true if silence mutator blocked skills this turn
     }
 
     @Data
@@ -133,6 +138,8 @@ public class BattleDto {
                 .status(battle.getStatus().name())
                 .bossId(battle.getBossId())
                 .bossPhase(battle.getBossPhase())
+                .mutatorId(battle.getMutatorId())
+                .fogActive("fog".equals(battle.getMutatorId()))
                 .build();
     }
 }

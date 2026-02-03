@@ -40,6 +40,9 @@ public class Battle {
     @Builder.Default
     private Integer bossPhase = 1;
 
+    @Column(name = "mutator_id", length = 50)
+    private String mutatorId;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default

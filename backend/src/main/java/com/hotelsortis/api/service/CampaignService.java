@@ -21,6 +21,7 @@ public class CampaignService {
 
     private final FloorRepository floorRepository;
     private final BossRepository bossRepository;
+    private final MutatorRepository mutatorRepository;
     private final CampaignProgressRepository campaignProgressRepository;
     private final BattleRepository battleRepository;
     private final BattleService battleService;
@@ -48,6 +49,19 @@ public class CampaignService {
                         .orElse(null);
             }
 
+            // Fetch mutator info
+            String mutatorName = null;
+            String mutatorDescription = null;
+            String mutatorIcon = null;
+            if (floor.getMutatorId() != null) {
+                var mutator = mutatorRepository.findById(floor.getMutatorId()).orElse(null);
+                if (mutator != null) {
+                    mutatorName = mutator.getName(language);
+                    mutatorDescription = mutator.getDescription(language);
+                    mutatorIcon = mutator.getIcon();
+                }
+            }
+
             floorStatuses.add(CampaignDto.FloorStatus.builder()
                     .floor(floor.getId())
                     .floorType(floor.getFloorType().name())
@@ -60,6 +74,10 @@ public class CampaignService {
                     .bossName(bossName)
                     .skillRewardRarity(floor.getSkillRewardRarity() != null ?
                             floor.getSkillRewardRarity().name() : null)
+                    .mutatorId(floor.getMutatorId())
+                    .mutatorName(mutatorName)
+                    .mutatorDescription(mutatorDescription)
+                    .mutatorIcon(mutatorIcon)
                     .build());
         }
 
@@ -137,6 +155,19 @@ public class CampaignService {
             }
         }
 
+        // Fetch mutator info
+        String mutatorName = null;
+        String mutatorDescription = null;
+        String mutatorIcon = null;
+        if (floor.getMutatorId() != null) {
+            var mutator = mutatorRepository.findById(floor.getMutatorId()).orElse(null);
+            if (mutator != null) {
+                mutatorName = mutator.getName(language);
+                mutatorDescription = mutator.getDescription(language);
+                mutatorIcon = mutator.getIcon();
+            }
+        }
+
         return CampaignDto.StartFloorResponse.builder()
                 .battleId(battleResponse.getBattleId())
                 .floor(floorNum)
@@ -149,6 +180,10 @@ public class CampaignService {
                 .bossName(bossName)
                 .bossPhase(floor.getFloorType() == Floor.FloorType.BOSS ? 1 : null)
                 .bossTotalPhases(bossTotalPhases)
+                .mutatorId(floor.getMutatorId())
+                .mutatorName(mutatorName)
+                .mutatorDescription(mutatorDescription)
+                .mutatorIcon(mutatorIcon)
                 .build();
     }
 
