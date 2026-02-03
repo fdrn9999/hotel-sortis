@@ -203,18 +203,6 @@
     "returnToCampaign": "キャンペーンへ",
     "battleProgress": "戦闘 {current}/{total}"
   },
-  "pvp": {
-    "ranked": "ランクマッチ",
-    "matchmaking": "対戦相手を検索中...",
-    "matchFound": "対戦相手が見つかりました！",
-    "eloChange": "ELO変動",
-    "soulStones": "魂石",
-    "season": "シーズン",
-    "rank": "ランク",
-    "wins": "勝利",
-    "losses": "敗北",
-    "draws": "引き分け"
-  },
   "ranks": {
     "bronze": "ブロンズ",
     "silver": "シルバー",
@@ -247,8 +235,13 @@
   },
   "pvp": {
     "title": "PvPランクモード",
+    "ranked": "ランクマッチ",
     "elo": "ELO",
+    "eloChange": "ELO変動",
     "tier": "ティア",
+    "rank": "ランク",
+    "season": "シーズン",
+    "soulStones": "魂石",
     "wins": "勝",
     "losses": "負",
     "draws": "引",

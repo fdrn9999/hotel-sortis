@@ -203,18 +203,6 @@
     "returnToCampaign": "Return to Campaign",
     "battleProgress": "Battle {current}/{total}"
   },
-  "pvp": {
-    "ranked": "Ranked Match",
-    "matchmaking": "Finding opponent...",
-    "matchFound": "Opponent found!",
-    "eloChange": "ELO Change",
-    "soulStones": "Soul Stones",
-    "season": "Season",
-    "rank": "Rank",
-    "wins": "Wins",
-    "losses": "Losses",
-    "draws": "Draws"
-  },
   "ranks": {
     "bronze": "Bronze",
     "silver": "Silver",
@@ -247,8 +235,13 @@
   },
   "pvp": {
     "title": "PvP Ranked Mode",
+    "ranked": "Ranked Match",
     "elo": "ELO",
+    "eloChange": "ELO Change",
     "tier": "Tier",
+    "rank": "Rank",
+    "season": "Season",
+    "soulStones": "Soul Stones",
     "wins": "Wins",
     "losses": "Losses",
     "draws": "Draws",

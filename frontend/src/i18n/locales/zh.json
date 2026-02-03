@@ -203,18 +203,6 @@
     "returnToCampaign": "返回战役",
     "battleProgress": "战斗 {current}/{total}"
   },
-  "pvp": {
-    "ranked": "排位赛",
-    "matchmaking": "正在寻找对手...",
-    "matchFound": "找到对手！",
-    "eloChange": "ELO变动",
-    "soulStones": "灵魂石",
-    "season": "赛季",
-    "rank": "排名",
-    "wins": "胜",
-    "losses": "负",
-    "draws": "平"
-  },
   "ranks": {
     "bronze": "青铜",
     "silver": "白银",
@@ -247,8 +235,13 @@
   },
   "pvp": {
     "title": "PvP排位模式",
+    "ranked": "排位赛",
     "elo": "ELO",
+    "eloChange": "ELO变动",
     "tier": "段位",
+    "rank": "排名",
+    "season": "赛季",
+    "soulStones": "灵魂石",
     "wins": "胜",
     "losses": "负",
     "draws": "平",

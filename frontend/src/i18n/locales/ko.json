@@ -203,18 +203,6 @@
     "returnToCampaign": "캠페인으로",
     "battleProgress": "전투 {current}/{total}"
   },
-  "pvp": {
-    "ranked": "랭크전",
-    "matchmaking": "매칭 중...",
-    "matchFound": "상대를 찾았습니다!",
-    "eloChange": "ELO 변동",
-    "soulStones": "영혼석",
-    "season": "시즌",
-    "rank": "랭크",
-    "wins": "승",
-    "losses": "패",
-    "draws": "무"
-  },
   "ranks": {
     "bronze": "브론즈",
     "silver": "실버",
@@ -247,8 +235,13 @@
   },
   "pvp": {
     "title": "PvP 랭크 모드",
+    "ranked": "랭크전",
     "elo": "ELO",
+    "eloChange": "ELO 변동",
     "tier": "티어",
+    "rank": "랭크",
+    "season": "시즌",
+    "soulStones": "영혼석",
     "wins": "승",
     "losses": "패",
     "draws": "무",

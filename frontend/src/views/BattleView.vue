@@ -4,18 +4,20 @@ import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
 import { battleApi, type RollDiceResponse, type EnemyTurnResult } from '@/api/battle'
 import { useDiceRoller, type DiceResult } from '@/composables/useDiceRoller'
+import { useOfflineBattle } from '@/composables/useOfflineBattle'
 import { useCampaignStore } from '@/stores/campaign'
 import { useCosmeticStore } from '@/stores/cosmetic'
 import { SFX, BGM } from '@/composables/useSound'
 import DiceRoller from '@/components/DiceRoller.vue'
 import SkillSelectionView from '@/views/SkillSelectionView.vue'
-import type { SkillRewardOption } from '@/types/game'
+import type { SkillRewardOption, Skill, SkillRarity } from '@/types/game'
 
 const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const campaignStore = useCampaignStore()
 const cosmeticStore = useCosmeticStore()
+const offlineBattle = useOfflineBattle()
 
 // Vue-based Dice Roller
 const diceRoller = useDiceRoller()
@@ -51,7 +53,19 @@ const phaseTransitionQuote = ref('')
 
 // Skill reward state
 const showSkillReward = ref(false)
-const offeredSkills = ref<SkillRewardOption[]>([])
+const offeredSkillsRaw = ref<SkillRewardOption[]>([])
+
+// Map SkillRewardOption to Skill for SkillSelectionView compatibility
+const offeredSkills = computed<Skill[]>(() =>
+  offeredSkillsRaw.value.map(opt => ({
+    id: opt.skillId,
+    skillCode: opt.skillCode,
+    name: opt.name,
+    description: opt.description,
+    rarity: opt.rarity as SkillRarity,
+    triggerType: opt.triggerType
+  }))
+)
 
 // Dice state
 const playerDice = ref<number[]>([])
@@ -193,7 +207,13 @@ async function rollDice() {
 
     if (battleId.value === -1) {
       // Offline mode for testing
-      response = simulateRoll()
+      response = offlineBattle.simulateRoll({
+        playerHP: playerHP.value,
+        enemyHP: enemyHP.value,
+        playerShield: playerShield.value,
+        enemyShield: enemyShield.value,
+        turnCount: turnCount.value
+      })
     } else {
       // Call server API first - dice generated SERVER-SIDE!
       response = await battleApi.rollDice(battleId.value, {
@@ -315,7 +335,7 @@ async function handleCampaignVictory() {
     )
 
     if (completeResponse?.offeredSkills && completeResponse.offeredSkills.length > 0) {
-      offeredSkills.value = completeResponse.offeredSkills
+      offeredSkillsRaw.value = completeResponse.offeredSkills
       showSkillReward.value = true
     }
   } catch (e) {
@@ -425,67 +445,6 @@ function addLog(message: string) {
   }
 }
 
-// Offline simulation for testing
-function simulateRoll(): RollDiceResponse {
-  const dice: [number, number, number] = [
-    Math.floor(Math.random() * 6) + 1,
-    Math.floor(Math.random() * 6) + 1,
-    Math.floor(Math.random() * 6) + 1
-  ]
-
-  const hand = evaluateHand(dice)
-  const newEnemyHp = Math.max(0, enemyHP.value - hand.power)
-
-  const enemyDiceRoll: [number, number, number] = [
-    Math.floor(Math.random() * 6) + 1,
-    Math.floor(Math.random() * 6) + 1,
-    Math.floor(Math.random() * 6) + 1
-  ]
-  const enemyHandResult = evaluateHand(enemyDiceRoll)
-  const newPlayerHp = Math.max(0, playerHP.value - enemyHandResult.power)
-
-  let newStatus: 'ONGOING' | 'VICTORY' | 'DEFEAT' | 'DRAW' = 'ONGOING'
-  if (newEnemyHp <= 0) newStatus = 'VICTORY'
-  else if (newPlayerHp <= 0) newStatus = 'DEFEAT'
-  else if (turnCount.value >= 10) newStatus = 'DRAW'
-
-  return {
-    dice,
-    hash: 'offline',
-    hand,
-    damage: hand.power,
-    playerHp: newPlayerHp,
-    enemyHp: newEnemyHp,
-    playerShield: playerShield.value,
-    enemyShield: enemyShield.value,
-    currentTurn: 'PLAYER',
-    status: newStatus,
-    enemyTurn: newEnemyHp > 0 ? {
-      dice: enemyDiceRoll,
-      hand: enemyHandResult,
-      damage: enemyHandResult.power
-    } : undefined
-  }
-}
-
-// Hand evaluation (Balanced System - PROJECTPLAN.md) - offline mode only
-function evaluateHand(dice: [number, number, number]) {
-  const sorted = [...dice].sort((a, b) => a - b) as [number, number, number]
-  const [a, b, c] = sorted
-
-  if (a === 1 && b === 1 && c === 1) return { rank: 'Ace', rankKR: '에이스', power: 45 }
-  if (a === b && b === c && a >= 2) return { rank: 'Triple', rankKR: '트리플', power: 8 + (a * 4) }
-  if (a === 4 && b === 5 && c === 6) return { rank: 'Straight', rankKR: '스트레이트', power: 38 }
-  if (a === 3 && b === 4 && c === 5) return { rank: 'Strike', rankKR: '스트라이크', power: 30 }
-  if (a === 2 && b === 3 && c === 4) return { rank: 'Slash', rankKR: '슬래시', power: 24 }
-  if (a === 1 && b === 2 && c === 3) return { rank: 'Storm', rankKR: '스톰', power: 16 }
-  if (a === b || b === c) {
-    const pairValue = a === b ? a : b
-    return { rank: 'Pair', rankKR: '페어', power: 5 + (pairValue * 2) }
-  }
-  return { rank: 'NoHand', rankKR: '노 핸드', power: a + b + c }
-}
-
 // Navigation
 function goHome() {
   stopTimer()
@@ -589,20 +548,6 @@ function goToSettings() {
           class="dice-roller-container"
         />
 
-        <!-- 2D Dice Display (result confirmation) -->
-        <div class="dice-area">
-          <template v-if="playerDice.length">
-            <span v-for="(d, i) in playerDice" :key="'p'+i" class="die player-die" :class="{ rolling: isRolling }">
-              {{ d }}
-            </span>
-          </template>
-          <template v-else>
-            <span class="die player-die">?</span>
-            <span class="die player-die">?</span>
-            <span class="die player-die">?</span>
-          </template>
-        </div>
-
         <div class="stat-bars">
           <div class="hp-bar">
             <div class="hp-fill player" :style="{ width: `${playerHP}%` }"></div>
@@ -667,7 +612,7 @@ function goToSettings() {
     <SkillSelectionView
       v-if="showSkillReward && offeredSkills.length > 0"
       :floor="campaignFloor"
-      :offered-skills="offeredSkills as any"
+      :offered-skills="offeredSkills"
       @skill-selected="onSkillSelected"
       @close="onSkillRewardClose"
     />

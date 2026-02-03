@@ -412,15 +412,18 @@
   - [ ] i18n: mutators 섹션 4개 언어 번역
 - [ ] **Draft Mode (PvP)**
   - [ ] 스킬 드래프트 시스템 기획 및 구현
-- [ ] **코드 리팩토링 (권장)**
-  - [ ] BattleView.vue 분리: useBattleState.ts composable 추출 (~1100줄 감소)
+- [x] **코드 리팩토링 (일부 완료)** ✅ 2026-02-03
+  - [x] BattleView.vue 중복 주사위 UI 제거 (DiceRoller + 2D Dice Display 중복 해결)
+  - [x] BattleView.vue 오프라인 로직 분리: useOfflineBattle.ts composable 추출
+  - [x] BattleView.vue `as any` 타입 안전성 문제 해결 (SkillRewardOption → Skill 매핑)
+  - [ ] BattleView.vue 분리: useBattleState.ts composable 추출 (~1000줄 감소)
   - [ ] BattleService.java 분리: MutatorService, BattleEffectProcessor 추출
 
 ### Phase 13: 2차 폴리싱 (2nd Polishing)
 
-- [ ] **i18n 정합성 수정 (CRITICAL)**
-  - [ ] ko.json `pvp` 키 중복 병합 (line 202 vs 244 — 두 번째가 첫 번째 덮어씀)
-  - [ ] en.json, ja.json, zh.json 동일하게 `pvp` 키 구조 통일
+- [x] **i18n 정합성 수정 (CRITICAL)** ✅ 2026-02-03
+  - [x] ko.json `pvp` 키 중복 병합 완료
+  - [x] en.json, ja.json, zh.json 동일하게 `pvp` 키 구조 통일 완료
   - [ ] 4개 locale 파일 전체 키 diff 검증 (누락/불일치 찾기)
   - [ ] `soulStones` 키 네스팅 위치 4개 파일 일관성 맞추기
 - [ ] **하드코딩 문자열 i18n 전환**
