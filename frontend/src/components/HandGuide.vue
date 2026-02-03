@@ -34,7 +34,7 @@
                   <td class="col-rank">{{ index + 1 }}</td>
                   <td class="col-name">
                     <span class="hand-name" :class="`rarity-${hand.rarity}`">
-                      {{ $t(`hands.${hand.rank.toLowerCase()}`) }}
+                      {{ $t(`hands.${rankToI18nKey[hand.rank]}`) }}
                     </span>
                   </td>
                   <td class="col-dice">
@@ -96,7 +96,20 @@ interface HandInfo {
   rarity: string
 }
 
+// Mapping rank names to i18n keys (preserves camelCase for NoHand)
+const rankToI18nKey: Record<string, string> = {
+  'Ace': 'ace',
+  'Triple': 'triple',
+  'Straight': 'straight',
+  'Strike': 'strike',
+  'Slash': 'slash',
+  'Storm': 'storm',
+  'Pair': 'pair',
+  'NoHand': 'noHand'
+}
+
 // All 8 hands with probabilities (PROJECTPLAN.md 2.1.1)
+// Order: Ace > Triple > Straight > Strike > Slash > Storm > Pair > NoHand
 const hands = computed<HandInfo[]>(() => [
   {
     rank: 'Ace',
@@ -106,17 +119,17 @@ const hands = computed<HandInfo[]>(() => [
     rarity: 'legendary'
   },
   {
-    rank: 'Straight',
-    example: [4, 5, 6],
-    powerDisplay: '38',
-    probability: '2.78%',
-    rarity: 'epic'
-  },
-  {
     rank: 'Triple',
     example: [6, 6, 6],
     powerDisplay: '16~32',
     probability: '2.31%',
+    rarity: 'epic'
+  },
+  {
+    rank: 'Straight',
+    example: [4, 5, 6],
+    powerDisplay: '38',
+    probability: '2.78%',
     rarity: 'epic'
   },
   {
