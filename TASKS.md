@@ -470,12 +470,12 @@
 
 > 최종 검토: 2026-02-04 (Phase 12 완료 후 재검토)
 
-- [x] **i18n 정합성 수정 (CRITICAL)** ✅ 2026-02-03
+- [x] **i18n 정합성 수정 (CRITICAL)** ✅ 2026-02-04
   - [x] ko.json `pvp` 키 중복 병합 완료
   - [x] en.json, ja.json, zh.json 동일하게 `pvp` 키 구조 통일 완료
   - [x] campaign.mutator 키 4개 언어 추가 완료
-  - [ ] 4개 locale 파일 전체 키 diff 검증 (누락/불일치 찾기)
-  - [ ] `soulStones` 키 네스팅 위치 4개 파일 일관성 맞추기
+  - [x] 4개 locale 파일 전체 키 diff 검증 완료 (20개 최상위 섹션, 모든 키 일치)
+  - [x] `soulStones` 키 네스팅 위치 4개 파일 일관성 확인 완료 (pvp, pvp.result, profile, shop)
 - [ ] **하드코딩 문자열 i18n 전환**
   - [ ] SettingsView.vue: ON/OFF 토글 텍스트 4건 → `t('common.on')` / `t('common.off')`
   - [ ] SignupView.vue: 언어 선택 드롭다운 라벨 4건 → i18n 키 사용
