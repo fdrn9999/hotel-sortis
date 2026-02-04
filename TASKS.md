@@ -456,8 +456,8 @@
   - [x] MutatorService.java 생성 (BattleService 분리)
   - [x] gravity, fog, silence, chaos, endurance 효과 구현
   - [x] BattleService 통합 및 Frontend fog 처리
-- [ ] **Draft Mode (PvP)**
-  - [ ] 스킬 드래프트 시스템 기획 및 구현
+- [x] **Draft Mode (PvP)** ✅ 2026-02-03
+  - [x] 스킬 드래프트 시스템 기획 및 구현 (스네이크 드래프트 A→B→B→A→A→B→B→A)
 - [x] **코드 리팩토링 (일부 완료)** ✅ 2026-02-03
   - [x] BattleView.vue 중복 주사위 UI 제거 (DiceRoller + 2D Dice Display 중복 해결)
   - [x] BattleView.vue 오프라인 로직 분리: useOfflineBattle.ts composable 추출
