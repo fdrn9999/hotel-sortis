@@ -468,6 +468,8 @@
 
 ### Phase 13: 2차 폴리싱 (2nd Polishing)
 
+> 최종 검토: 2026-02-04 (Phase 12 완료 후 재검토)
+
 - [x] **i18n 정합성 수정 (CRITICAL)** ✅ 2026-02-03
   - [x] ko.json `pvp` 키 중복 병합 완료
   - [x] en.json, ja.json, zh.json 동일하게 `pvp` 키 구조 통일 완료
@@ -475,19 +477,24 @@
   - [ ] 4개 locale 파일 전체 키 diff 검증 (누락/불일치 찾기)
   - [ ] `soulStones` 키 네스팅 위치 4개 파일 일관성 맞추기
 - [ ] **하드코딩 문자열 i18n 전환**
-  - [ ] SettingsView.vue: ON/OFF 토글 텍스트 → `t('common.on')` / `t('common.off')`
-  - [ ] SignupView.vue: 언어 선택 드롭다운 라벨 → i18n 키 사용
-  - [ ] ProfileView.vue: 언어 선택 드롭다운 라벨 → i18n 키 사용
-  - [ ] i18n locale 4개 파일에 `common.on`, `common.off` 키 추가
-- [ ] **console.log/error 정리 (40+ 건)**
-  - [ ] `stores/skill.ts` — 8건 제거 또는 `import.meta.env.DEV` 가드
-  - [ ] `stores/cosmetic.ts` — 12건 제거
-  - [ ] `stores/shop.ts` — 10건 제거
-  - [ ] `stores/auth.ts` — console.error 1건 정리
-  - [ ] `api/client.ts` — console.error 1건 정리
-  - [ ] `game/DiceScene.ts` — console.log 2건 제거
-  - [ ] `composables/usePvPWebSocket.ts` — WebSocket 디버그 로그 정리
-  - [ ] `views/BattleView.vue` — 전투 디버그 로그 정리
+  - [ ] SettingsView.vue: ON/OFF 토글 텍스트 4건 → `t('common.on')` / `t('common.off')`
+  - [ ] SignupView.vue: 언어 선택 드롭다운 라벨 4건 → i18n 키 사용
+  - [ ] ProfileView.vue: 언어 선택 드롭다운 라벨 4건 → i18n 키 사용
+  - [ ] i18n locale 4개 파일에 `common.on`, `common.off`, `languages.*` 키 추가
+- [ ] **console.log/error 정리 (총 72건)**
+  - [ ] `stores/skill.ts` — 9건 제거 또는 `import.meta.env.DEV` 가드
+  - [ ] `stores/cosmetic.ts` — 11건 제거
+  - [ ] `stores/shop.ts` — 11건 제거
+  - [ ] `stores/campaign.ts` — 3건 정리
+  - [ ] `stores/auth.ts` — 1건 정리
+  - [ ] `api/client.ts` — 1건 정리
+  - [ ] `composables/usePvPWebSocket.ts` — 7건 WebSocket 디버그 로그 정리
+  - [ ] `composables/useDraftWebSocket.ts` — 9건 정리
+  - [ ] `composables/useWebSocket.ts` — 3건 정리
+  - [ ] `composables/useDiceRoller.ts` — 1건 정리
+  - [ ] `views/BattleView.vue` — 4건 전투 디버그 로그 정리
+  - [ ] `views/PvPMatchmakingView.vue` — 4건 정리
+  - [ ] 기타 views (LoginView, ProfileView, RankView, PvPView, DraftView 등) — 8건
 - [ ] **UI/UX 빈 상태(Empty State) 및 에러 상태 보강**
   - [ ] ShopView.vue: 에러 상태 UI 추가 (현재 없음)
   - [ ] ShopView.vue: 빈 상점 상태 UI 개선 (현재 placeholder 텍스트)
@@ -500,7 +507,7 @@
   - [ ] 모든 form input에 연결된 label 또는 aria-label 확인
   - [ ] 키보드 탭 순서(tab order) 전 화면 점검
 - [ ] **CSS 일관성 개선**
-  - [ ] 하드코딩 색상 → CSS 변수 전환 (LoginView, SignupView, ProfileView 등 30~40%)
+  - [ ] 하드코딩 색상 → CSS 변수 전환 (LoginView, SignupView, ProfileView 등)
   - [ ] AppNavigation.vue: `#d4af37` → `var(--color-gold)` 통일
   - [ ] 매직 넘버 정리 (의미 있는 CSS 변수 또는 주석 추가)
 - [ ] **반응형 태블릿 브레이크포인트 추가**
@@ -508,14 +515,13 @@
   - [ ] SignupView.vue: 태블릿 레이아웃 최적화
   - [ ] ShopView.vue: 태블릿 레이아웃 최적화
   - [ ] BattleView.vue: 태블릿 가로 모드 최적화
-- [ ] **성능 최적화**
-  - [ ] BattleView.vue 청크 분리 (현재 556KB — Three.js/Cannon-es 별도 vendor chunk)
-  - [ ] `vite.config.ts`에 `manualChunks` 설정 (three, cannon-es, howler 분리)
-  - [ ] BattleView.vue 전투 로직 composable 추출 (`useBattleLogic.ts`)
+- [ ] **성능 최적화** (Phase 12에서 Three.js/Cannon-es 제거 완료, 번들 700KB 감소)
+  - [x] ~~Three.js/Cannon-es 청크 분리~~ — Vue UI로 대체 완료 (BattleView 14.76KB)
+  - [ ] `vite.config.ts`에 `manualChunks` 설정 (howler 분리)
   - [ ] 이미지/아이콘 lazy loading 적용
   - [ ] 로딩 스켈레톤 UI (LoadingSpinner 대체용 SkeletonLoader 컴포넌트)
 - [ ] **코드 품질 정리**
-  - [ ] TODO/FIXME 주석 전수 조사 및 해결 (BattleView, SkillLoadoutView, CampaignView)
+  - [ ] TODO/FIXME 주석 4건 해결 (BattleView, SkillLoadoutView, DraftView, CampaignView)
   - [ ] 한국어 코드 주석 → 영어로 통일 (SettingsView, SignupView, ProfileView 등)
   - [ ] 미사용 CSS 클래스 정리
 - [ ] **사운드 에셋 적용**
@@ -526,7 +532,7 @@
   - [ ] 합성음 SFX를 실제 에셋으로 교체 (옵션: 합성음 fallback 유지)
   - [ ] 라이선스 표기 파일 작성 (`public/sounds/LICENSES.md`)
 - [ ] **테스트**
-  - [ ] 족보 판정 단위 테스트 (evaluateHand — 프론트엔드 `battle.ts`)
+  - [ ] 족보 판정 단위 테스트 (`useOfflineBattle.ts` → `evaluateHand`)
   - [ ] 스킬 슬롯 검증 단위 테스트 (최대 4개, 중복 방지)
   - [ ] i18n 키 일관성 자동 검증 스크립트 (4개 파일 키 비교)
   - [ ] 크로스 브라우저 수동 테스트 (Chrome, Firefox, Safari, 모바일)
@@ -563,9 +569,12 @@
 - Legendary: +10~18 범위
 
 ### 기술 스택
-- **Frontend**: Vue 3.4+, Vite 5+, Pinia, Vue Router 4, Vue I18n 9+, Three.js, Cannon-es
+
+- **Frontend**: Vue 3.4+, Vite 5+, Pinia, Vue Router 4, Vue I18n 9+, Howler.js (사운드)
 - **Backend**: Spring Boot 3.2+, Java 17+, MariaDB 11.x, Redis 7.x
 - **Protocol**: REST (HATEOAS), WebSocket (STOMP)
+
+> Note: Three.js/Cannon-es는 Phase 12에서 Vue CSS 애니메이션으로 대체되어 제거됨 (번들 ~700KB 감소)
 
 ### 사운드 에셋 소스 (무료/로열티 프리)
 
