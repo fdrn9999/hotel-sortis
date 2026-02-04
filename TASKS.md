@@ -531,6 +531,23 @@
   - [ ] `useSound.ts` BGM_MAP 경로와 실제 파일 매칭 확인
   - [ ] 합성음 SFX를 실제 에셋으로 교체 (옵션: 합성음 fallback 유지)
   - [ ] 라이선스 표기 파일 작성 (`public/sounds/LICENSES.md`)
+- [ ] **UI 디자인 개선 (frontend-design 에이전트)**
+  - [ ] HomeView.vue: 메인 메뉴 버튼 호버/클릭 마이크로 인터랙션 강화
+  - [ ] HomeView.vue: 배경 Art Deco 패턴 또는 파티클 이펙트 추가
+  - [ ] BattleView.vue: 데미지/회복 숫자 팝업 애니메이션 개선 (바운스, 페이드)
+  - [ ] BattleView.vue: HP 바 감소 시 쉐이크 효과 추가
+  - [ ] BattleView.vue: 승리/패배 화면 연출 강화 (컨페티, 글로우 효과)
+  - [ ] DiceRoller.vue: 주사위 굴림 애니메이션 3D 느낌 강화 (그림자, 퍼스펙티브)
+  - [ ] DiceRoller.vue: 족보 완성 시 이펙트 추가 (글로우, 파티클)
+  - [ ] CampaignView.vue: 층 타워 비주얼 개선 (아이콘, 진행 표시 강화)
+  - [ ] SkillLoadoutView.vue: 스킬 카드 드래그 앤 드롭 피드백 개선
+  - [ ] DraftView.vue: 픽 애니메이션 및 턴 전환 연출 강화
+  - [ ] PvPMatchmakingView.vue: 매칭 대기 애니메이션 개선 (펄스, 로딩 링)
+  - [ ] ShopView.vue: 아이템 카드 호버 효과 및 구매 피드백 강화
+  - [ ] CollectionView.vue: 코스메틱 미리보기 인터랙션 개선
+  - [ ] Toast/Modal: 등장/퇴장 애니메이션 고급화 (스프링, 이징)
+  - [ ] 전역: 페이지 전환 트랜지션 다양화 (슬라이드, 페이드, 스케일)
+  - [ ] 전역: 로딩 상태 스켈레톤 UI 디자인 (Art Deco 스타일)
 - [ ] **테스트**
   - [ ] 족보 판정 단위 테스트 (`useOfflineBattle.ts` → `evaluateHand`)
   - [ ] 스킬 슬롯 검증 단위 테스트 (최대 4개, 중복 방지)
