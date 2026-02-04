@@ -17,10 +17,10 @@ const isMobile = computed(() => settingsStore.isMobile)
 
 // Language options
 const languages = [
-  { code: 'ko', label: '한국어' },
-  { code: 'en', label: 'English' },
-  { code: 'ja', label: '日本語' },
-  { code: 'zh', label: '简体中文' }
+  { code: 'ko', labelKey: 'languages.ko' },
+  { code: 'en', labelKey: 'languages.en' },
+  { code: 'ja', labelKey: 'languages.ja' },
+  { code: 'zh', labelKey: 'languages.zh' }
 ]
 
 // Speed options
@@ -122,7 +122,7 @@ function saveAll() {
             :class="{ active: localSettings.language === lang.code }"
             @click="setLanguage(lang.code)"
           >
-            {{ lang.label }}
+            {{ t(lang.labelKey) }}
           </button>
         </div>
       </section>
@@ -170,7 +170,7 @@ function saveAll() {
             :class="{ active: localSettings.muted }"
             @click="toggleMute"
           >
-            {{ localSettings.muted ? 'ON' : 'OFF' }}
+            {{ localSettings.muted ? t('common.on') : t('common.off') }}
           </button>
         </div>
       </section>
@@ -185,7 +185,7 @@ function saveAll() {
             :class="{ active: localSettings.vibration }"
             @click="toggleVibration"
           >
-            {{ localSettings.vibration ? 'ON' : 'OFF' }}
+            {{ localSettings.vibration ? t('common.on') : t('common.off') }}
           </button>
         </div>
       </section>
@@ -216,7 +216,7 @@ function saveAll() {
             :class="{ active: localSettings.animations }"
             @click="toggleAnimations"
           >
-            {{ localSettings.animations ? 'ON' : 'OFF' }}
+            {{ localSettings.animations ? t('common.on') : t('common.off') }}
           </button>
         </div>
       </section>
@@ -247,7 +247,7 @@ function saveAll() {
             :class="{ active: localSettings.battleSkip }"
             @click="toggleBattleSkip"
           >
-            {{ localSettings.battleSkip ? 'ON' : 'OFF' }}
+            {{ localSettings.battleSkip ? t('common.on') : t('common.off') }}
           </button>
         </div>
       </section>

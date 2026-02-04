@@ -63,10 +63,10 @@
         <div class="form-group">
           <label for="language">{{ $t('auth.preferredLanguage') }}</label>
           <select id="language" v-model="preferredLanguage">
-            <option value="ko">한국어 (Korean)</option>
-            <option value="en">English</option>
-            <option value="ja">日本語 (Japanese)</option>
-            <option value="zh">简体中文 (Chinese)</option>
+            <option value="ko">{{ $t('languages.ko') }}</option>
+            <option value="en">{{ $t('languages.en') }}</option>
+            <option value="ja">{{ $t('languages.ja') }}</option>
+            <option value="zh">{{ $t('languages.zh') }}</option>
           </select>
         </div>
 

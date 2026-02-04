@@ -476,11 +476,12 @@
   - [x] campaign.mutator 키 4개 언어 추가 완료
   - [x] 4개 locale 파일 전체 키 diff 검증 완료 (20개 최상위 섹션, 모든 키 일치)
   - [x] `soulStones` 키 네스팅 위치 4개 파일 일관성 확인 완료 (pvp, pvp.result, profile, shop)
-- [ ] **하드코딩 문자열 i18n 전환**
-  - [ ] SettingsView.vue: ON/OFF 토글 텍스트 4건 → `t('common.on')` / `t('common.off')`
-  - [ ] SignupView.vue: 언어 선택 드롭다운 라벨 4건 → i18n 키 사용
-  - [ ] ProfileView.vue: 언어 선택 드롭다운 라벨 4건 → i18n 키 사용
-  - [ ] i18n locale 4개 파일에 `common.on`, `common.off`, `languages.*` 키 추가
+- [x] **하드코딩 문자열 i18n 전환** ✅ 2026-02-04
+  - [x] SettingsView.vue: ON/OFF 토글 텍스트 4건 → `t('common.on')` / `t('common.off')`
+  - [x] SettingsView.vue: 언어 버튼 라벨 4건 → `t('languages.*')` 키 사용
+  - [x] SignupView.vue: 언어 선택 드롭다운 라벨 4건 → `$t('languages.*')` 키 사용
+  - [x] ProfileView.vue: 언어 선택 드롭다운 라벨 4건 → `$t('languages.*')` 키 사용
+  - [x] i18n locale 4개 파일에 `common.on`, `common.off`, `languages.*` 키 추가
 - [ ] **console.log/error 정리 (총 72건)**
   - [ ] `stores/skill.ts` — 9건 제거 또는 `import.meta.env.DEV` 가드
   - [ ] `stores/cosmetic.ts` — 11건 제거

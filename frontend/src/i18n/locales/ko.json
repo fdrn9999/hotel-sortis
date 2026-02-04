@@ -12,7 +12,15 @@
     "close": "닫기",
     "retry": "재시도",
     "yes": "예",
-    "no": "아니오"
+    "no": "아니오",
+    "on": "켜짐",
+    "off": "꺼짐"
+  },
+  "languages": {
+    "ko": "한국어",
+    "en": "English",
+    "ja": "日本語",
+    "zh": "简体中文"
   },
   "menu": {
     "campaign": "PvE 캠페인",
