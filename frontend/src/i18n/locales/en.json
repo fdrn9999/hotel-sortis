@@ -445,5 +445,21 @@
     "reset": "Reset",
     "history": "Roll History",
     "damage": "Damage"
+  },
+  "draft": {
+    "title": "Skill Draft",
+    "yourTurn": "Your Turn",
+    "opponentTurn": "Opponent's Turn",
+    "pickNumber": "Pick {current} / {total}",
+    "myPicks": "My Skills",
+    "opponentPicks": "Opponent's Skills",
+    "emptySlot": "Empty Slot",
+    "pickComplete": "All picks complete!",
+    "waitingForOpponent": "Waiting for opponent...",
+    "ready": "Ready",
+    "bothReady": "Both players ready!",
+    "startingBattle": "Starting battle...",
+    "pickError": "Skill selection error",
+    "loadError": "Could not load draft information"
   }
 }

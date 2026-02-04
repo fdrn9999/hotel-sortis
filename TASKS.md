@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-03 (Phase 12 Part 2 완료: Mutator 효과 로직 구현)
+> 최종 업데이트: 2026-02-04 (Phase 12 완료: 쉴드 시스템, Mutator, PvP 드래프트 모드)
 
 ---
 
@@ -371,7 +371,25 @@
   - [x] Database: battles 테이블에 mutator_id 컬럼 추가
   - [x] Frontend: api/battle.ts 타입 업데이트
   - [x] Frontend: BattleView.vue fog 처리 (족보명 "???" 표시)
-- [ ] PvP 드래프트 모드 기획 및 구현
+- [x] **PvP 드래프트 모드 구현 완료** (2026-02-03)
+  - [x] Backend: DraftDto.java (9개 DTO 클래스)
+  - [x] Backend: DraftService.java (Redis 기반 드래프트 상태 관리)
+  - [x] Backend: DraftWebSocketController.java (실시간 픽/레디 처리)
+  - [x] Backend: Battle.java에 draftCompleted 필드 추가
+  - [x] Backend: BattleService.createPvPBattleWithDraft() 메서드 추가
+  - [x] Backend: PvPController.java에 드래프트 초기화 및 GET 엔드포인트 추가
+  - [x] Frontend: types/game.ts에 드래프트 타입 추가 (6개 인터페이스)
+  - [x] Frontend: useDraftWebSocket.ts composable 생성
+  - [x] Frontend: DraftView.vue 구현 (스네이크 드래프트 UI)
+    - 3열 레이아웃: 양측 픽 패널 + 중앙 스킬 풀
+    - 30초 타이머, 턴 표시, 레디 버튼
+    - Art Deco 스타일 적용
+  - [x] Frontend: api/pvp.ts에 getDraftState() 함수 추가
+  - [x] Frontend: PvPMatchmakingView.vue에서 hasDraft 분기 처리
+  - [x] Frontend: router에 /pvp/draft 라우트 추가
+  - [x] Database: battles 테이블에 draft_completed 컬럼 추가
+  - [x] i18n: 4개 언어에 draft 섹션 추가 (ko, en, ja, zh)
+  - [x] 스네이크 드래프트 순서: A→B→B→A→A→B→B→A (8픽, 플레이어당 4개)
 
 ---
 

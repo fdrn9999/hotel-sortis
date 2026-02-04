@@ -445,5 +445,21 @@
     "reset": "초기화",
     "history": "굴림 기록",
     "damage": "데미지"
+  },
+  "draft": {
+    "title": "스킬 드래프트",
+    "yourTurn": "당신의 차례",
+    "opponentTurn": "상대의 차례",
+    "pickNumber": "픽 {current} / {total}",
+    "myPicks": "내 스킬",
+    "opponentPicks": "상대 스킬",
+    "emptySlot": "빈 슬롯",
+    "pickComplete": "모든 픽 완료!",
+    "waitingForOpponent": "상대를 기다리는 중...",
+    "ready": "준비 완료",
+    "bothReady": "모두 준비 완료!",
+    "startingBattle": "전투 시작 중...",
+    "pickError": "스킬 선택 오류",
+    "loadError": "드래프트 정보를 불러올 수 없습니다"
   }
 }

@@ -224,21 +224,32 @@ const stopMatching = () => {
 }
 
 /**
- * 매치 찾음 처리
+ * 매치 찾음 처리 (idempotent - safe to call multiple times)
  */
 const handleMatchFound = (match: MatchFoundResponse) => {
+  // Prevent double handling from both polling and WebSocket
+  if (matchFound.value) return
+
   stopMatching()
   matchFound.value = true
   battleId.value = match.battleId
   opponentId.value = playerId.value === match.player1Id ? match.player2Id : match.player1Id
   opponentElo.value = playerId.value === match.player1Id ? match.player2Elo : match.player1Elo
 
-  // 2초 후 전투 화면으로 이동
+  // 2초 후 화면 이동
   setTimeout(() => {
-    router.push({
-      name: 'Battle',
-      params: { battleId: battleId.value }
-    })
+    // Draft 모드가 활성화된 경우 드래프트 화면으로, 아니면 전투 화면으로
+    if (match.hasDraft) {
+      router.push({
+        name: 'pvp-draft',
+        query: { battleId: battleId.value.toString() }
+      })
+    } else {
+      router.push({
+        name: 'battle',
+        query: { battleId: battleId.value.toString(), pvpMode: 'true' }
+      })
+    }
   }, 2000)
 }
 

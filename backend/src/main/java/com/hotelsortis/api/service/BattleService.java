@@ -471,4 +471,31 @@ public class BattleService {
 
         return battle;
     }
+
+    /**
+     * Create a new PvP battle with draft mode (skills selected during draft phase)
+     */
+    @Transactional
+    public Battle createPvPBattleWithDraft(com.hotelsortis.api.entity.Player player1, com.hotelsortis.api.entity.Player player2) {
+        Battle battle = Battle.builder()
+                .playerId(player1.getId())
+                .enemyId(player2.getId())
+                .battleType(Battle.BattleType.PVP)
+                .playerHp(100)
+                .enemyHp(100)
+                .turnCount(1)
+                .currentTurn(Battle.TurnActor.PLAYER)
+                .status(Battle.Status.ONGOING)
+                .playerEquippedSkills("[]") // Empty until draft completes
+                .enemyEquippedSkills("[]")
+                .draftCompleted(false)
+                .build();
+
+        battle = battleRepository.save(battle);
+
+        log.info("Created PvP battle with draft: {} - Player {} (ELO: {}) vs Player {} (ELO: {})",
+                battle.getId(), player1.getId(), player1.getElo(), player2.getId(), player2.getElo());
+
+        return battle;
+    }
 }

@@ -79,6 +79,10 @@ public class Battle {
     @Column(name = "enemy_equipped_skills", columnDefinition = "JSON")
     private String enemyEquippedSkills;
 
+    @Column(name = "draft_completed")
+    @Builder.Default
+    private Boolean draftCompleted = false;
+
     @Column(name = "started_at", nullable = false, updatable = false)
     private LocalDateTime startedAt;
 

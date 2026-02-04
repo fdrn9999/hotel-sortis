@@ -49,6 +49,7 @@ public class PvPDto {
         private Integer player1Elo;
         private Integer player2Elo;
         private String status; // "MATCH_FOUND"
+        private Boolean hasDraft; // true if draft phase required before battle
     }
 
     /**

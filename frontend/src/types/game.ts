@@ -194,6 +194,7 @@ export interface MatchFoundResponse {
   player1Elo: number
   player2Elo: number
   status: 'MATCH_FOUND'
+  hasDraft?: boolean
 }
 
 export interface RankInfoResponse {
@@ -339,4 +340,60 @@ export interface EquipCosmeticResponse {
   cosmeticId?: number
   equippedDiceSkinId?: number
   equippedAvatarId?: number
+}
+
+// Draft Mode Types
+export type DraftStatus = 'IN_PROGRESS' | 'PICKS_COMPLETE' | 'COMPLETED' | 'CANCELLED'
+
+export interface DraftSkillInfo {
+  skillId: number
+  skillCode: string
+  name: string
+  description: string
+  rarity: string
+  triggerType: string
+}
+
+export interface DraftState {
+  battleId: number
+  player1Id: number
+  player2Id: number
+  currentTurn: 'player1' | 'player2'
+  pickNumber: number
+  timeRemaining: number
+  pool: DraftSkillInfo[]
+  player1Picks: DraftSkillInfo[]
+  player2Picks: DraftSkillInfo[]
+  player1Ready: boolean
+  player2Ready: boolean
+  status: DraftStatus
+}
+
+export interface DraftPickRequest {
+  playerId: number
+  skillId: number
+}
+
+export interface DraftPickResponse {
+  battleId: number
+  playerId: number
+  skillId: number
+  skillName: string
+  pickNumber: number
+  nextTurn: string | null
+  success: boolean
+  error?: string
+}
+
+export interface DraftCompleteMessage {
+  battleId: number
+  player1Skills: number[]
+  player2Skills: number[]
+  status: 'READY_TO_START'
+}
+
+export interface DraftTimerUpdate {
+  battleId: number
+  timeRemaining: number
+  currentTurn: string
 }

@@ -445,5 +445,21 @@
     "reset": "リセット",
     "history": "ロール履歴",
     "damage": "ダメージ"
+  },
+  "draft": {
+    "title": "スキルドラフト",
+    "yourTurn": "あなたの番",
+    "opponentTurn": "相手の番",
+    "pickNumber": "ピック {current} / {total}",
+    "myPicks": "自分のスキル",
+    "opponentPicks": "相手のスキル",
+    "emptySlot": "空きスロット",
+    "pickComplete": "全てのピック完了！",
+    "waitingForOpponent": "相手を待っています...",
+    "ready": "準備完了",
+    "bothReady": "両プレイヤー準備完了！",
+    "startingBattle": "バトル開始中...",
+    "pickError": "スキル選択エラー",
+    "loadError": "ドラフト情報を読み込めませんでした"
   }
 }

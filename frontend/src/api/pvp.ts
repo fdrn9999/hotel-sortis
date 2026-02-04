@@ -1,7 +1,8 @@
 import type {
   JoinQueueResponse,
   MatchFoundResponse,
-  RankInfoResponse
+  RankInfoResponse,
+  DraftState
 } from '@/types/game'
 import { apiClient } from './client'
 
@@ -86,4 +87,19 @@ export function getTierColor(tier: string): string {
  */
 export function getTierI18nKey(tier: string): string {
   return `pvp.tiers.${tier.toLowerCase()}`
+}
+
+/**
+ * Get draft state (REST fallback for initial load)
+ */
+export async function getDraftState(battleId: number): Promise<DraftState | null> {
+  try {
+    const response = await apiClient.get<DraftState>(`/api/v1/pvp/draft/${battleId}`)
+    return response.data
+  } catch (error: any) {
+    if (error.response?.status === 404) {
+      return null
+    }
+    throw error
+  }
 }

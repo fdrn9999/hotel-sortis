@@ -445,5 +445,21 @@
     "reset": "重置",
     "history": "投掷记录",
     "damage": "伤害"
+  },
+  "draft": {
+    "title": "技能选秀",
+    "yourTurn": "你的回合",
+    "opponentTurn": "对手的回合",
+    "pickNumber": "选择 {current} / {total}",
+    "myPicks": "我的技能",
+    "opponentPicks": "对手的技能",
+    "emptySlot": "空槽位",
+    "pickComplete": "所有选择完成！",
+    "waitingForOpponent": "等待对手...",
+    "ready": "准备就绪",
+    "bothReady": "双方准备完毕！",
+    "startingBattle": "战斗开始中...",
+    "pickError": "技能选择错误",
+    "loadError": "无法加载选秀信息"
   }
 }

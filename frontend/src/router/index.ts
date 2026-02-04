@@ -66,6 +66,12 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/pvp/draft',
+      name: 'pvp-draft',
+      component: () => import('@/views/DraftView.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/collection',
       name: 'collection',
       component: () => import('@/views/CollectionView.vue'),

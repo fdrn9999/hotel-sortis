@@ -1,12 +1,14 @@
 package com.hotelsortis.api.controller;
 
 import com.hotelsortis.api.dto.BattleDto;
+import com.hotelsortis.api.dto.DraftDto;
 import com.hotelsortis.api.dto.PvPDto;
 import com.hotelsortis.api.entity.Battle;
 import com.hotelsortis.api.entity.Player;
 import com.hotelsortis.api.repository.BattleRepository;
 import com.hotelsortis.api.repository.PlayerRepository;
 import com.hotelsortis.api.service.BattleService;
+import com.hotelsortis.api.service.DraftService;
 import com.hotelsortis.api.service.MatchmakingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,7 @@ public class PvPController {
 
     private final MatchmakingService matchmakingService;
     private final BattleService battleService;
+    private final DraftService draftService;
     private final PlayerRepository playerRepository;
     private final BattleRepository battleRepository;
     private final SimpMessagingTemplate messagingTemplate;
@@ -126,7 +129,11 @@ public class PvPController {
         Player player2 = playerRepository.findById(opponentId)
             .orElseThrow(() -> new IllegalArgumentException("Opponent not found"));
 
-        Battle battle = battleService.createPvPBattle(player1, player2);
+        // Create battle with draft mode (skills will be selected during draft)
+        Battle battle = battleService.createPvPBattleWithDraft(player1, player2);
+
+        // Initialize draft session
+        draftService.initializeDraft(battle.getId(), playerId, opponentId, "ko");
 
         PvPDto.MatchFoundResponse response = PvPDto.MatchFoundResponse.builder()
             .battleId(battle.getId())
@@ -135,12 +142,14 @@ public class PvPController {
             .player1Elo(player1.getElo())
             .player2Elo(player2.getElo())
             .status("MATCH_FOUND")
+            .hasDraft(true) // Draft phase required before battle
             .build();
 
         EntityModel<PvPDto.MatchFoundResponse> resource = EntityModel.of(response);
         resource.add(linkTo(methodOn(BattleController.class).getBattleStatus(battle.getId()))
             .withRel("battle"));
         resource.add(Link.of("/ws", "websocket"));
+        resource.add(Link.of("/api/v1/pvp/draft/" + battle.getId() + "/pool", "draft-pool"));
 
         // WebSocket으로 양측에 매치 알림
         messagingTemplate.convertAndSendToUser(
@@ -173,6 +182,21 @@ public class PvPController {
         log.info("Player {} left matchmaking queue", playerId);
 
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Get draft state for a battle
+     */
+    @GetMapping("/draft/{battleId}")
+    public ResponseEntity<DraftDto.DraftState> getDraftState(
+        @PathVariable Long battleId,
+        @RequestHeader(value = "Accept-Language", defaultValue = "ko") String lang
+    ) {
+        DraftDto.DraftState state = draftService.getDraftState(battleId, lang);
+        if (state == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(state);
     }
 
     /**

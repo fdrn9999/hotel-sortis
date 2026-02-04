@@ -127,6 +127,7 @@ CREATE TABLE battles (
     current_turn ENUM('PLAYER', 'ENEMY') NOT NULL DEFAULT 'PLAYER',
     player_equipped_skills JSON COMMENT '플레이어 장착 스킬',
     enemy_equipped_skills JSON COMMENT '적 장착 스킬',
+    draft_completed BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'PvP 드래프트 완료 여부',
     started_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     ended_at TIMESTAMP,
     FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE,

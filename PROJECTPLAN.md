@@ -2189,17 +2189,26 @@ export function useWebSocket() {
 ### Phase 1-9 (완료)
 - 핵심 시스템, 전투, 3D 주사위, 스킬 엔진, PvP 매칭, 코스메틱 상점 구현 완료.
 
-### Phase 10: 폴리싱 & 사운드 (현재)
-- **사운드 시스템**: BGM, SFX, 3D 오디오
-- **UI/UX 개선**: 트랜지션, 반응형 레이아웃
+### Phase 10: 폴리싱 & 사운드 (완료)
+- **사운드 시스템**: BGM, SFX (Howler.js + Web Audio API 합성음)
+- **UI/UX 개선**: 페이지 트랜지션, 반응형 레이아웃, 터치 제스처
 
-### Phase 11: 튜토리얼 & 온보딩 (New)
-- **Floor 0**: 튜토리얼 매치
-- **가이드북**: 인게임 도감
+### Phase 11: 튜토리얼 & 온보딩 (완료)
+- **Floor 0**: 튜토리얼 매치 (스크립트된 전투, Lucifuge 대사)
+- **가이드북**: HandGuide 컴포넌트 (Tab 키로 토글)
+- **연습 모드**: PracticeView (시간 제한 없는 샌드박스)
 
-### Phase 12: 콘텐츠 확장 (Future)
-- **Floor Mutators**: 층별 룰 변형
-- **Shield System**: 방어 메커니즘 심화
+### Phase 12: 콘텐츠 확장 (완료 - 2026-02-03)
+- **Shield System**: 쉴드 메커니즘 구현 (HP보다 먼저 소모)
+- **Floor Mutators**: 5개 효과 구현 (gravity, fog, silence, chaos, endurance)
+- **Vue 주사위 리팩토링**: Three.js → Vue CSS 애니메이션 (번들 ~700KB 감소)
+- **PvP 드래프트 모드**: 스네이크 드래프트 (A→B→B→A→A→B→B→A)
+
+### Phase 13: 2차 폴리싱 (진행 예정)
+- **i18n 정합성**: 4개 locale 파일 키 diff 검증
+- **하드코딩 문자열**: ON/OFF 토글, 언어 선택 드롭다운 i18n 전환
+- **console.log 정리**: 40+ 건 제거 또는 DEV 가드
+- **접근성 개선**: aria-label, 키보드 탭 순서 점검
 
 ---
 

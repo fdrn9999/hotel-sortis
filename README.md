@@ -16,8 +16,8 @@ HOTEL SORTIS는 **친치로(Chinchiro) 주사위 게임**을 현대적 로그라
 ### 핵심 특징
 - **3개의 주사위**로 만드는 족보 시스템 (8종)
 - **최대 4개 스킬** 조합의 전략적 깊이 (60개 스킬)
-- **15층 캠페인** - 3명의 보스와 대결
-- **PvP 랭크전** - ELO 기반 매칭
+- **15층 캠페인** - 3명의 보스와 대결, 각 층별 특수 룰(Mutator) 적용
+- **PvP 랭크전 & 드래프트 모드** - ELO 기반 매칭 및 교차 스킬 픽
 - **4개 언어 지원** - 한국어, 영어, 일본어, 중국어
 
 ---
@@ -30,8 +30,7 @@ HOTEL SORTIS는 **친치로(Chinchiro) 주사위 게임**을 현대적 로그라
 - Pinia (상태관리)
 - Vue Router 4
 - Vue I18n 9+ (다국어)
-- Three.js (3D 주사위)
-- Cannon-es (물리 엔진)
+- Vue CSS Animations (2D/3D 주사위 렌더링)
 
 ### Backend
 - Spring Boot 3.2+
@@ -111,8 +110,7 @@ hotel-sortis/
 │   │   ├── router/         # 라우팅
 │   │   ├── i18n/           # 다국어 (ko, en, ja, zh)
 │   │   ├── composables/    # 컴포저블
-│   │   ├── types/          # TypeScript 타입
-│   │   └── game/           # 게임 로직 (Three.js)
+│   │   └── types/          # TypeScript 타입
 │   └── package.json
 │
 ├── backend/                 # Spring Boot 백엔드
@@ -165,6 +163,10 @@ hotel-sortis/
 - 총 **60개** 스킬 (Common 10, Rare 15, Epic 20, Legendary 15)
 - 최대 **4개** 장착 가능
 - 보스 클리어 시 스킬 획득 (5층: Rare, 10층: Epic, 15층: Legendary)
+
+### 추가 시스템
+- **쉴드 (Shield)**: 전투당 임시 생명력, 데미지 우선 방어
+- **Mutator (변형)**: 층별 특수 규칙 적용 (예: Gravity, Fog, Chaos 등)
 
 ---
 
