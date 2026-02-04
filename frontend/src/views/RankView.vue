@@ -157,7 +157,6 @@ const loadRankInfo = async () => {
   try {
     rankInfo.value = await getRankInfo(playerId.value)
   } catch (err: any) {
-    console.error('Failed to load rank info:', err)
     error.value = err.response?.data?.message || 'Failed to load rank information'
   } finally {
     loading.value = false

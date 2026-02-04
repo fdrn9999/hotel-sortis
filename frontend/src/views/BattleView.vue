@@ -203,8 +203,7 @@ async function startBattle() {
 
     addLog(t('battle.turn') + ' ' + turnCount.value)
     startTimer()
-  } catch (error) {
-    console.error('Failed to start battle:', error)
+  } catch {
     addLog('Failed to start battle. Using offline mode.')
     battleId.value = -1
     startTimer()
@@ -314,8 +313,7 @@ async function rollDice() {
       addLog(t('battle.turn') + ' ' + turnCount.value)
       startTimer()
     }
-  } catch (error) {
-    console.error('Failed to roll dice:', error)
+  } catch {
     addLog('Error rolling dice')
   } finally {
     isRolling.value = false
@@ -366,8 +364,8 @@ async function handleCampaignVictory() {
       offeredSkillsRaw.value = completeResponse.offeredSkills
       showSkillReward.value = true
     }
-  } catch (e) {
-    console.error('Failed to complete floor battle:', e)
+  } catch {
+    // Floor battle completion failed silently
   }
 }
 
@@ -383,8 +381,8 @@ async function onSkillSelected(skill: { id: number }) {
   const { campaignApi } = await import('@/api/campaign')
   try {
     await campaignApi.selectSkillReward(playerId.value, campaignFloor.value, skill.id)
-  } catch (e) {
-    console.error('Failed to select skill reward:', e)
+  } catch {
+    // Skill reward selection failed silently
   }
 
   showSkillReward.value = false

@@ -12,14 +12,12 @@ export function useWebSocket() {
       webSocketFactory: () => socket as WebSocket,
       onConnect: () => {
         connected.value = true
-        console.log('WebSocket connected')
       },
       onDisconnect: () => {
         connected.value = false
-        console.log('WebSocket disconnected')
       },
-      onStompError: (frame) => {
-        console.error('STOMP error:', frame.headers['message'])
+      onStompError: () => {
+        // STOMP error handled silently
       }
     })
 

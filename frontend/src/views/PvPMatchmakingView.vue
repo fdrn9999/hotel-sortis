@@ -125,7 +125,6 @@ onMounted(() => {
 
   // 매치 찾기 이벤트 핸들러
   wsOnMatchFound.value = (match: MatchFoundResponse) => {
-    console.log('Match found via WebSocket:', match)
     handleMatchFound(match)
   }
 })
@@ -177,13 +176,12 @@ const startMatching = async () => {
         if (match) {
           handleMatchFound(match)
         }
-      } catch (err: any) {
-        console.error('Polling error:', err)
+      } catch {
+        // Polling error handled silently
       }
     }, 2000)
 
   } catch (err: any) {
-    console.error('Failed to join queue:', err)
     error.value = err.response?.data?.message || t('pvp.matchmaking.errorJoin')
     loading.value = false
     isMatching.value = false
@@ -198,7 +196,6 @@ const cancelMatching = async () => {
     await leaveMatchmakingQueue(playerId.value)
     stopMatching()
   } catch (err: any) {
-    console.error('Failed to leave queue:', err)
     error.value = err.response?.data?.message || t('pvp.matchmaking.errorLeave')
   }
 }

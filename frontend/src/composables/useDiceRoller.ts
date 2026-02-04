@@ -84,7 +84,6 @@ export function useDiceRoller() {
    */
   const applySkin = (skin: DiceSkin) => {
     currentSkin.value = skin
-    console.log(`Applied dice skin: ${skin.name} (${skin.skinCode})`)
   }
 
   /**

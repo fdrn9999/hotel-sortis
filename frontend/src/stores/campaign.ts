@@ -67,7 +67,6 @@ export const useCampaignStore = defineStore('campaign', () => {
       totalDefeats.value = response.totalDefeats
     } catch (e) {
       error.value = 'Failed to load campaign progress'
-      console.error('Campaign progress error:', e)
       // Offline fallback: generate default floor data
       generateOfflineFloors()
     } finally {
@@ -95,7 +94,6 @@ export const useCampaignStore = defineStore('campaign', () => {
       return response
     } catch (e) {
       error.value = 'Failed to start floor'
-      console.error('Start floor error:', e)
       return null
     } finally {
       loading.value = false
@@ -124,7 +122,6 @@ export const useCampaignStore = defineStore('campaign', () => {
       }
       return response
     } catch (e) {
-      console.error('Complete floor error:', e)
       return null
     }
   }

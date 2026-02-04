@@ -172,8 +172,7 @@ async function handleUpdateProfile() {
     await authStore.updateProfile(updates)
     success(t('profile.profileUpdated'))
     newUsername.value = ''
-  } catch (err: any) {
-    console.error('Profile update failed:', err)
+  } catch {
     error(t('profile.updateFailed'))
   } finally {
     isLoading.value = false
@@ -202,8 +201,7 @@ async function handleChangePassword() {
     success(t('profile.passwordChanged'))
     currentPassword.value = ''
     newPassword.value = ''
-  } catch (err: any) {
-    console.error('Password change failed:', err)
+  } catch {
     error(t('profile.passwordChangeFailed'))
   } finally {
     isLoading.value = false

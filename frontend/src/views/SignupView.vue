@@ -140,8 +140,6 @@ async function handleSignup() {
     // 회원가입 성공 시 홈으로 이동
     router.push('/')
   } catch (err: any) {
-    console.error('Signup failed:', err)
-
     if (err.message?.includes('Email already exists')) {
       error(t('auth.errors.emailExists'))
     } else {

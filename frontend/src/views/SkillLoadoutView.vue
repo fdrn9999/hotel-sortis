@@ -247,8 +247,7 @@ async function startBattle() {
           skills: equippedSkillIds.join(',')
         }
       })
-    } catch (err) {
-      console.error('Failed to start campaign floor:', err)
+    } catch {
       error('Failed to start floor')
     }
   } else {

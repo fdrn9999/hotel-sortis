@@ -66,12 +66,8 @@ export const useShopStore = defineStore('shop', () => {
       diceSkins.value = response.diceSkins
       avatars.value = response.avatars
       playerSoulStones.value = response.playerSoulStones
-
-      console.log(`Loaded shop: ${response.diceSkins.length} dice skins, ${response.avatars.length} avatars`)
-      console.log(`Player soul stones: ${playerSoulStones.value}`)
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load shop'
-      console.error('Failed to load shop:', err)
       throw err
     } finally {
       loading.value = false
@@ -117,17 +113,11 @@ export const useShopStore = defineStore('shop', () => {
         // 코스메틱 스토어도 업데이트
         const cosmeticStore = useCosmeticStore()
         await cosmeticStore.loadCollection(playerId)
-
-        console.log(`Purchased ${cosmeticType} ${cosmeticId} for ${response.pricePaid} soul stones`)
-        console.log(`Remaining soul stones: ${response.remainingSoulStones}`)
-      } else {
-        console.warn(`Purchase failed: ${response.message}`)
       }
 
       return response
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to purchase cosmetic'
-      console.error('Failed to purchase cosmetic:', err)
       throw err
     } finally {
       loading.value = false
@@ -145,11 +135,8 @@ export const useShopStore = defineStore('shop', () => {
       const wallet: PlayerWallet = await apiGetPlayerWallet(playerId)
       playerSoulStones.value = wallet.soulStones
       playerElo.value = wallet.elo
-
-      console.log(`Loaded wallet: ${wallet.soulStones} soul stones, ELO ${wallet.elo}`)
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load wallet'
-      console.error('Failed to load wallet:', err)
       throw err
     } finally {
       loading.value = false
@@ -161,7 +148,6 @@ export const useShopStore = defineStore('shop', () => {
    */
   function addSoulStones(amount: number) {
     playerSoulStones.value += amount
-    console.log(`Added ${amount} soul stones. Total: ${playerSoulStones.value}`)
   }
 
   /**
@@ -172,7 +158,6 @@ export const useShopStore = defineStore('shop', () => {
       throw new Error('Not enough soul stones')
     }
     playerSoulStones.value -= amount
-    console.log(`Deducted ${amount} soul stones. Remaining: ${playerSoulStones.value}`)
   }
 
   /**

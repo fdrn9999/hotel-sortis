@@ -40,10 +40,8 @@ export const useSkillStore = defineStore('skill', () => {
     try {
       const response: SkillListResponse = await getAllSkills()
       allSkills.value = response.skills
-      console.log(`Loaded ${response.total} skills (language: ${response.language})`)
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load skills'
-      console.error('Failed to load skills:', err)
       throw err
     } finally {
       loading.value = false
@@ -69,7 +67,6 @@ export const useSkillStore = defineStore('skill', () => {
 
     // 슬롯에 스킬 장착
     equippedSkills.value[slotIndex] = skill
-    console.log(`Equipped skill ${skill.name} to slot ${slotIndex}`)
   }
 
   /**
@@ -80,11 +77,6 @@ export const useSkillStore = defineStore('skill', () => {
       throw new Error(`Invalid slot index: ${slotIndex}. Must be 0-3`)
     }
 
-    const skill = equippedSkills.value[slotIndex]
-    if (skill) {
-      console.log(`Unequipped skill ${skill.name} from slot ${slotIndex}`)
-    }
-
     equippedSkills.value[slotIndex] = null
   }
 
@@ -93,7 +85,6 @@ export const useSkillStore = defineStore('skill', () => {
    */
   function unequipAllSkills() {
     equippedSkills.value = [null, null, null, null]
-    console.log('Unequipped all skills')
   }
 
   /**
@@ -120,7 +111,6 @@ export const useSkillStore = defineStore('skill', () => {
 
     // 0~4개 사이여야 함
     if (equipped.length > 4) {
-      console.error('Cannot equip more than 4 skills')
       return false
     }
 
@@ -128,7 +118,6 @@ export const useSkillStore = defineStore('skill', () => {
     const ids = equipped.map(s => s!.id)
     const unique = new Set(ids)
     if (ids.length !== unique.size) {
-      console.error('Duplicate skills detected')
       return false
     }
 
@@ -161,11 +150,8 @@ export const useSkillStore = defineStore('skill', () => {
           equippedSkills.value[index] = skill
         }
       })
-
-      console.log(`Loaded ${response.skills.length} equipped skills`)
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load equipped skills'
-      console.error('Failed to load equipped skills:', err)
       throw err
     } finally {
       loading.value = false

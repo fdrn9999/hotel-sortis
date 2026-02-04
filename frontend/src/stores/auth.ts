@@ -147,8 +147,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (token.value) {
       try {
         await fetchProfile()
-      } catch (err) {
-        console.error('Auth check failed:', err)
+      } catch {
         logout()
       }
     }

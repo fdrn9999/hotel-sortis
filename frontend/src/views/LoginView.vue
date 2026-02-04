@@ -81,8 +81,7 @@ async function handleLogin() {
 
     // 로그인 성공 시 홈으로 이동
     router.push('/')
-  } catch (err: any) {
-    console.error('Login failed:', err)
+  } catch {
     error(t('auth.errors.invalidCredentials'))
   } finally {
     isLoading.value = false

@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-04 (Phase 12 완료: 쉴드 시스템, Mutator, PvP 드래프트 모드)
+> 최종 업데이트: 2026-02-04 (Phase 13 진행 중: console.log/error 정리 완료)
 
 ---
 
@@ -482,20 +482,20 @@
   - [x] SignupView.vue: 언어 선택 드롭다운 라벨 4건 → `$t('languages.*')` 키 사용
   - [x] ProfileView.vue: 언어 선택 드롭다운 라벨 4건 → `$t('languages.*')` 키 사용
   - [x] i18n locale 4개 파일에 `common.on`, `common.off`, `languages.*` 키 추가
-- [ ] **console.log/error 정리 (총 72건)**
-  - [ ] `stores/skill.ts` — 9건 제거 또는 `import.meta.env.DEV` 가드
-  - [ ] `stores/cosmetic.ts` — 11건 제거
-  - [ ] `stores/shop.ts` — 11건 제거
-  - [ ] `stores/campaign.ts` — 3건 정리
-  - [ ] `stores/auth.ts` — 1건 정리
-  - [ ] `api/client.ts` — 1건 정리
-  - [ ] `composables/usePvPWebSocket.ts` — 7건 WebSocket 디버그 로그 정리
-  - [ ] `composables/useDraftWebSocket.ts` — 9건 정리
-  - [ ] `composables/useWebSocket.ts` — 3건 정리
-  - [ ] `composables/useDiceRoller.ts` — 1건 정리
-  - [ ] `views/BattleView.vue` — 4건 전투 디버그 로그 정리
-  - [ ] `views/PvPMatchmakingView.vue` — 4건 정리
-  - [ ] 기타 views (LoginView, ProfileView, RankView, PvPView, DraftView 등) — 8건
+- [x] **console.log/error 정리 (총 72건)** ✅ 완료 (2026-02-04)
+  - [x] `stores/skill.ts` — 9건 제거
+  - [x] `stores/cosmetic.ts` — 11건 제거
+  - [x] `stores/shop.ts` — 11건 제거
+  - [x] `stores/campaign.ts` — 3건 제거
+  - [x] `stores/auth.ts` — 1건 제거
+  - [x] `api/client.ts` — 1건 제거
+  - [x] `composables/usePvPWebSocket.ts` — 7건 제거
+  - [x] `composables/useDraftWebSocket.ts` — 9건 제거
+  - [x] `composables/useWebSocket.ts` — 3건 제거
+  - [x] `composables/useDiceRoller.ts` — 1건 제거
+  - [x] `views/BattleView.vue` — 4건 제거
+  - [x] `views/PvPMatchmakingView.vue` — 4건 제거
+  - [x] 기타 views (LoginView, ProfileView, RankView, PvPView, DraftView, SkillLoadoutView) — 8건 제거
 - [ ] **UI/UX 빈 상태(Empty State) 및 에러 상태 보강**
   - [ ] ShopView.vue: 에러 상태 UI 추가 (현재 없음)
   - [ ] ShopView.vue: 빈 상점 상태 UI 개선 (현재 placeholder 텍스트)

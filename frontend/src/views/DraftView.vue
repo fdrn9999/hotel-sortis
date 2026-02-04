@@ -228,8 +228,8 @@ const loadDraftState = async () => {
       draftState.value = state
       timeRemaining.value = Math.ceil(state.timeRemaining / 1000)
     }
-  } catch (err) {
-    console.error('Failed to load draft state:', err)
+  } catch {
+    // Draft state loading failed silently
   } finally {
     loading.value = false
   }

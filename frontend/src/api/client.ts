@@ -56,7 +56,6 @@ class ApiClient {
       const data = await response.json()
       return { data, _links: data._links }
     } catch (error) {
-      console.error('API request failed:', error)
       throw error
     }
   }

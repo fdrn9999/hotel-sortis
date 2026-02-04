@@ -72,10 +72,8 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
     try {
       const skins = await getAllDiceSkins(playerId)
       diceSkins.value = skins
-      console.log(`Loaded ${skins.length} dice skins`)
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load dice skins'
-      console.error('Failed to load dice skins:', err)
       throw err
     } finally {
       loading.value = false
@@ -92,10 +90,8 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
     try {
       const avatarList = await getAllAvatars(playerId)
       avatars.value = avatarList
-      console.log(`Loaded ${avatarList.length} avatars`)
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load avatars'
-      console.error('Failed to load avatars:', err)
       throw err
     } finally {
       loading.value = false
@@ -115,12 +111,8 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
       ownedAvatars.value = collection.avatars
       equippedDiceSkinId.value = collection.equippedDiceSkinId || null
       equippedAvatarId.value = collection.equippedAvatarId || null
-
-      console.log(`Loaded collection: ${collection.diceSkins.length} dice skins, ${collection.avatars.length} avatars`)
-      console.log(`Equipped: Dice skin ${equippedDiceSkinId.value}, Avatar ${equippedAvatarId.value}`)
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load collection'
-      console.error('Failed to load collection:', err)
       throw err
     } finally {
       loading.value = false
@@ -158,11 +150,9 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
         }))
       }
 
-      console.log(`Equipped ${cosmeticType}: ${cosmeticId}`)
       return response
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to equip cosmetic'
-      console.error('Failed to equip cosmetic:', err)
       throw err
     } finally {
       loading.value = false
@@ -199,11 +189,9 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
         }))
       }
 
-      console.log(`Unequipped ${cosmeticType}`)
       return response
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to unequip cosmetic'
-      console.error('Failed to unequip cosmetic:', err)
       throw err
     } finally {
       loading.value = false

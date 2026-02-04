@@ -33,7 +33,6 @@ export function usePvPWebSocket(playerId: number) {
    */
   const subscribePvP = () => {
     if (!connected.value) {
-      console.warn('WebSocket not connected. Connecting...')
       connect()
       // 연결 후 1초 대기 후 재시도
       setTimeout(subscribePvP, 1000)
@@ -43,7 +42,6 @@ export function usePvPWebSocket(playerId: number) {
     // 1. 매치 찾기 알림 구독
     const matchSub = subscribe(`/user/queue/match-found`, (message: IMessage) => {
       const match: MatchFoundResponse = JSON.parse(message.body)
-      console.log('Match found:', match)
       if (onMatchFound.value) {
         onMatchFound.value(match)
       }
@@ -53,7 +51,6 @@ export function usePvPWebSocket(playerId: number) {
     // 2. 턴 시작 알림 구독
     const turnSub = subscribe(`/user/queue/pvp/turn-start`, (message: IMessage) => {
       const turn: TurnStartMessage = JSON.parse(message.body)
-      console.log('Turn start:', turn)
       if (onTurnStart.value) {
         onTurnStart.value(turn)
       }
@@ -63,7 +60,6 @@ export function usePvPWebSocket(playerId: number) {
     // 3. 주사위 결과 구독
     const diceSub = subscribe(`/user/queue/pvp/dice-result`, (message: IMessage) => {
       const result: DiceResultMessage = JSON.parse(message.body)
-      console.log('Dice result:', result)
       if (onDiceResult.value) {
         onDiceResult.value(result)
       }
@@ -73,14 +69,11 @@ export function usePvPWebSocket(playerId: number) {
     // 4. 전투 종료 구독
     const endSub = subscribe(`/user/queue/pvp/battle-end`, (message: IMessage) => {
       const end: BattleEndMessage = JSON.parse(message.body)
-      console.log('Battle end:', end)
       if (onBattleEnd.value) {
         onBattleEnd.value(end)
       }
     })
     if (endSub) subscriptions.value.push(endSub)
-
-    console.log(`PvP WebSocket subscribed for player ${playerId}`)
   }
 
   /**
@@ -102,7 +95,6 @@ export function usePvPWebSocket(playerId: number) {
       }
     })
     subscriptions.value = []
-    console.log('PvP WebSocket unsubscribed')
   }
 
   onUnmounted(() => {
