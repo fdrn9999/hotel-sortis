@@ -185,8 +185,8 @@ const goToMatchmaking = () => {
 <style scoped>
 .rank-view {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1b1b27 0%, #0d0d0d 100%);
-  color: #fffdd0;
+  background: linear-gradient(135deg, var(--color-dark-navy) 0%, var(--color-black) 100%);
+  color: var(--color-cream);
   padding: 20px;
 }
 
@@ -198,9 +198,9 @@ const goToMatchmaking = () => {
 }
 
 .nav-btn {
-  background: rgba(212, 175, 55, 0.2);
-  border: 1px solid #d4af37;
-  color: #d4af37;
+  background: rgba(var(--color-gold-rgb), 0.2);
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
@@ -209,7 +209,7 @@ const goToMatchmaking = () => {
 }
 
 .nav-btn:hover {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-gold-rgb), 0.3);
   transform: translateY(-2px);
 }
 
@@ -221,9 +221,9 @@ const goToMatchmaking = () => {
 
 .title {
   font-size: 48px;
-  color: #d4af37;
+  color: var(--color-gold);
   margin-bottom: 40px;
-  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.5);
 }
 
 .loading {
@@ -233,8 +233,8 @@ const goToMatchmaking = () => {
 .spinner {
   width: 80px;
   height: 80px;
-  border: 8px solid rgba(212, 175, 55, 0.2);
-  border-top-color: #d4af37;
+  border: 8px solid rgba(var(--color-gold-rgb), 0.2);
+  border-top-color: var(--color-gold);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 30px;
@@ -247,8 +247,8 @@ const goToMatchmaking = () => {
 }
 
 .rank-info {
-  background: rgba(27, 27, 39, 0.5);
-  border: 1px solid #d4af37;
+  background: rgba(var(--color-dark-navy-rgb), 0.5);
+  border: 1px solid var(--color-gold);
   border-radius: 20px;
   padding: 40px;
   backdrop-filter: blur(10px);
@@ -284,11 +284,11 @@ const goToMatchmaking = () => {
 }
 
 .label {
-  color: #c0c0c0;
+  color: var(--color-silver);
 }
 
 .elo-value {
-  color: #d4af37;
+  color: var(--color-gold);
   font-size: 48px;
   font-weight: bold;
 }
@@ -307,7 +307,7 @@ const goToMatchmaking = () => {
 }
 
 .stat-label {
-  color: #c0c0c0;
+  color: var(--color-silver);
   font-size: 16px;
   margin-bottom: 10px;
 }
@@ -318,15 +318,15 @@ const goToMatchmaking = () => {
 }
 
 .wins {
-  color: #50c878;
+  color: var(--color-emerald);
 }
 
 .losses {
-  color: #ff6b6b;
+  color: var(--color-error);
 }
 
 .draws {
-  color: #ffd700;
+  color: var(--color-gold-light);
 }
 
 .winrate-section {
@@ -334,7 +334,7 @@ const goToMatchmaking = () => {
 }
 
 .winrate-label {
-  color: #c0c0c0;
+  color: var(--color-silver);
   font-size: 18px;
   margin-bottom: 15px;
 }
@@ -348,13 +348,13 @@ const goToMatchmaking = () => {
 }
 
 .winrate-fill {
-  background: linear-gradient(90deg, #50c878, #d4af37);
+  background: linear-gradient(90deg, var(--color-emerald), var(--color-gold));
   height: 100%;
   transition: width 0.5s ease-out;
 }
 
 .winrate-value {
-  color: #d4af37;
+  color: var(--color-gold);
   font-size: 24px;
   font-weight: bold;
 }
@@ -367,13 +367,13 @@ const goToMatchmaking = () => {
 }
 
 .range-label {
-  color: #c0c0c0;
+  color: var(--color-silver);
   font-size: 16px;
   margin-bottom: 10px;
 }
 
 .range-value {
-  color: #d4af37;
+  color: var(--color-gold);
   font-size: 20px;
   font-weight: bold;
 }
@@ -382,8 +382,8 @@ const goToMatchmaking = () => {
   width: 100%;
   padding: 20px;
   font-size: 24px;
-  background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
-  color: #1b1b27;
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+  color: var(--color-dark-navy);
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -393,13 +393,13 @@ const goToMatchmaking = () => {
 
 .btn-matchmaking:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 10px 30px rgba(var(--color-gold-rgb), 0.5);
 }
 
 .error-message {
-  background: rgba(139, 0, 0, 0.3);
-  border: 1px solid #8b0000;
-  color: #ff6b6b;
+  background: rgba(var(--color-velvet-red-rgb), 0.3);
+  border: 1px solid var(--color-velvet-red);
+  color: var(--color-error);
   padding: 30px;
   border-radius: 10px;
 }
@@ -407,9 +407,9 @@ const goToMatchmaking = () => {
 .btn-retry {
   margin-top: 20px;
   padding: 10px 30px;
-  background: rgba(212, 175, 55, 0.2);
-  border: 1px solid #d4af37;
-  color: #d4af37;
+  background: rgba(var(--color-gold-rgb), 0.2);
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
@@ -417,7 +417,7 @@ const goToMatchmaking = () => {
 }
 
 .btn-retry:hover {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-gold-rgb), 0.3);
 }
 
 /* Empty State */
@@ -439,12 +439,12 @@ const goToMatchmaking = () => {
 .empty-title {
   font-size: 20px;
   font-weight: bold;
-  color: #d4af37;
+  color: var(--color-gold);
 }
 
 .empty-description {
   font-size: 14px;
-  color: rgba(255, 253, 208, 0.6);
+  color: rgba(var(--color-cream-rgb), 0.6);
   max-width: 400px;
   margin-bottom: 12px;
 }

@@ -89,7 +89,7 @@ defineExpose({ addToast, removeToast })
   min-width: 300px;
   max-width: 400px;
   padding: 16px 20px;
-  background: rgba(27, 27, 39, 0.98);
+  background: rgba(var(--color-dark-navy-rgb), 0.98);
   border: 2px solid;
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
@@ -98,18 +98,18 @@ defineExpose({ addToast, removeToast })
 }
 
 .toast.success {
-  border-color: #4caf50;
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(27, 27, 39, 0.98) 100%);
+  border-color: var(--color-emerald);
+  background: linear-gradient(135deg, rgba(var(--color-emerald-rgb), 0.15) 0%, rgba(var(--color-dark-navy-rgb), 0.98) 100%);
 }
 
 .toast.error {
   border-color: #f44336;
-  background: linear-gradient(135deg, rgba(244, 67, 54, 0.15) 0%, rgba(27, 27, 39, 0.98) 100%);
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.15) 0%, rgba(var(--color-dark-navy-rgb), 0.98) 100%);
 }
 
 .toast.info {
-  border-color: #d4af37;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(27, 27, 39, 0.98) 100%);
+  border-color: var(--color-gold);
+  background: linear-gradient(135deg, rgba(var(--color-gold-rgb), 0.15) 0%, rgba(var(--color-dark-navy-rgb), 0.98) 100%);
 }
 
 .toast-icon {
@@ -125,8 +125,8 @@ defineExpose({ addToast, removeToast })
 }
 
 .toast.success .toast-icon {
-  background: rgba(76, 175, 80, 0.2);
-  color: #4caf50;
+  background: rgba(var(--color-emerald-rgb), 0.2);
+  color: var(--color-emerald);
 }
 
 .toast.error .toast-icon {
@@ -135,13 +135,13 @@ defineExpose({ addToast, removeToast })
 }
 
 .toast.info .toast-icon {
-  background: rgba(212, 175, 55, 0.2);
-  color: #d4af37;
+  background: rgba(var(--color-gold-rgb), 0.2);
+  color: var(--color-gold);
 }
 
 .toast-message {
   flex: 1;
-  color: #fffdd0;
+  color: var(--color-cream);
   font-size: 14px;
   line-height: 1.5;
 }

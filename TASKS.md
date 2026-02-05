@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-05 (Phase 13 진행 중: Empty/Error State + 접근성 개선 완료)
+> 최종 업데이트: 2026-02-05 (Phase 13 진행 중: Empty/Error State + 접근성 + CSS 일관성 개선 완료)
 
 ---
 
@@ -510,10 +510,25 @@
   - [x] SkillLoadoutView.vue: 스킬 해제(✕) 버튼에 aria-label 추가
   - [x] 모든 form input에 연결된 label 또는 aria-label 확인 (LoginView, SignupView, ProfileView 통과)
   - [x] 키보드 탭 순서(tab order) 전 화면 점검 — 커스텀 tabindex 없음, 자연 DOM 순서 사용 확인
-- [ ] **CSS 일관성 개선**
-  - [ ] 하드코딩 색상 → CSS 변수 전환 (LoginView, SignupView, ProfileView 등)
-  - [ ] AppNavigation.vue: `#d4af37` → `var(--color-gold)` 통일
-  - [ ] 매직 넘버 정리 (의미 있는 CSS 변수 또는 주석 추가)
+- [x] **CSS 일관성 개선** ✅ 2026-02-05
+  - [x] main.css: RGB 컴포넌트 변수 추가 (--color-gold-rgb, --color-cream-rgb, --color-dark-navy-rgb 등)
+  - [x] main.css: 시맨틱 색상 변수 추가 (--color-error, --color-gold-light, --color-white, --color-silver, --color-rare, --color-epic)
+  - [x] main.css: 레어리티 클래스 CSS 변수 전환 (.rarity-common, .rarity-rare, .rarity-epic, .rarity-legendary)
+  - [x] main.css: 스크롤바/선택 색상 CSS 변수 전환
+  - [x] LoginView.vue: 하드코딩 색상 → CSS 변수 전환 (15개 인스턴스)
+  - [x] SignupView.vue: 하드코딩 색상 → CSS 변수 전환 (15개 인스턴스)
+  - [x] ProfileView.vue: 하드코딩 색상 → CSS 변수 전환 (20개 인스턴스)
+  - [x] AppNavigation.vue: 하드코딩 색상 → CSS 변수 전환 (12개 인스턴스)
+  - [x] ShopView.vue: 하드코딩 색상 → CSS 변수 전환 (25개 인스턴스)
+  - [x] CollectionView.vue: 하드코딩 색상 → CSS 변수 전환 (25개 인스턴스)
+  - [x] RankView.vue: 하드코딩 색상 → CSS 변수 전환 (30개 인스턴스)
+  - [x] PvPView.vue: 하드코딩 색상 → CSS 변수 전환 (30개 인스턴스)
+  - [x] HomeView.vue: 하드코딩 색상 → CSS 변수 전환 (8개 인스턴스)
+  - [x] SettingsView.vue: 하드코딩 색상 → CSS 변수 전환 (15개 인스턴스)
+  - [x] CampaignView.vue: 하드코딩 색상 → CSS 변수 전환 (35개 인스턴스)
+  - [x] Toast.vue: 하드코딩 색상 → CSS 변수 전환 (10개 인스턴스)
+  - [x] ConfirmModal.vue: 하드코딩 색상 → CSS 변수 전환 (8개 인스턴스)
+  - [x] LoadingSpinner.vue: 하드코딩 색상 → CSS 변수 전환 (5개 인스턴스)
 - [ ] **반응형 태블릿 브레이크포인트 추가**
   - [ ] LoginView.vue: 태블릿(768px~1024px) 레이아웃 최적화
   - [ ] SignupView.vue: 태블릿 레이아웃 최적화

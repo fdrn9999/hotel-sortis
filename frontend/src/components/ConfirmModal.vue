@@ -129,12 +129,12 @@ defineExpose({ openModal, closeModal })
 .modal-container {
   width: 100%;
   max-width: 480px;
-  background: linear-gradient(135deg, rgba(27, 27, 39, 0.98) 0%, rgba(40, 40, 60, 0.98) 100%);
-  border: 3px solid #d4af37;
+  background: linear-gradient(135deg, rgba(var(--color-dark-navy-rgb), 0.98) 0%, rgba(40, 40, 60, 0.98) 100%);
+  border: 3px solid var(--color-gold);
   border-radius: 16px;
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.6),
-    0 0 40px rgba(212, 175, 55, 0.3),
+    0 0 40px rgba(var(--color-gold-rgb), 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   overflow: hidden;
 }
@@ -142,15 +142,15 @@ defineExpose({ openModal, closeModal })
 /* 헤더 */
 .modal-header {
   padding: 24px 24px 16px;
-  border-bottom: 2px solid rgba(212, 175, 55, 0.3);
-  background: linear-gradient(to bottom, rgba(212, 175, 55, 0.1), transparent);
+  border-bottom: 2px solid rgba(var(--color-gold-rgb), 0.3);
+  background: linear-gradient(to bottom, rgba(var(--color-gold-rgb), 0.1), transparent);
 }
 
 .modal-title {
   margin: 0;
   font-size: 24px;
   font-weight: 700;
-  color: #d4af37;
+  color: var(--color-gold);
   text-align: center;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   letter-spacing: 0.5px;
@@ -165,7 +165,7 @@ defineExpose({ openModal, closeModal })
   margin: 0;
   font-size: 16px;
   line-height: 1.6;
-  color: #fffdd0;
+  color: var(--color-cream);
   text-align: center;
   white-space: pre-line;
 }
@@ -214,16 +214,16 @@ defineExpose({ openModal, closeModal })
 
 /* 확인 버튼 */
 .confirm-btn {
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(212, 175, 55, 0.2));
-  border-color: #d4af37;
-  color: #d4af37;
+  background: linear-gradient(135deg, rgba(var(--color-gold-rgb), 0.3), rgba(var(--color-gold-rgb), 0.2));
+  border-color: var(--color-gold);
+  color: var(--color-gold);
 }
 
 .confirm-btn:hover {
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.5), rgba(212, 175, 55, 0.3));
+  background: linear-gradient(135deg, rgba(var(--color-gold-rgb), 0.5), rgba(var(--color-gold-rgb), 0.3));
   border-color: #e4bf47;
   color: #e4bf47;
-  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 16px rgba(var(--color-gold-rgb), 0.4);
 }
 
 /* 애니메이션 */

@@ -87,8 +87,8 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(212, 175, 55, 0.1);
-  border: 2px solid rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-gold-rgb), 0.1);
+  border: 2px solid rgba(var(--color-gold-rgb), 0.3);
   border-radius: 8px;
   color: var(--color-gold);
   font-size: 22px;
@@ -97,10 +97,10 @@ onMounted(() => {
 }
 
 .icon-btn:hover {
-  background: rgba(212, 175, 55, 0.2);
-  border-color: rgba(212, 175, 55, 0.6);
+  background: rgba(var(--color-gold-rgb), 0.2);
+  border-color: rgba(var(--color-gold-rgb), 0.6);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 4px 12px rgba(var(--color-gold-rgb), 0.3);
 }
 
 .icon-btn:active {
@@ -163,9 +163,9 @@ onMounted(() => {
   padding: 0.6rem 1rem;
   font-family: var(--font-primary);
   font-size: 0.9rem;
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  border: 1px solid rgba(var(--color-gold-rgb), 0.3);
   background: transparent;
-  color: rgba(212, 175, 55, 0.7);
+  color: rgba(var(--color-gold-rgb), 0.7);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -173,6 +173,6 @@ onMounted(() => {
 .sub-menu-btn:hover {
   border-color: var(--color-gold);
   color: var(--color-gold);
-  background: rgba(212, 175, 55, 0.1);
+  background: rgba(var(--color-gold-rgb), 0.1);
 }
 </style>

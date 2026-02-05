@@ -104,9 +104,9 @@ const handleSettings = () => {
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  background: linear-gradient(to bottom, rgba(27, 27, 39, 0.98), rgba(27, 27, 39, 0.95));
+  background: linear-gradient(to bottom, rgba(var(--color-dark-navy-rgb), 0.98), rgba(var(--color-dark-navy-rgb), 0.95));
   backdrop-filter: blur(10px);
-  border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+  border-bottom: 2px solid rgba(var(--color-gold-rgb), 0.3);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -131,7 +131,7 @@ const handleSettings = () => {
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  color: #d4af37;
+  color: var(--color-gold);
   text-align: center;
   letter-spacing: 0.5px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -147,10 +147,10 @@ const handleSettings = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(212, 175, 55, 0.1);
-  border: 2px solid rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-gold-rgb), 0.1);
+  border: 2px solid rgba(var(--color-gold-rgb), 0.3);
   border-radius: 8px;
-  color: #d4af37;
+  color: var(--color-gold);
   font-size: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -158,15 +158,15 @@ const handleSettings = () => {
 }
 
 .nav-btn:hover {
-  background: rgba(212, 175, 55, 0.2);
-  border-color: rgba(212, 175, 55, 0.6);
+  background: rgba(var(--color-gold-rgb), 0.2);
+  border-color: rgba(var(--color-gold-rgb), 0.6);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 4px 12px rgba(var(--color-gold-rgb), 0.3);
 }
 
 .nav-btn:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 2px 6px rgba(var(--color-gold-rgb), 0.2);
 }
 
 /* 버튼별 스타일 */

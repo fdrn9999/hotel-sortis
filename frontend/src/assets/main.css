@@ -3,21 +3,36 @@
 :root {
   /* 1-5층: Art Deco */
   --color-gold: #D4AF37;
+  --color-gold-rgb: 212, 175, 55;
   --color-cream: #FFFDD0;
+  --color-cream-rgb: 255, 253, 208;
   --color-velvet-red: #8B0000;
+  --color-velvet-red-rgb: 139, 0, 0;
   --color-emerald: #50C878;
+  --color-emerald-rgb: 80, 200, 120;
   --color-dark-navy: #1B1B27;
+  --color-dark-navy-rgb: 27, 27, 39;
 
   /* 6-10층: 균열과 불안 */
   --color-gray: #808080;
   --color-purple: #6A0DAD;
   --color-teal: #008B8B;
   --color-black: #0D0D0D;
+  --color-black-rgb: 13, 13, 13;
 
   /* 11-15층: 코즈믹 호러 */
   --color-neon-pink: #FF10F0;
   --color-electric-blue: #7DF9FF;
   --color-purple-glow: #8A2BE2;
+
+  /* Semantic colors */
+  --color-error: #FF6B6B;
+  --color-error-rgb: 255, 107, 107;
+  --color-gold-light: #FFD700;
+  --color-white: #FFFFFF;
+  --color-silver: #C0C0C0;
+  --color-rare: #4169E1;
+  --color-epic: #9932CC;
 
   /* Common */
   --color-bg: #1B1B27;
@@ -78,19 +93,19 @@ html, body {
 
 /* Rarity Colors */
 .rarity-common {
-  color: #FFFFFF;
+  color: var(--color-white);
 }
 
 .rarity-rare {
-  color: #4169E1;
+  color: var(--color-rare);
 }
 
 .rarity-epic {
-  color: #9932CC;
+  color: var(--color-epic);
 }
 
 .rarity-legendary {
-  color: #FFD700;
+  color: var(--color-gold-light);
 }
 
 /* Button active state consistency */
@@ -137,16 +152,16 @@ html, body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-gold-rgb), 0.3);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(212, 175, 55, 0.5);
+  background: rgba(var(--color-gold-rgb), 0.5);
 }
 
 /* Selection color */
 ::selection {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-gold-rgb), 0.3);
   color: var(--color-cream);
 }

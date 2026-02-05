@@ -172,8 +172,8 @@ const viewRankDetails = () => {
 <style scoped>
 .pvp-view {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1b1b27 0%, #0d0d0d 100%);
-  color: #fffdd0;
+  background: linear-gradient(135deg, var(--color-dark-navy) 0%, var(--color-black) 100%);
+  color: var(--color-cream);
   padding: 20px;
 }
 
@@ -185,9 +185,9 @@ const viewRankDetails = () => {
 }
 
 .nav-btn {
-  background: rgba(212, 175, 55, 0.2);
-  border: 1px solid #d4af37;
-  color: #d4af37;
+  background: rgba(var(--color-gold-rgb), 0.2);
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
@@ -196,7 +196,7 @@ const viewRankDetails = () => {
 }
 
 .nav-btn:hover {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-gold-rgb), 0.3);
   transform: translateY(-2px);
 }
 
@@ -208,9 +208,9 @@ const viewRankDetails = () => {
 
 .title {
   font-size: 48px;
-  color: #d4af37;
+  color: var(--color-gold);
   margin-bottom: 40px;
-  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.5);
 }
 
 .loading {
@@ -220,8 +220,8 @@ const viewRankDetails = () => {
 .spinner {
   width: 80px;
   height: 80px;
-  border: 8px solid rgba(212, 175, 55, 0.2);
-  border-top-color: #d4af37;
+  border: 8px solid rgba(var(--color-gold-rgb), 0.2);
+  border-top-color: var(--color-gold);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 30px;
@@ -234,8 +234,8 @@ const viewRankDetails = () => {
 }
 
 .pvp-dashboard {
-  background: rgba(27, 27, 39, 0.5);
-  border: 1px solid #d4af37;
+  background: rgba(var(--color-dark-navy-rgb), 0.5);
+  border: 1px solid var(--color-gold);
   border-radius: 20px;
   padding: 40px;
   backdrop-filter: blur(10px);
@@ -271,11 +271,11 @@ const viewRankDetails = () => {
 }
 
 .label {
-  color: #c0c0c0;
+  color: var(--color-silver);
 }
 
 .elo-value {
-  color: #d4af37;
+  color: var(--color-gold);
   font-size: 32px;
   font-weight: bold;
 }
@@ -294,7 +294,7 @@ const viewRankDetails = () => {
 }
 
 .stat-label {
-  color: #c0c0c0;
+  color: var(--color-silver);
   font-size: 14px;
   margin-bottom: 10px;
 }
@@ -305,19 +305,19 @@ const viewRankDetails = () => {
 }
 
 .wins {
-  color: #50c878;
+  color: var(--color-emerald);
 }
 
 .losses {
-  color: #ff6b6b;
+  color: var(--color-error);
 }
 
 .draws {
-  color: #ffd700;
+  color: var(--color-gold-light);
 }
 
 .winrate {
-  color: #d4af37;
+  color: var(--color-gold);
 }
 
 .action-buttons {
@@ -338,29 +338,29 @@ const viewRankDetails = () => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
-  color: #1b1b27;
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+  color: var(--color-dark-navy);
 }
 
 .btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 10px 30px rgba(var(--color-gold-rgb), 0.5);
 }
 
 .btn-secondary {
-  background: rgba(212, 175, 55, 0.2);
-  border: 1px solid #d4af37;
-  color: #d4af37;
+  background: rgba(var(--color-gold-rgb), 0.2);
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
 }
 
 .btn-secondary:hover {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-gold-rgb), 0.3);
 }
 
 .error-message {
-  background: rgba(139, 0, 0, 0.3);
-  border: 1px solid #8b0000;
-  color: #ff6b6b;
+  background: rgba(var(--color-velvet-red-rgb), 0.3);
+  border: 1px solid var(--color-velvet-red);
+  color: var(--color-error);
   padding: 30px;
   border-radius: 10px;
 }
@@ -368,9 +368,9 @@ const viewRankDetails = () => {
 .btn-retry {
   margin-top: 20px;
   padding: 10px 30px;
-  background: rgba(212, 175, 55, 0.2);
-  border: 1px solid #d4af37;
-  color: #d4af37;
+  background: rgba(var(--color-gold-rgb), 0.2);
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
@@ -378,7 +378,7 @@ const viewRankDetails = () => {
 }
 
 .btn-retry:hover {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-gold-rgb), 0.3);
 }
 
 /* Empty State */
@@ -400,12 +400,12 @@ const viewRankDetails = () => {
 .empty-title {
   font-size: 20px;
   font-weight: bold;
-  color: #d4af37;
+  color: var(--color-gold);
 }
 
 .empty-description {
   font-size: 14px;
-  color: rgba(255, 253, 208, 0.6);
+  color: rgba(var(--color-cream-rgb), 0.6);
   max-width: 400px;
   margin-bottom: 12px;
 }

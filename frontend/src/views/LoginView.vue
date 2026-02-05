@@ -95,18 +95,18 @@ async function handleLogin() {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #1a1a27 0%, #2d2d3f 100%);
+  background: linear-gradient(135deg, var(--color-dark-navy) 0%, #2d2d3f 100%);
   padding: 20px;
 }
 
 .login-container {
   width: 100%;
   max-width: 400px;
-  background: rgba(27, 27, 39, 0.95);
-  border: 2px solid #d4af37;
+  background: rgba(var(--color-dark-navy-rgb), 0.95);
+  border: 2px solid var(--color-gold);
   border-radius: 8px;
   padding: 40px 32px;
-  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 8px 32px rgba(var(--color-gold-rgb), 0.2);
 }
 
 .logo-section {
@@ -117,14 +117,14 @@ async function handleLogin() {
 .game-title {
   font-family: 'Cinzel Decorative', serif;
   font-size: 32px;
-  color: #d4af37;
+  color: var(--color-gold);
   margin-bottom: 8px;
-  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.5);
 }
 
 .subtitle {
   font-size: 14px;
-  color: #fffdd0;
+  color: var(--color-cream);
   opacity: 0.8;
 }
 
@@ -142,36 +142,36 @@ async function handleLogin() {
 
 .form-group label {
   font-size: 14px;
-  color: #d4af37;
+  color: var(--color-gold);
   font-weight: 600;
 }
 
 .form-group input {
   padding: 12px 16px;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  border: 1px solid rgba(var(--color-gold-rgb), 0.3);
   border-radius: 4px;
-  color: #fffdd0;
+  color: var(--color-cream);
   font-size: 16px;
   transition: all 0.3s ease;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #d4af37;
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+  border-color: var(--color-gold);
+  box-shadow: 0 0 12px rgba(var(--color-gold-rgb), 0.3);
 }
 
 .form-group input::placeholder {
-  color: rgba(255, 253, 208, 0.4);
+  color: rgba(var(--color-cream-rgb), 0.4);
 }
 
 .btn-primary {
   padding: 14px 24px;
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+  background: linear-gradient(135deg, var(--color-gold) 0%, #f4d03f 100%);
   border: none;
   border-radius: 4px;
-  color: #1a1a27;
+  color: var(--color-dark-navy);
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -182,7 +182,7 @@ async function handleLogin() {
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 6px 20px rgba(var(--color-gold-rgb), 0.4);
 }
 
 .btn-primary:active:not(:disabled) {
@@ -198,18 +198,18 @@ async function handleLogin() {
   margin-top: 24px;
   text-align: center;
   padding-top: 24px;
-  border-top: 1px solid rgba(212, 175, 55, 0.2);
+  border-top: 1px solid rgba(var(--color-gold-rgb), 0.2);
 }
 
 .signup-link p {
   font-size: 14px;
-  color: #fffdd0;
+  color: var(--color-cream);
   opacity: 0.8;
   margin-bottom: 8px;
 }
 
 .signup-link .link {
-  color: #d4af37;
+  color: var(--color-gold);
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -217,7 +217,7 @@ async function handleLogin() {
 
 .signup-link .link:hover {
   text-decoration: underline;
-  text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+  text-shadow: 0 0 8px rgba(var(--color-gold-rgb), 0.5);
 }
 
 /* 모바일 최적화 */

@@ -229,7 +229,7 @@ async function handleLogout() {
 .profile-view {
   min-height: 100vh;
   padding: 80px 20px 20px;
-  background: linear-gradient(135deg, #1a1a27 0%, #2d2d3f 100%);
+  background: linear-gradient(135deg, var(--color-dark-navy) 0%, #2d2d3f 100%);
 }
 
 .profile-container {
@@ -240,17 +240,17 @@ async function handleLogout() {
 .page-title {
   font-family: 'Cinzel Decorative', serif;
   font-size: 36px;
-  color: #d4af37;
+  color: var(--color-gold);
   text-align: center;
   margin-bottom: 40px;
-  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.5);
 }
 
 .profile-section,
 .edit-section,
 .password-section {
-  background: rgba(27, 27, 39, 0.95);
-  border: 2px solid rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-dark-navy-rgb), 0.95);
+  border: 2px solid rgba(var(--color-gold-rgb), 0.3);
   border-radius: 8px;
   padding: 32px;
   margin-bottom: 24px;
@@ -258,9 +258,9 @@ async function handleLogout() {
 
 .section-title {
   font-size: 24px;
-  color: #d4af37;
+  color: var(--color-gold);
   margin-bottom: 24px;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  border-bottom: 1px solid rgba(var(--color-gold-rgb), 0.2);
   padding-bottom: 12px;
 }
 
@@ -278,13 +278,13 @@ async function handleLogout() {
 
 .info-item .label {
   font-size: 14px;
-  color: rgba(212, 175, 55, 0.7);
+  color: rgba(var(--color-gold-rgb), 0.7);
   font-weight: 600;
 }
 
 .info-item .value {
   font-size: 18px;
-  color: #fffdd0;
+  color: var(--color-cream);
   font-weight: 600;
 }
 
@@ -303,7 +303,7 @@ async function handleLogout() {
 
 .form-group label {
   font-size: 14px;
-  color: #d4af37;
+  color: var(--color-gold);
   font-weight: 600;
 }
 
@@ -311,9 +311,9 @@ async function handleLogout() {
 .form-group select {
   padding: 12px 16px;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  border: 1px solid rgba(var(--color-gold-rgb), 0.3);
   border-radius: 4px;
-  color: #fffdd0;
+  color: var(--color-cream);
   font-size: 16px;
   transition: all 0.3s ease;
 }
@@ -321,13 +321,13 @@ async function handleLogout() {
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #d4af37;
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+  border-color: var(--color-gold);
+  box-shadow: 0 0 12px rgba(var(--color-gold-rgb), 0.3);
 }
 
 .form-group select option {
-  background: #1a1a27;
-  color: #fffdd0;
+  background: var(--color-dark-navy);
+  color: var(--color-cream);
 }
 
 .btn-primary,
@@ -345,18 +345,18 @@ async function handleLogout() {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
-  color: #1a1a27;
+  background: linear-gradient(135deg, var(--color-gold) 0%, #f4d03f 100%);
+  color: var(--color-dark-navy);
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #6a0dad 0%, #9b30ff 100%);
-  color: #fffdd0;
+  background: linear-gradient(135deg, var(--color-purple) 0%, #9b30ff 100%);
+  color: var(--color-cream);
 }
 
 .btn-danger {
   background: linear-gradient(135deg, #c41e3a 0%, #ff1744 100%);
-  color: #fffdd0;
+  color: var(--color-cream);
   width: 100%;
 }
 
@@ -364,7 +364,7 @@ async function handleLogout() {
 .btn-secondary:hover:not(:disabled),
 .btn-danger:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 6px 20px rgba(var(--color-gold-rgb), 0.4);
 }
 
 .btn-primary:disabled,

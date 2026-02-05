@@ -47,7 +47,7 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(27, 27, 39, 0.9);
+  background: rgba(var(--color-dark-navy-rgb), 0.9);
   z-index: 900;
 }
 
@@ -69,8 +69,8 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(212, 175, 55, 0.1);
-  border: 2px solid rgba(212, 175, 55, 0.4);
+  background: rgba(var(--color-gold-rgb), 0.1);
+  border: 2px solid rgba(var(--color-gold-rgb), 0.4);
   border-radius: 8px;
   animation: dice-bounce 1.2s ease-in-out infinite;
 }
@@ -97,7 +97,7 @@ onUnmounted(() => {
     transform: translateY(-8px);
     opacity: 1;
     border-color: var(--color-gold);
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 4px 12px rgba(var(--color-gold-rgb), 0.3);
   }
 }
 </style>

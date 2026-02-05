@@ -282,8 +282,8 @@ function saveAll() {
 /* Section */
 .settings-section {
   margin-bottom: 32px;
-  background: rgba(212, 175, 55, 0.05);
-  border: 1px solid rgba(212, 175, 55, 0.15);
+  background: rgba(var(--color-gold-rgb), 0.05);
+  border: 1px solid rgba(var(--color-gold-rgb), 0.15);
   border-radius: 12px;
   padding: 20px;
 }
@@ -294,7 +294,7 @@ function saveAll() {
   color: var(--color-gold);
   margin-bottom: 16px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  border-bottom: 1px solid rgba(var(--color-gold-rgb), 0.2);
   letter-spacing: 0.05em;
 }
 
@@ -331,7 +331,7 @@ function saveAll() {
   height: 6px;
   -webkit-appearance: none;
   appearance: none;
-  background: rgba(212, 175, 55, 0.2);
+  background: rgba(var(--color-gold-rgb), 0.2);
   border-radius: 3px;
   outline: none;
   cursor: pointer;
@@ -345,7 +345,7 @@ function saveAll() {
   border-radius: 50%;
   background: var(--color-gold);
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 2px 6px rgba(var(--color-gold-rgb), 0.4);
   transition: transform 0.2s ease;
 }
 
@@ -371,7 +371,7 @@ function saveAll() {
   min-width: 64px;
   height: 36px;
   padding: 0 16px;
-  border: 2px solid rgba(212, 175, 55, 0.3);
+  border: 2px solid rgba(var(--color-gold-rgb), 0.3);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.05);
   color: var(--color-text-secondary);
@@ -383,14 +383,14 @@ function saveAll() {
 }
 
 .toggle-btn.active {
-  background: rgba(212, 175, 55, 0.2);
+  background: rgba(var(--color-gold-rgb), 0.2);
   border-color: var(--color-gold);
   color: var(--color-gold);
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 12px rgba(var(--color-gold-rgb), 0.2);
 }
 
 .toggle-btn:hover {
-  border-color: rgba(212, 175, 55, 0.6);
+  border-color: rgba(var(--color-gold-rgb), 0.6);
 }
 
 .toggle-btn:active {
@@ -405,7 +405,7 @@ function saveAll() {
 
 .option-btn {
   padding: 6px 14px;
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  border: 1px solid rgba(var(--color-gold-rgb), 0.2);
   border-radius: 6px;
   background: transparent;
   color: var(--color-text-secondary);
@@ -416,13 +416,13 @@ function saveAll() {
 }
 
 .option-btn.active {
-  background: rgba(212, 175, 55, 0.15);
+  background: rgba(var(--color-gold-rgb), 0.15);
   border-color: var(--color-gold);
   color: var(--color-gold);
 }
 
 .option-btn:hover {
-  border-color: rgba(212, 175, 55, 0.5);
+  border-color: rgba(var(--color-gold-rgb), 0.5);
   color: var(--color-cream);
 }
 
@@ -439,7 +439,7 @@ function saveAll() {
 
 .lang-btn {
   padding: 12px 16px;
-  border: 2px solid rgba(212, 175, 55, 0.2);
+  border: 2px solid rgba(var(--color-gold-rgb), 0.2);
   border-radius: 8px;
   background: transparent;
   color: var(--color-cream);
@@ -449,14 +449,14 @@ function saveAll() {
 }
 
 .lang-btn.active {
-  background: rgba(212, 175, 55, 0.15);
+  background: rgba(var(--color-gold-rgb), 0.15);
   border-color: var(--color-gold);
   color: var(--color-gold);
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 12px rgba(var(--color-gold-rgb), 0.15);
 }
 
 .lang-btn:hover {
-  border-color: rgba(212, 175, 55, 0.5);
+  border-color: rgba(var(--color-gold-rgb), 0.5);
 }
 
 .lang-btn:active {
@@ -483,7 +483,7 @@ function saveAll() {
 .save-btn:hover {
   background: var(--color-cream);
   border-color: var(--color-cream);
-  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 16px rgba(var(--color-gold-rgb), 0.4);
 }
 
 .save-btn:active {

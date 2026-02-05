@@ -282,7 +282,7 @@ onMounted(async () => {
 <style scoped>
 .campaign-view {
   min-height: 100vh;
-  background: linear-gradient(180deg, #1b1b27 0%, #0d0d1a 100%);
+  background: linear-gradient(180deg, var(--color-dark-navy) 0%, #0d0d1a 100%);
   color: #f5f5f5;
 }
 
@@ -297,9 +297,9 @@ onMounted(async () => {
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  background: rgba(27, 27, 39, 0.95);
+  background: rgba(var(--color-dark-navy-rgb), 0.95);
   backdrop-filter: blur(10px);
-  border-bottom: 2px solid #d4af37;
+  border-bottom: 2px solid var(--color-gold);
   z-index: 1000;
 }
 
@@ -314,7 +314,7 @@ onMounted(async () => {
   height: 44px;
   border: none;
   background: transparent;
-  color: #d4af37;
+  color: var(--color-gold);
   font-size: 22px;
   cursor: pointer;
   transition: transform 0.2s;
@@ -334,7 +334,7 @@ onMounted(async () => {
 .nav-title {
   font-size: 20px;
   font-weight: bold;
-  color: #d4af37;
+  color: var(--color-gold);
   margin: 0;
   letter-spacing: 0.05em;
 }
@@ -357,8 +357,8 @@ onMounted(async () => {
   width: 40px;
   height: 40px;
   margin: 0 auto 16px;
-  border: 3px solid rgba(212, 175, 55, 0.2);
-  border-top-color: #d4af37;
+  border: 3px solid rgba(var(--color-gold-rgb), 0.2);
+  border-top-color: var(--color-gold);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -370,8 +370,8 @@ onMounted(async () => {
 .retry-btn {
   margin-top: 16px;
   padding: 12px 24px;
-  background: #d4af37;
-  color: #1b1b27;
+  background: var(--color-gold);
+  color: var(--color-dark-navy);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -396,7 +396,7 @@ onMounted(async () => {
   padding: 16px;
   background: rgba(45, 45, 63, 0.6);
   border-radius: 8px;
-  border: 1px solid rgba(212, 175, 55, 0.2);
+  border: 1px solid rgba(var(--color-gold-rgb), 0.2);
 }
 
 .stat-item {
@@ -416,11 +416,11 @@ onMounted(async () => {
 .stat-value {
   font-size: 24px;
   font-weight: bold;
-  color: #d4af37;
+  color: var(--color-gold);
 }
 
 .stat-value.victories {
-  color: #4caf50;
+  color: var(--color-emerald);
 }
 
 .stat-value.defeats {
@@ -436,7 +436,7 @@ onMounted(async () => {
   overflow-y: auto;
   padding: 4px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(212, 175, 55, 0.3) transparent;
+  scrollbar-color: rgba(var(--color-gold-rgb), 0.3) transparent;
 }
 
 .floor-tower::-webkit-scrollbar {
@@ -448,7 +448,7 @@ onMounted(async () => {
 }
 
 .floor-tower::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-gold-rgb), 0.3);
   border-radius: 3px;
 }
 
@@ -483,8 +483,8 @@ onMounted(async () => {
 
 /* Floor Selected */
 .floor-row.floor-selected {
-  border-color: #d4af37;
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
+  border-color: var(--color-gold);
+  box-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.2);
 }
 
 /* Floor States */
@@ -503,20 +503,20 @@ onMounted(async () => {
 
 /* Tier Colors: 1-5 Gold/Art Deco */
 .floor-row.tier-gold {
-  background: rgba(212, 175, 55, 0.08);
+  background: rgba(var(--color-gold-rgb), 0.08);
 }
 
 .floor-row.tier-gold::before {
-  background: linear-gradient(90deg, #d4af37, #fffdd0);
+  background: linear-gradient(90deg, var(--color-gold), var(--color-cream));
 }
 
 .floor-row.tier-gold .floor-num {
-  color: #d4af37;
+  color: var(--color-gold);
 }
 
 .floor-row.tier-gold.floor-selected {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: #d4af37;
+  background: rgba(var(--color-gold-rgb), 0.15);
+  border-color: var(--color-gold);
 }
 
 /* Tier Colors: 6-10 Gray/Purple */
@@ -525,7 +525,7 @@ onMounted(async () => {
 }
 
 .floor-row.tier-purple::before {
-  background: linear-gradient(90deg, #808080, #6a0dad);
+  background: linear-gradient(90deg, var(--color-gray), var(--color-purple));
 }
 
 .floor-row.tier-purple .floor-num {
@@ -543,16 +543,16 @@ onMounted(async () => {
 }
 
 .floor-row.tier-cosmic::before {
-  background: linear-gradient(90deg, #6a0dad, #ff10f0);
+  background: linear-gradient(90deg, var(--color-purple), var(--color-neon-pink));
 }
 
 .floor-row.tier-cosmic .floor-num {
-  color: #ff10f0;
+  color: var(--color-neon-pink);
 }
 
 .floor-row.tier-cosmic.floor-selected {
   background: rgba(255, 16, 240, 0.1);
-  border-color: #ff10f0;
+  border-color: var(--color-neon-pink);
 }
 
 /* Floor Number */
@@ -670,11 +670,11 @@ onMounted(async () => {
 }
 
 .cleared-icon {
-  color: #4caf50;
+  color: var(--color-emerald);
 }
 
 .available-icon {
-  color: #d4af37;
+  color: var(--color-gold);
 }
 
 /* Floor Detail Panel */
@@ -682,11 +682,11 @@ onMounted(async () => {
   background: rgba(45, 45, 63, 0.8);
   border-radius: 12px;
   padding: 20px;
-  border: 2px solid rgba(212, 175, 55, 0.3);
+  border: 2px solid rgba(var(--color-gold-rgb), 0.3);
 }
 
 .floor-detail-panel.tier-gold {
-  border-color: rgba(212, 175, 55, 0.4);
+  border-color: rgba(var(--color-gold-rgb), 0.4);
 }
 
 .floor-detail-panel.tier-purple {
@@ -709,7 +709,7 @@ onMounted(async () => {
 .detail-header h2 {
   font-size: 20px;
   font-weight: bold;
-  color: #d4af37;
+  color: var(--color-gold);
   margin: 0;
 }
 
@@ -782,14 +782,14 @@ onMounted(async () => {
 }
 
 .start-btn {
-  background: linear-gradient(135deg, #d4af37 0%, #f5e6a8 100%);
-  color: #1b1b27;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  background: linear-gradient(135deg, var(--color-gold) 0%, #f5e6a8 100%);
+  color: var(--color-dark-navy);
+  box-shadow: 0 4px 12px rgba(var(--color-gold-rgb), 0.4);
 }
 
 .start-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.6);
+  box-shadow: 0 6px 16px rgba(var(--color-gold-rgb), 0.6);
 }
 
 .start-btn:active {

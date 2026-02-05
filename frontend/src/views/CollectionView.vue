@@ -123,8 +123,8 @@ onMounted(() => {
 <style scoped>
 .collection-view {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1b1b27 0%, #0d0d0d 100%);
-  color: #fffdd0;
+  background: linear-gradient(135deg, var(--color-dark-navy) 0%, var(--color-black) 100%);
+  color: var(--color-cream);
 }
 
 .main-content {
@@ -148,34 +148,34 @@ onMounted(() => {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: rgba(139, 0, 0, 0.3);
-  border: 2px solid #8b0000;
+  background: rgba(var(--color-velvet-red-rgb), 0.3);
+  border: 2px solid var(--color-velvet-red);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 32px;
   font-weight: bold;
-  color: #ff6b6b;
+  color: var(--color-error);
 }
 
 .error-title {
   font-size: 20px;
   font-weight: bold;
-  color: #ff6b6b;
+  color: var(--color-error);
 }
 
 .error-detail {
   font-size: 14px;
-  color: rgba(255, 107, 107, 0.7);
+  color: rgba(var(--color-error-rgb), 0.7);
   max-width: 400px;
 }
 
 .btn-retry {
   margin-top: 12px;
   padding: 10px 30px;
-  background: rgba(212, 175, 55, 0.2);
-  border: 1px solid #d4af37;
-  color: #d4af37;
+  background: rgba(var(--color-gold-rgb), 0.2);
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
@@ -184,7 +184,7 @@ onMounted(() => {
 }
 
 .btn-retry:hover {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-gold-rgb), 0.3);
   transform: translateY(-2px);
 }
 
@@ -207,21 +207,21 @@ onMounted(() => {
 .empty-title {
   font-size: 20px;
   font-weight: bold;
-  color: #d4af37;
+  color: var(--color-gold);
 }
 
 .empty-description {
   font-size: 14px;
-  color: rgba(255, 253, 208, 0.6);
+  color: rgba(var(--color-cream-rgb), 0.6);
   max-width: 400px;
 }
 
 .btn-action {
   margin-top: 12px;
   padding: 12px 32px;
-  background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
   border: none;
-  color: #1b1b27;
+  color: var(--color-dark-navy);
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
@@ -232,7 +232,7 @@ onMounted(() => {
 
 .btn-action:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 6px 20px rgba(var(--color-gold-rgb), 0.4);
 }
 
 /* Tab Filter */
@@ -245,9 +245,9 @@ onMounted(() => {
 .tab-btn {
   flex: 1;
   padding: 12px 16px;
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  color: rgba(255, 253, 208, 0.6);
+  background: rgba(var(--color-gold-rgb), 0.1);
+  border: 1px solid rgba(var(--color-gold-rgb), 0.3);
+  color: rgba(var(--color-cream-rgb), 0.6);
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
@@ -256,15 +256,15 @@ onMounted(() => {
 }
 
 .tab-btn.active {
-  background: rgba(212, 175, 55, 0.2);
-  border-color: #d4af37;
-  color: #d4af37;
+  background: rgba(var(--color-gold-rgb), 0.2);
+  border-color: var(--color-gold);
+  color: var(--color-gold);
   font-weight: bold;
 }
 
 .tab-btn:hover:not(.active) {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: rgba(212, 175, 55, 0.5);
+  background: rgba(var(--color-gold-rgb), 0.15);
+  border-color: rgba(var(--color-gold-rgb), 0.5);
 }
 
 /* Item Grid */
@@ -275,22 +275,22 @@ onMounted(() => {
 }
 
 .item-card {
-  background: rgba(27, 27, 39, 0.6);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(var(--color-dark-navy-rgb), 0.6);
+  border: 1px solid rgba(var(--color-gold-rgb), 0.3);
   border-radius: 12px;
   padding: 16px;
   transition: all 0.3s;
 }
 
 .item-card:hover {
-  border-color: #d4af37;
+  border-color: var(--color-gold);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 4px 16px rgba(var(--color-gold-rgb), 0.15);
 }
 
 .item-card.equipped {
-  border-color: #50c878;
-  box-shadow: 0 0 12px rgba(80, 200, 120, 0.15);
+  border-color: var(--color-emerald);
+  box-shadow: 0 0 12px rgba(var(--color-emerald-rgb), 0.15);
 }
 
 .item-rarity {
@@ -301,21 +301,21 @@ onMounted(() => {
   font-weight: bold;
 }
 
-.rarity-common { color: #ffffff; }
-.rarity-rare { color: #4169e1; }
-.rarity-epic { color: #9932cc; }
-.rarity-legendary { color: #ffd700; }
+.rarity-common { color: var(--color-white); }
+.rarity-rare { color: var(--color-rare); }
+.rarity-epic { color: var(--color-epic); }
+.rarity-legendary { color: var(--color-gold-light); }
 
 .item-name {
   font-size: 16px;
   font-weight: bold;
-  color: #fffdd0;
+  color: var(--color-cream);
   margin-bottom: 6px;
 }
 
 .item-description {
   font-size: 13px;
-  color: rgba(255, 253, 208, 0.5);
+  color: rgba(var(--color-cream-rgb), 0.5);
   margin-bottom: 12px;
   line-height: 1.4;
 }
@@ -328,8 +328,8 @@ onMounted(() => {
 
 .equipped-badge {
   font-size: 12px;
-  color: #50c878;
-  border: 1px solid #50c878;
+  color: var(--color-emerald);
+  border: 1px solid var(--color-emerald);
   border-radius: 4px;
   padding: 2px 8px;
 }
