@@ -53,7 +53,7 @@
                 </div>
                 <p class="skill-description">{{ skill.description }}</p>
                 <span class="skill-trigger">{{ skill.triggerType }}</span>
-                <button class="unequip-btn" @click.stop="unequipSkill(index)">
+                <button class="unequip-btn" @click.stop="unequipSkill(index)" :aria-label="$t('skills.unequip')">
                   ✕
                 </button>
               </div>

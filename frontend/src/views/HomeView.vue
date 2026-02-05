@@ -21,10 +21,10 @@ onMounted(() => {
   <div class="home">
     <!-- 우측 상단 버튼들 -->
     <div class="top-buttons">
-      <button class="icon-btn" @click="navigate('/profile')" :title="t('profile.myProfile')">
+      <button class="icon-btn" @click="navigate('/profile')" :title="t('profile.myProfile')" :aria-label="t('profile.myProfile')">
         👤
       </button>
-      <button class="icon-btn" @click="navigate('/settings')" :title="t('common.settings')">
+      <button class="icon-btn" @click="navigate('/settings')" :title="t('common.settings')" :aria-label="t('common.settings')">
         ⚙️
       </button>
     </div>

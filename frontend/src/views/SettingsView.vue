@@ -132,9 +132,10 @@ function saveAll() {
         <h2 class="section-title">{{ t('settings.sound') }}</h2>
 
         <div class="setting-row">
-          <label>{{ t('settings.bgmVolume') }}</label>
+          <label for="bgmVolume">{{ t('settings.bgmVolume') }}</label>
           <div class="slider-group">
             <input
+              id="bgmVolume"
               type="range"
               :value="localSettings.bgmVolume"
               min="0"
@@ -148,9 +149,10 @@ function saveAll() {
         </div>
 
         <div class="setting-row">
-          <label>{{ t('settings.sfxVolume') }}</label>
+          <label for="sfxVolume">{{ t('settings.sfxVolume') }}</label>
           <div class="slider-group">
             <input
+              id="sfxVolume"
               type="range"
               :value="localSettings.sfxVolume"
               min="0"
@@ -195,13 +197,15 @@ function saveAll() {
         <h2 class="section-title">{{ t('settings.graphics') }}</h2>
 
         <div class="setting-row">
-          <label>{{ t('settings.quality') }}</label>
-          <div class="option-group">
+          <label id="quality-label">{{ t('settings.quality') }}</label>
+          <div class="option-group" role="radiogroup" aria-labelledby="quality-label">
             <button
               v-for="opt in qualityOptions"
               :key="opt.value"
               class="option-btn"
               :class="{ active: localSettings.quality === opt.value }"
+              role="radio"
+              :aria-checked="localSettings.quality === opt.value"
               @click="setQuality(opt.value)"
             >
               {{ t(`settings.${opt.key}`) }}
@@ -226,13 +230,15 @@ function saveAll() {
         <h2 class="section-title">{{ t('settings.gameplay') }}</h2>
 
         <div class="setting-row">
-          <label>{{ t('settings.animationSpeed') }}</label>
-          <div class="option-group">
+          <label id="speed-label">{{ t('settings.animationSpeed') }}</label>
+          <div class="option-group" role="radiogroup" aria-labelledby="speed-label">
             <button
               v-for="opt in speedOptions"
               :key="opt.value"
               class="option-btn"
               :class="{ active: localSettings.animationSpeed === opt.value }"
+              role="radio"
+              :aria-checked="localSettings.animationSpeed === opt.value"
               @click="setAnimationSpeed(opt.value)"
             >
               {{ t(`settings.${opt.key}`) }}

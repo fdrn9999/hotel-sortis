@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-04 (Phase 13 진행 중: console.log/error 정리 완료)
+> 최종 업데이트: 2026-02-05 (Phase 13 진행 중: Empty/Error State + 접근성 개선 완료)
 
 ---
 
@@ -496,17 +496,20 @@
   - [x] `views/BattleView.vue` — 4건 제거
   - [x] `views/PvPMatchmakingView.vue` — 4건 제거
   - [x] 기타 views (LoginView, ProfileView, RankView, PvPView, DraftView, SkillLoadoutView) — 8건 제거
-- [ ] **UI/UX 빈 상태(Empty State) 및 에러 상태 보강**
-  - [ ] ShopView.vue: 에러 상태 UI 추가 (현재 없음)
-  - [ ] ShopView.vue: 빈 상점 상태 UI 개선 (현재 placeholder 텍스트)
-  - [ ] CollectionView.vue: 빈 컬렉션 상태 메시지 추가
-  - [ ] RankView.vue: 빈 랭크 데이터 상태 메시지 추가
-  - [ ] PvPView.vue: 에러/로딩 상태 점검
-- [ ] **접근성(Accessibility) 개선**
-  - [ ] ShopView.vue: 이모지 전용 버튼에 aria-label 추가
-  - [ ] HomeView.vue: 이모지 전용 아이콘 버튼에 aria-label 보강
-  - [ ] 모든 form input에 연결된 label 또는 aria-label 확인
-  - [ ] 키보드 탭 순서(tab order) 전 화면 점검
+- [x] **UI/UX 빈 상태(Empty State) 및 에러 상태 보강** ✅ 2026-02-05
+  - [x] ShopView.vue: 에러 상태 UI 추가 + useShopStore 연결 + LoadingSpinner/AppNavigation 통일
+  - [x] ShopView.vue: 빈 상점 상태 UI 개선 (아이콘 + 메시지 + 새로고침 버튼) + 아이템 그리드 표시
+  - [x] CollectionView.vue: useCosmeticStore 연결 + loading/error/empty/data 4상태 구현 + 상점 CTA
+  - [x] RankView.vue: 빈 랭크 데이터 상태 메시지 추가 + 에러 메시지 i18n 전환
+  - [x] PvPView.vue: 빈 상태 추가 + 에러 메시지 i18n 전환
+  - [x] i18n: 4개 언어에 shop/cosmetics/pvp 관련 empty/error 키 7개 추가
+- [x] **접근성(Accessibility) 개선** ✅ 2026-02-05
+  - [x] ShopView.vue: AppNavigation 컴포넌트 사용으로 자동 해결 (i18n aria-label 포함)
+  - [x] HomeView.vue: 프로필(👤), 설정(⚙️) 이모지 버튼에 i18n aria-label 추가
+  - [x] SettingsView.vue: BGM/SFX 슬라이더에 for/id 연결, 품질/속도 옵션에 role="radiogroup"/role="radio"+aria-checked 추가
+  - [x] SkillLoadoutView.vue: 스킬 해제(✕) 버튼에 aria-label 추가
+  - [x] 모든 form input에 연결된 label 또는 aria-label 확인 (LoginView, SignupView, ProfileView 통과)
+  - [x] 키보드 탭 순서(tab order) 전 화면 점검 — 커스텀 tabindex 없음, 자연 DOM 순서 사용 확인
 - [ ] **CSS 일관성 개선**
   - [ ] 하드코딩 색상 → CSS 변수 전환 (LoginView, SignupView, ProfileView 등)
   - [ ] AppNavigation.vue: `#d4af37` → `var(--color-gold)` 통일

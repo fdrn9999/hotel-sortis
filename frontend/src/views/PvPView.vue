@@ -72,6 +72,16 @@
           {{ t('common.retry') }}
         </button>
       </div>
+
+      <!-- 빈 상태 (데이터 없음) -->
+      <div v-else class="empty-state">
+        <div class="empty-icon">&#x2694;&#xFE0F;</div>
+        <p class="empty-title">{{ t('pvp.noRankData') }}</p>
+        <p class="empty-description">{{ t('pvp.noRankDataHint') }}</p>
+        <button class="btn-primary btn-large" @click="startMatchmaking">
+          {{ t('pvp.matchmaking.start') }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -137,7 +147,7 @@ const loadRankInfo = async () => {
   try {
     rankInfo.value = await getRankInfo(playerId.value)
   } catch (err: any) {
-    error.value = err.response?.data?.message || 'Failed to load rank information'
+    error.value = err.response?.data?.message || t('pvp.loadFailed')
   } finally {
     loading.value = false
   }
@@ -369,6 +379,35 @@ const viewRankDetails = () => {
 
 .btn-retry:hover {
   background: rgba(212, 175, 55, 0.3);
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+  gap: 12px;
+}
+
+.empty-icon {
+  font-size: 64px;
+  opacity: 0.6;
+}
+
+.empty-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #d4af37;
+}
+
+.empty-description {
+  font-size: 14px;
+  color: rgba(255, 253, 208, 0.6);
+  max-width: 400px;
+  margin-bottom: 12px;
 }
 
 /* 반응형 */

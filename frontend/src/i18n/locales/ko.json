@@ -256,6 +256,9 @@
     "draws": "무",
     "winRate": "승률",
     "eloRange": "ELO 범위",
+    "noRankData": "아직 PvP 전적이 없습니다",
+    "noRankDataHint": "첫 매칭을 시작하여 랭크를 배정받으세요",
+    "loadFailed": "랭크 정보를 불러올 수 없습니다",
     "viewRankDetails": "랭크 상세 보기",
     "tiers": {
       "bronze": "브론즈",
@@ -368,6 +371,8 @@
     "sortByRarity": "희귀도순",
     "sortByName": "이름순",
     "noItems": "판매 중인 아이템이 없습니다",
+    "emptyDescription": "아직 판매 중인 아이템이 없습니다. 나중에 다시 확인해주세요.",
+    "loadFailed": "상점을 불러올 수 없습니다",
     "loading": "상점 로딩 중...",
     "refreshShop": "상점 새로고침"
   },
@@ -399,6 +404,8 @@
       "cosmic": "우주"
     },
     "noItems": "보유 중인 코스메틱이 없습니다",
+    "emptyCollectionHint": "상점에서 주사위 스킨과 아바타를 구매하세요",
+    "loadFailed": "컬렉션을 불러올 수 없습니다",
     "goToShop": "상점으로 가기",
     "currentSkin": "현재 스킨",
     "default": "기본"

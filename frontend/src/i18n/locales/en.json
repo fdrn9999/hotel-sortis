@@ -256,6 +256,9 @@
     "draws": "Draws",
     "winRate": "Win Rate",
     "eloRange": "ELO Range",
+    "noRankData": "No PvP records yet",
+    "noRankDataHint": "Start your first match to get your rank",
+    "loadFailed": "Failed to load rank information",
     "viewRankDetails": "View Rank Details",
     "tiers": {
       "bronze": "Bronze",
@@ -368,6 +371,8 @@
     "sortByRarity": "Rarity",
     "sortByName": "Name",
     "noItems": "No items available",
+    "emptyDescription": "There are no items for sale yet. Please check back later.",
+    "loadFailed": "Failed to load shop",
     "loading": "Loading shop...",
     "refreshShop": "Refresh Shop"
   },
@@ -399,6 +404,8 @@
       "cosmic": "Cosmic"
     },
     "noItems": "No cosmetics owned",
+    "emptyCollectionHint": "Purchase dice skins and avatars from the shop",
+    "loadFailed": "Failed to load collection",
     "goToShop": "Go to Shop",
     "currentSkin": "Current Skin",
     "default": "Default"

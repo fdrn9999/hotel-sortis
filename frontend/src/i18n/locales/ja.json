@@ -256,6 +256,9 @@
     "draws": "引",
     "winRate": "勝率",
     "eloRange": "ELO範囲",
+    "noRankData": "まだPvP戦績がありません",
+    "noRankDataHint": "初めてのマッチを開始してランクを獲得しましょう",
+    "loadFailed": "ランク情報の読み込みに失敗しました",
     "viewRankDetails": "ランク詳細を見る",
     "tiers": {
       "bronze": "ブロンズ",
@@ -368,6 +371,8 @@
     "sortByRarity": "レア度順",
     "sortByName": "名前順",
     "noItems": "販売中のアイテムがありません",
+    "emptyDescription": "まだ販売中のアイテムがありません。後でもう一度ご確認ください。",
+    "loadFailed": "ショップの読み込みに失敗しました",
     "loading": "ショップ読み込み中...",
     "refreshShop": "ショップ更新"
   },
@@ -399,6 +404,8 @@
       "cosmic": "宇宙"
     },
     "noItems": "所有しているコスメティックがありません",
+    "emptyCollectionHint": "ショップでダイススキンやアバターを購入しましょう",
+    "loadFailed": "コレクションの読み込みに失敗しました",
     "goToShop": "ショップへ",
     "currentSkin": "現在のスキン",
     "default": "デフォルト"

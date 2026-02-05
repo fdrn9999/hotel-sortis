@@ -256,6 +256,9 @@
     "draws": "平",
     "winRate": "胜率",
     "eloRange": "ELO范围",
+    "noRankData": "还没有PvP战绩",
+    "noRankDataHint": "开始您的第一场比赛以获取排名",
+    "loadFailed": "排名信息加载失败",
     "viewRankDetails": "查看排位详情",
     "tiers": {
       "bronze": "青铜",
@@ -368,6 +371,8 @@
     "sortByRarity": "按稀有度",
     "sortByName": "按名称",
     "noItems": "没有可售商品",
+    "emptyDescription": "目前没有可出售的商品，请稍后再来查看。",
+    "loadFailed": "商店加载失败",
     "loading": "商店加载中...",
     "refreshShop": "刷新商店"
   },
@@ -399,6 +404,8 @@
       "cosmic": "宇宙"
     },
     "noItems": "没有拥有的装扮",
+    "emptyCollectionHint": "在商店购买骰子皮肤和头像吧",
+    "loadFailed": "收藏加载失败",
     "goToShop": "前往商店",
     "currentSkin": "当前皮肤",
     "default": "默认"
