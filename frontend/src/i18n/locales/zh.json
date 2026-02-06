@@ -476,5 +476,42 @@
     "startingBattle": "战斗开始中...",
     "pickError": "技能选择错误",
     "loadError": "无法加载选秀信息"
+  },
+  "social": {
+    "chat": {
+      "title": "聊天",
+      "global": "世界",
+      "whisper": "私聊",
+      "noMessages": "暂无消息",
+      "noWhispers": "暂无私聊",
+      "globalPlaceholder": "输入消息...",
+      "whisperPlaceholder": "私聊 {name}...",
+      "inputLabel": "聊天输入",
+      "send": "发送",
+      "expand": "展开聊天",
+      "minimize": "收起聊天",
+      "whisperTo": "发送私聊",
+      "whisperSent": "已向 {name} 发送私聊"
+    },
+    "friends": {
+      "title": "好友",
+      "addFriend": "添加好友",
+      "removeFriend": "删除好友",
+      "requestSent": "已发送好友请求",
+      "requestAccepted": "已接受好友请求",
+      "requestDeclined": "已拒绝好友请求",
+      "friendRemoved": "已删除好友",
+      "pending": "待处理",
+      "accepted": "已接受",
+      "noFriends": "暂无好友",
+      "noPending": "暂无待处理的请求"
+    },
+    "block": {
+      "blockPlayer": "屏蔽玩家",
+      "unblockPlayer": "取消屏蔽",
+      "blocked": "已屏蔽该玩家",
+      "unblocked": "已取消屏蔽",
+      "noBlocked": "暂无屏蔽的玩家"
+    }
   }
 }

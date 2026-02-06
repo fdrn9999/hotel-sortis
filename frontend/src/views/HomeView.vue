@@ -19,7 +19,7 @@ onMounted(() => {
 
 <template>
   <div class="home">
-    <!-- 우측 상단 버튼들 -->
+    <!-- Top-Right Buttons -->
     <div class="top-buttons">
       <button class="icon-btn" @click="navigate('/profile')" :title="t('profile.myProfile')" :aria-label="t('profile.myProfile')">
         👤

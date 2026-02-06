@@ -476,5 +476,42 @@
     "startingBattle": "バトル開始中...",
     "pickError": "スキル選択エラー",
     "loadError": "ドラフト情報を読み込めませんでした"
+  },
+  "social": {
+    "chat": {
+      "title": "チャット",
+      "global": "全体",
+      "whisper": "ささやき",
+      "noMessages": "メッセージがありません",
+      "noWhispers": "ささやきがありません",
+      "globalPlaceholder": "メッセージを入力...",
+      "whisperPlaceholder": "{name}さんへのささやき...",
+      "inputLabel": "チャット入力",
+      "send": "送信",
+      "expand": "チャットを開く",
+      "minimize": "チャットを閉じる",
+      "whisperTo": "ささやきを送る",
+      "whisperSent": "{name}さんにささやきを送りました"
+    },
+    "friends": {
+      "title": "フレンド",
+      "addFriend": "フレンド追加",
+      "removeFriend": "フレンド削除",
+      "requestSent": "フレンド申請を送りました",
+      "requestAccepted": "フレンド申請を承認しました",
+      "requestDeclined": "フレンド申請を拒否しました",
+      "friendRemoved": "フレンドを削除しました",
+      "pending": "保留中",
+      "accepted": "承認済み",
+      "noFriends": "フレンドがいません",
+      "noPending": "保留中の申請がありません"
+    },
+    "block": {
+      "blockPlayer": "ブロック",
+      "unblockPlayer": "ブロック解除",
+      "blocked": "プレイヤーをブロックしました",
+      "unblocked": "ブロックを解除しました",
+      "noBlocked": "ブロック中のプレイヤーがいません"
+    }
   }
 }

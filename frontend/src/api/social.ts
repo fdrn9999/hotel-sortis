@@ -5,7 +5,6 @@ import { apiClient } from './client'
 import type {
   FriendInfo,
   FriendListResponse,
-  FriendRequest,
   PendingRequestsResponse,
   BlockedPlayer,
   BlockListResponse,

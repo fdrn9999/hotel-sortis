@@ -476,5 +476,42 @@
     "startingBattle": "Starting battle...",
     "pickError": "Skill selection error",
     "loadError": "Could not load draft information"
+  },
+  "social": {
+    "chat": {
+      "title": "Chat",
+      "global": "Global",
+      "whisper": "Whisper",
+      "noMessages": "No messages yet",
+      "noWhispers": "No whispers yet",
+      "globalPlaceholder": "Type a message...",
+      "whisperPlaceholder": "Whisper to {name}...",
+      "inputLabel": "Chat input",
+      "send": "Send",
+      "expand": "Expand chat",
+      "minimize": "Minimize chat",
+      "whisperTo": "Send whisper",
+      "whisperSent": "Whisper sent to {name}"
+    },
+    "friends": {
+      "title": "Friends",
+      "addFriend": "Add Friend",
+      "removeFriend": "Remove Friend",
+      "requestSent": "Friend request sent",
+      "requestAccepted": "Friend request accepted",
+      "requestDeclined": "Friend request declined",
+      "friendRemoved": "Friend removed",
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "noFriends": "No friends yet",
+      "noPending": "No pending requests"
+    },
+    "block": {
+      "blockPlayer": "Block Player",
+      "unblockPlayer": "Unblock Player",
+      "blocked": "Player blocked",
+      "unblocked": "Player unblocked",
+      "noBlocked": "No blocked players"
+    }
   }
 }

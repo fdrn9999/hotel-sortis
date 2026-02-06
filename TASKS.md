@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-06 (Phase 13 진행 중: 태블릿 브레이크포인트 + 번들 최적화 완료)
+> 최종 업데이트: 2026-02-06 (Phase 14 진행 중: Chat Interface 완료)
 
 ---
 
@@ -574,11 +574,12 @@
   - [x] `api/social.ts`: API client for friends/blocks/chat (15 functions)
   - [x] `stores/social.ts`: Pinia store for social state management
   - [x] `composables/useChatWebSocket.ts`: WebSocket integration for real-time chat
-- [ ] **Frontend: Chat Interface**
-  - [ ] `GlobalChatWidget.vue`: Persistent floating chat (bottom-left/right)
-  - [ ] Global Channel integration
-  - [ ] Whisper Functionality (`/w nickname message`)
-  - [ ] Context Menu: Right-click on user to Whisper/Add Friend/Block
+- [x] **Frontend: Chat Interface** ✅ 2026-02-06
+  - [x] `GlobalChatWidget.vue`: Persistent floating chat (bottom-left)
+  - [x] Global Channel integration
+  - [x] Whisper Functionality (`/w nickname message`)
+  - [x] Context Menu: Right-click on user to Whisper/Add Friend/Block
+  - [x] i18n: `social` section added to all 4 languages (ko, en, ja, zh)
 - [ ] **Frontend: Friend Management**
   - [ ] `FriendListSidebar.vue` or Modal (Toggleable)
   - [ ] Add Friend (by Email/Nickname)
@@ -588,8 +589,8 @@
   - [ ] DM Tab in ChatWidget
   - [ ] Real-time message delivery
   - [ ] Unread message indicators
-- [ ] **i18n Support**
-  - [ ] `social` section in 4 languages
+- [x] **i18n Support** ✅ 2026-02-06
+  - [x] `social` section in 4 languages (chat, friends, block subsections)
 
 ### Phase 15: Final Visual Polish (UI Design Improvements)
 

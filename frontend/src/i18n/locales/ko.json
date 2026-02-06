@@ -476,5 +476,42 @@
     "startingBattle": "전투 시작 중...",
     "pickError": "스킬 선택 오류",
     "loadError": "드래프트 정보를 불러올 수 없습니다"
+  },
+  "social": {
+    "chat": {
+      "title": "채팅",
+      "global": "전체",
+      "whisper": "귓속말",
+      "noMessages": "메시지가 없습니다",
+      "noWhispers": "귓속말이 없습니다",
+      "globalPlaceholder": "메시지를 입력하세요...",
+      "whisperPlaceholder": "{name}님에게 귓속말...",
+      "inputLabel": "채팅 입력",
+      "send": "전송",
+      "expand": "채팅창 열기",
+      "minimize": "채팅창 닫기",
+      "whisperTo": "귓속말 보내기",
+      "whisperSent": "{name}님에게 귓속말을 보냈습니다"
+    },
+    "friends": {
+      "title": "친구",
+      "addFriend": "친구 추가",
+      "removeFriend": "친구 삭제",
+      "requestSent": "친구 요청을 보냈습니다",
+      "requestAccepted": "친구 요청을 수락했습니다",
+      "requestDeclined": "친구 요청을 거절했습니다",
+      "friendRemoved": "친구를 삭제했습니다",
+      "pending": "대기 중",
+      "accepted": "수락됨",
+      "noFriends": "친구가 없습니다",
+      "noPending": "대기 중인 요청이 없습니다"
+    },
+    "block": {
+      "blockPlayer": "차단하기",
+      "unblockPlayer": "차단 해제",
+      "blocked": "플레이어를 차단했습니다",
+      "unblocked": "차단을 해제했습니다",
+      "noBlocked": "차단한 플레이어가 없습니다"
+    }
   }
 }
