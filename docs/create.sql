@@ -12,6 +12,9 @@
 -- =====================================================
 -- 기존 테이블 삭제 (개발용, 운영시 주석 처리)
 -- =====================================================
+DROP TABLE IF EXISTS chat_messages;
+DROP TABLE IF EXISTS block_list;
+DROP TABLE IF EXISTS friends;
 DROP TABLE IF EXISTS player_cosmetics;
 DROP TABLE IF EXISTS dice_skins;
 DROP TABLE IF EXISTS avatars;
@@ -367,7 +370,65 @@ CREATE TABLE player_cosmetics (
 COMMENT='플레이어가 소유한 코스메틱 아이템';
 
 -- =====================================================
+-- 15. 친구 테이블 (friends)
+-- =====================================================
+CREATE TABLE friends (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    player_id BIGINT NOT NULL COMMENT '친구 요청을 보낸 플레이어',
+    friend_id BIGINT NOT NULL COMMENT '친구 요청을 받은 플레이어',
+    status ENUM('PENDING', 'ACCEPTED') NOT NULL DEFAULT 'PENDING',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    accepted_at TIMESTAMP NULL COMMENT '친구 수락 시간',
+    FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE,
+    FOREIGN KEY (friend_id) REFERENCES players(id) ON DELETE CASCADE,
+    UNIQUE KEY uk_player_friend (player_id, friend_id),
+    INDEX idx_friend_player_status (player_id, status),
+    INDEX idx_friend_friend_status (friend_id, status),
+    INDEX idx_friend_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+COMMENT='친구 관계 (양방향: ACCEPTED 시 두 행 생성)';
+
+-- =====================================================
+-- 16. 차단 목록 테이블 (block_list)
+-- =====================================================
+CREATE TABLE block_list (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    blocker_id BIGINT NOT NULL COMMENT '차단한 플레이어',
+    blocked_id BIGINT NOT NULL COMMENT '차단된 플레이어',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (blocker_id) REFERENCES players(id) ON DELETE CASCADE,
+    FOREIGN KEY (blocked_id) REFERENCES players(id) ON DELETE CASCADE,
+    UNIQUE KEY uk_blocker_blocked (blocker_id, blocked_id),
+    INDEX idx_block_blocker_id (blocker_id),
+    INDEX idx_block_blocked_id (blocked_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+COMMENT='차단 목록 (단방향)';
+
+-- =====================================================
+-- 17. 채팅 메시지 테이블 (chat_messages)
+-- =====================================================
+CREATE TABLE chat_messages (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    sender_id BIGINT NOT NULL COMMENT '발신자',
+    sender_username VARCHAR(20) NOT NULL COMMENT '발신자 닉네임 (비정규화)',
+    receiver_id BIGINT NULL COMMENT '수신자 (GLOBAL 메시지는 NULL)',
+    receiver_username VARCHAR(20) NULL COMMENT '수신자 닉네임 (비정규화)',
+    message_type ENUM('GLOBAL', 'WHISPER') NOT NULL,
+    content TEXT NOT NULL COMMENT '메시지 내용',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    read_at TIMESTAMP NULL COMMENT '읽은 시간 (NULL이면 안읽음)',
+    FOREIGN KEY (sender_id) REFERENCES players(id) ON DELETE CASCADE,
+    FOREIGN KEY (receiver_id) REFERENCES players(id) ON DELETE CASCADE,
+    INDEX idx_chat_sender_id (sender_id),
+    INDEX idx_chat_receiver_id (receiver_id),
+    INDEX idx_chat_type_created (message_type, created_at),
+    INDEX idx_chat_whisper (sender_id, receiver_id, created_at),
+    INDEX idx_chat_unread (receiver_id, read_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+COMMENT='채팅 메시지 (GLOBAL: 전체, WHISPER: 1:1)';
+
+-- =====================================================
 -- 완료 메시지
 -- =====================================================
-SELECT 'Table creation complete! (14 tables)' AS message;
+SELECT 'Table creation complete! (17 tables)' AS message;
 SHOW TABLES;

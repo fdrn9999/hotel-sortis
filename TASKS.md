@@ -557,16 +557,18 @@
   - [ ] 라이선스 표기 파일 작성 (`public/sounds/LICENSES.md`)
 ### Phase 14: Social Platform (Friends & Chat)
 
-- [ ] **Backend: Social Entities**
-  - [ ] `Friend` Entity (requester, recipient, status, alias)
-  - [ ] `BlockList` Entity (blocker, blocked)
-  - [ ] `ChatMessage` Entity (sender, receiver, content, type, timestamp)
-  - [ ] Repository Interfaces (`FriendRepository`, `BlockListRepository`, `ChatMessageRepository`)
-- [ ] **Backend: Social Services**
-  - [ ] `FriendService`: Add, Accept, Deny, Remove, Set Alias, Block/Unblock
-  - [ ] `ChatService`: Global chat, DM routing, History (short-term persistence)
-  - [ ] `SocialController`: REST API for friends/blocks
-  - [ ] `ChatController`: WebSocket handlers for global/DM
+- [x] **Backend: Social Entities** ✅ 2026-02-06
+  - [x] `Friend` Entity (player, friend, status: PENDING/ACCEPTED, acceptedAt)
+  - [x] `BlockList` Entity (blocker, blocked)
+  - [x] `ChatMessage` Entity (sender, receiver, content, messageType: GLOBAL/WHISPER, readAt)
+  - [x] Repository Interfaces (`FriendRepository`, `BlockListRepository`, `ChatMessageRepository`)
+  - [x] Database tables added to `docs/create.sql` (3 new tables, total 17)
+- [x] **Backend: Social Services** ✅ 2026-02-06
+  - [x] `SocialDto.java`: DTOs for friends, blocks, chat (12 classes)
+  - [x] `FriendService`: Add, Accept, Deny, Remove, Block/Unblock
+  - [x] `ChatService`: Global chat, Whisper, History, Read status
+  - [x] `SocialController`: REST API for friends/blocks/chat (15 endpoints)
+  - [x] `ChatWebSocketController`: WebSocket handlers for global/whisper/notifications
 - [ ] **Frontend: Social Store**
   - [ ] `stores/social.ts` (friends list, online status, blocked users, unread DMs)
   - [ ] WebSocket integration for real-time friend updates & chat
