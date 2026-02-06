@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-05 (Phase 13 진행 중: Empty/Error State + 접근성 + CSS 일관성 개선 완료)
+> 최종 업데이트: 2026-02-06 (Phase 13 진행 중: 태블릿 브레이크포인트 + 번들 최적화 완료)
 
 ---
 
@@ -529,20 +529,25 @@
   - [x] Toast.vue: 하드코딩 색상 → CSS 변수 전환 (10개 인스턴스)
   - [x] ConfirmModal.vue: 하드코딩 색상 → CSS 변수 전환 (8개 인스턴스)
   - [x] LoadingSpinner.vue: 하드코딩 색상 → CSS 변수 전환 (5개 인스턴스)
-- [ ] **반응형 태블릿 브레이크포인트 추가**
-  - [ ] LoginView.vue: 태블릿(768px~1024px) 레이아웃 최적화
-  - [ ] SignupView.vue: 태블릿 레이아웃 최적화
-  - [ ] ShopView.vue: 태블릿 레이아웃 최적화
-  - [ ] BattleView.vue: 태블릿 가로 모드 최적화
-- [ ] **성능 최적화** (Phase 12에서 Three.js/Cannon-es 제거 완료, 번들 700KB 감소)
+- [x] **반응형 태블릿 브레이크포인트 추가** ✅ 2026-02-06
+  - [x] LoginView.vue: 태블릿(768px) 브레이크포인트 추가 (padding, title font, form gap 조정)
+  - [x] SignupView.vue: 태블릿(768px) 브레이크포인트 추가 (padding, title font, form gap 조정)
+  - [x] ShopView.vue: 태블릿(768px) 2컬럼 그리드 + 모바일(480px) 1컬럼 추가
+  - [x] BattleView.vue: 태블릿 가로 모드(1024px) + 세로 모드(768px) 브레이크포인트 추가
+- [x] **성능 최적화** ✅ 2026-02-06 (Phase 12에서 Three.js/Cannon-es 제거 완료, 번들 700KB 감소)
   - [x] ~~Three.js/Cannon-es 청크 분리~~ — Vue UI로 대체 완료 (BattleView 14.76KB)
-  - [ ] `vite.config.ts`에 `manualChunks` 설정 (howler 분리)
-  - [ ] 이미지/아이콘 lazy loading 적용
-  - [ ] 로딩 스켈레톤 UI (LoadingSpinner 대체용 SkeletonLoader 컴포넌트)
-- [ ] **코드 품질 정리**
-  - [ ] TODO/FIXME 주석 4건 해결 (BattleView, SkillLoadoutView, DraftView, CampaignView)
-  - [ ] 한국어 코드 주석 → 영어로 통일 (SettingsView, SignupView, ProfileView 등)
-  - [ ] 미사용 CSS 클래스 정리
+  - [x] `vite.config.ts`에 `manualChunks` 설정 — 벤더 청크 분리 (index.js 264KB → 59KB, **78% 감소**)
+    - vendor-vue: 106KB (vue, vue-router, pinia)
+    - vendor-i18n: 64KB (vue-i18n)
+    - vendor-websocket: 64KB (@stomp/stompjs, sockjs-client)
+    - vendor-howler: 37KB (howler)
+  - [x] 로딩 스켈레톤 UI — SkeletonLoader.vue 컴포넌트 생성 (card, list, text 변형)
+  - [x] ShopView에 SkeletonLoader 적용 (LoadingSpinner 대체)
+  - [ ] 이미지/아이콘 lazy loading 적용 (optional - 현재 이미지 에셋 없음)
+- [x] **코드 품질 정리** ✅ 2026-02-06
+  - [x] TODO 주석 해결: playerId 하드코딩 → auth store 연동 (6 files: BattleView, CampaignView, CollectionView, DraftView, ShopView, SkillLoadoutView)
+  - [x] 한국어 코드 주석 → 영어로 통일 (100+ comments across 30+ files)
+  - [ ] 미사용 CSS 클래스 정리 (optional - low priority)
 - [ ] **사운드 에셋 적용**
   - [ ] Pixabay/Wavbvkery에서 주사위 굴림 WAV/MP3 다운로드 → `public/sounds/sfx/`
   - [ ] Silverman Sound/FMA에서 1920s 재즈 BGM 다운로드 → `public/sounds/bgm/`
@@ -550,23 +555,57 @@
   - [ ] `useSound.ts` BGM_MAP 경로와 실제 파일 매칭 확인
   - [ ] 합성음 SFX를 실제 에셋으로 교체 (옵션: 합성음 fallback 유지)
   - [ ] 라이선스 표기 파일 작성 (`public/sounds/LICENSES.md`)
-- [ ] **UI 디자인 개선 (frontend-design 에이전트)**
-  - [ ] HomeView.vue: 메인 메뉴 버튼 호버/클릭 마이크로 인터랙션 강화
-  - [ ] HomeView.vue: 배경 Art Deco 패턴 또는 파티클 이펙트 추가
-  - [ ] BattleView.vue: 데미지/회복 숫자 팝업 애니메이션 개선 (바운스, 페이드)
-  - [ ] BattleView.vue: HP 바 감소 시 쉐이크 효과 추가
-  - [ ] BattleView.vue: 승리/패배 화면 연출 강화 (컨페티, 글로우 효과)
-  - [ ] DiceRoller.vue: 주사위 굴림 애니메이션 3D 느낌 강화 (그림자, 퍼스펙티브)
-  - [ ] DiceRoller.vue: 족보 완성 시 이펙트 추가 (글로우, 파티클)
-  - [ ] CampaignView.vue: 층 타워 비주얼 개선 (아이콘, 진행 표시 강화)
-  - [ ] SkillLoadoutView.vue: 스킬 카드 드래그 앤 드롭 피드백 개선
-  - [ ] DraftView.vue: 픽 애니메이션 및 턴 전환 연출 강화
-  - [ ] PvPMatchmakingView.vue: 매칭 대기 애니메이션 개선 (펄스, 로딩 링)
-  - [ ] ShopView.vue: 아이템 카드 호버 효과 및 구매 피드백 강화
-  - [ ] CollectionView.vue: 코스메틱 미리보기 인터랙션 개선
-  - [ ] Toast/Modal: 등장/퇴장 애니메이션 고급화 (스프링, 이징)
-  - [ ] 전역: 페이지 전환 트랜지션 다양화 (슬라이드, 페이드, 스케일)
-  - [ ] 전역: 로딩 상태 스켈레톤 UI 디자인 (Art Deco 스타일)
+### Phase 14: Social Platform (Friends & Chat)
+
+- [ ] **Backend: Social Entities**
+  - [ ] `Friend` Entity (requester, recipient, status, alias)
+  - [ ] `BlockList` Entity (blocker, blocked)
+  - [ ] `ChatMessage` Entity (sender, receiver, content, type, timestamp)
+  - [ ] Repository Interfaces (`FriendRepository`, `BlockListRepository`, `ChatMessageRepository`)
+- [ ] **Backend: Social Services**
+  - [ ] `FriendService`: Add, Accept, Deny, Remove, Set Alias, Block/Unblock
+  - [ ] `ChatService`: Global chat, DM routing, History (short-term persistence)
+  - [ ] `SocialController`: REST API for friends/blocks
+  - [ ] `ChatController`: WebSocket handlers for global/DM
+- [ ] **Frontend: Social Store**
+  - [ ] `stores/social.ts` (friends list, online status, blocked users, unread DMs)
+  - [ ] WebSocket integration for real-time friend updates & chat
+- [ ] **Frontend: Chat Interface**
+  - [ ] `GlobalChatWidget.vue`: Persistent floating chat (bottom-left/right)
+  - [ ] Global Channel integration
+  - [ ] Whisper Functionality (`/w nickname message`)
+  - [ ] Context Menu: Right-click on user to Whisper/Add Friend/Block
+- [ ] **Frontend: Friend Management**
+  - [ ] `FriendListSidebar.vue` or Modal (Toggleable)
+  - [ ] Add Friend (by Email/Nickname)
+  - [ ] Friend Request Notifications
+  - [ ] Friend Actions: DM, Set Alias, Remove, Block
+- [ ] **Private Messaging (DM)**
+  - [ ] DM Tab in ChatWidget
+  - [ ] Real-time message delivery
+  - [ ] Unread message indicators
+- [ ] **i18n Support**
+  - [ ] `social` section in 4 languages
+
+### Phase 15: Final Visual Polish (UI Design Improvements)
+
+- [ ] **Existing UI Design Improvements**
+  - [ ] HomeView.vue: Main menu button interactions & background effects
+  - [ ] BattleView.vue: Damage popups, shake effects, victory/defeat sequences
+  - [ ] DiceRoller.vue: 3D-feel animations & particle effects
+  - [ ] CampaignView.vue: Tower visual improvements
+  - [ ] SkillLoadoutView.vue: Drag-and-drop feedback
+  - [ ] DraftView.vue: Pick animations
+  - [ ] PvPMatchmakingView.vue: Matching animations
+  - [ ] ShopView.vue: Card hover effects
+  - [ ] CollectionView.vue: Preview interactions
+  - [ ] Toast/Modal: Advanced entrance/exit animations
+  - [ ] Global: Page transitions & Skeleton UI styling
+- [ ] **Social System Polish**
+  - [ ] **Chat Widget Styling**: Art Deco glassmorphism, minimize animations
+  - [ ] **Friend List Styling**: Elegant sidebar/modal design with status indicators
+  - [ ] **Context Menus**: Custom styled menus (not browser default)
+  - [ ] **Notification Badges**: Gold/Red Art Deco style badges for unread messages
 - [ ] **테스트**
   - [ ] 족보 판정 단위 테스트 (`useOfflineBattle.ts` → `evaluateHand`)
   - [ ] 스킬 슬롯 검증 단위 테스트 (최대 4개, 중복 방지)

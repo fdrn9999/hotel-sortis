@@ -25,7 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   // Actions
   /**
-   * 회원가입
+   * Sign up
    */
   async function signup(request: SignupRequest): Promise<void> {
     isLoading.value = true
@@ -34,11 +34,11 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const response: AuthResponse = await authApi.signup(request)
 
-      // 토큰 저장
+      // Save token
       token.value = response.token
       localStorage.setItem('auth_token', response.token)
 
-      // 프로필 조회
+      // Fetch profile
       await fetchProfile()
     } catch (err: any) {
       error.value = err.message || 'Signup failed'
@@ -49,7 +49,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   /**
-   * 로그인
+   * Login
    */
   async function login(request: LoginRequest): Promise<void> {
     isLoading.value = true
@@ -58,11 +58,11 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const response: AuthResponse = await authApi.login(request)
 
-      // 토큰 저장
+      // Save token
       token.value = response.token
       localStorage.setItem('auth_token', response.token)
 
-      // 프로필 조회
+      // Fetch profile
       await fetchProfile()
     } catch (err: any) {
       error.value = err.message || 'Login failed'
@@ -73,7 +73,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   /**
-   * 로그아웃
+   * Logout
    */
   function logout(): void {
     token.value = null
@@ -82,7 +82,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   /**
-   * 프로필 조회
+   * Fetch profile
    */
   async function fetchProfile(): Promise<void> {
     if (!token.value) {
@@ -96,7 +96,7 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = await authApi.getMyProfile()
     } catch (err: any) {
       error.value = err.message || 'Failed to fetch profile'
-      // 401 에러면 로그아웃
+      // Logout on 401 error
       if (err.message?.includes('401') || err.message?.includes('Unauthorized')) {
         logout()
       }
@@ -107,7 +107,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   /**
-   * 프로필 업데이트
+   * Update profile
    */
   async function updateProfile(request: UpdateProfileRequest): Promise<void> {
     isLoading.value = true
@@ -124,7 +124,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   /**
-   * 비밀번호 변경
+   * Change password
    */
   async function changePassword(request: ChangePasswordRequest): Promise<void> {
     isLoading.value = true
@@ -141,7 +141,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   /**
-   * 인증 상태 확인 (앱 초기화 시 호출)
+   * Check auth status (called on app initialization)
    */
   async function checkAuth(): Promise<void> {
     if (token.value) {

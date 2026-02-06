@@ -49,7 +49,7 @@ export interface ChangePasswordRequest {
 }
 
 /**
- * 회원가입
+ * Sign up
  */
 export async function signup(request: SignupRequest): Promise<AuthResponse> {
   const response = await apiClient.post<AuthResponse>('/auth/signup', request)
@@ -57,7 +57,7 @@ export async function signup(request: SignupRequest): Promise<AuthResponse> {
 }
 
 /**
- * 로그인
+ * Login
  */
 export async function login(request: LoginRequest): Promise<AuthResponse> {
   const response = await apiClient.post<AuthResponse>('/auth/login', request)
@@ -65,7 +65,7 @@ export async function login(request: LoginRequest): Promise<AuthResponse> {
 }
 
 /**
- * 내 프로필 조회
+ * Get my profile
  */
 export async function getMyProfile(): Promise<UserProfile> {
   const response = await apiClient.get<UserProfile>('/users/me')
@@ -73,7 +73,7 @@ export async function getMyProfile(): Promise<UserProfile> {
 }
 
 /**
- * 프로필 업데이트
+ * Update profile
  */
 export async function updateProfile(request: UpdateProfileRequest): Promise<UserProfile> {
   const response = await apiClient.put<UserProfile>('/users/me', request)
@@ -81,7 +81,7 @@ export async function updateProfile(request: UpdateProfileRequest): Promise<User
 }
 
 /**
- * 비밀번호 변경
+ * Change password
  */
 export async function changePassword(request: ChangePasswordRequest): Promise<MessageResponse> {
   const response = await apiClient.post<MessageResponse>('/users/me/change-password', request)

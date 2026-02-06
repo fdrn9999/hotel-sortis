@@ -9,37 +9,37 @@ import type {
 } from '@/types/game'
 
 /**
- * PvP WebSocket 전용 composable
+ * PvP WebSocket dedicated composable
  *
- * - 매치 찾기 알림
- * - 턴 시작 알림
- * - 주사위 결과 브로드캐스트
- * - 전투 종료 알림
+ * - Match found notification
+ * - Turn start notification
+ * - Dice result broadcast
+ * - Battle end notification
  */
 export function usePvPWebSocket(playerId: number) {
   const { connected, connect, disconnect, subscribe, send } = useWebSocket()
 
-  // 구독 객체 저장 (언마운트 시 정리용)
+  // Store subscription objects (for cleanup on unmount)
   const subscriptions = ref<any[]>([])
 
-  // 이벤트 핸들러
+  // Event handlers
   const onMatchFound = ref<((match: MatchFoundResponse) => void) | null>(null)
   const onTurnStart = ref<((turn: TurnStartMessage) => void) | null>(null)
   const onDiceResult = ref<((result: DiceResultMessage) => void) | null>(null)
   const onBattleEnd = ref<((end: BattleEndMessage) => void) | null>(null)
 
   /**
-   * PvP 구독 시작
+   * Start PvP subscriptions
    */
   const subscribePvP = () => {
     if (!connected.value) {
       connect()
-      // 연결 후 1초 대기 후 재시도
+      // Wait 1 second after connection then retry
       setTimeout(subscribePvP, 1000)
       return
     }
 
-    // 1. 매치 찾기 알림 구독
+    // 1. Subscribe to match found notification
     const matchSub = subscribe(`/user/queue/match-found`, (message: IMessage) => {
       const match: MatchFoundResponse = JSON.parse(message.body)
       if (onMatchFound.value) {
@@ -48,7 +48,7 @@ export function usePvPWebSocket(playerId: number) {
     })
     if (matchSub) subscriptions.value.push(matchSub)
 
-    // 2. 턴 시작 알림 구독
+    // 2. Subscribe to turn start notification
     const turnSub = subscribe(`/user/queue/pvp/turn-start`, (message: IMessage) => {
       const turn: TurnStartMessage = JSON.parse(message.body)
       if (onTurnStart.value) {
@@ -57,7 +57,7 @@ export function usePvPWebSocket(playerId: number) {
     })
     if (turnSub) subscriptions.value.push(turnSub)
 
-    // 3. 주사위 결과 구독
+    // 3. Subscribe to dice result
     const diceSub = subscribe(`/user/queue/pvp/dice-result`, (message: IMessage) => {
       const result: DiceResultMessage = JSON.parse(message.body)
       if (onDiceResult.value) {
@@ -66,7 +66,7 @@ export function usePvPWebSocket(playerId: number) {
     })
     if (diceSub) subscriptions.value.push(diceSub)
 
-    // 4. 전투 종료 구독
+    // 4. Subscribe to battle end
     const endSub = subscribe(`/user/queue/pvp/battle-end`, (message: IMessage) => {
       const end: BattleEndMessage = JSON.parse(message.body)
       if (onBattleEnd.value) {
@@ -77,7 +77,7 @@ export function usePvPWebSocket(playerId: number) {
   }
 
   /**
-   * 주사위 굴림 전송
+   * Send dice roll
    */
   const sendRollDice = (battleId: number) => {
     send(`/app/pvp/battles/${battleId}/roll`, {
@@ -86,7 +86,7 @@ export function usePvPWebSocket(playerId: number) {
   }
 
   /**
-   * 구독 정리
+   * Cleanup subscriptions
    */
   const unsubscribeAll = () => {
     subscriptions.value.forEach((sub) => {

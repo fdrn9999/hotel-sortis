@@ -1,6 +1,6 @@
 /**
- * 상점 Store (Pinia)
- * Pay-to-Win 금지 - 영혼석으로만 구매 가능 (코스메틱 전용)
+ * Shop Store (Pinia)
+ * No Pay-to-Win - purchase with soul stones only (cosmetics only)
  */
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
@@ -55,7 +55,7 @@ export const useShopStore = defineStore('shop', () => {
 
   // Actions
   /**
-   * 상점 로드 (구매 가능한 코스메틱 목록)
+   * Load shop (list of purchasable cosmetics)
    */
   async function loadShop(playerId: number) {
     loading.value = true
@@ -75,8 +75,8 @@ export const useShopStore = defineStore('shop', () => {
   }
 
   /**
-   * 코스메틱 구매
-   * Pay-to-Win 금지 - 영혼석으로만 구매
+   * Purchase cosmetic
+   * No Pay-to-Win - purchase with soul stones only
    */
   async function purchaseCosmetic(
     playerId: number,
@@ -92,10 +92,10 @@ export const useShopStore = defineStore('shop', () => {
       lastPurchase.value = response
 
       if (response.success) {
-        // 영혼석 업데이트
+        // Update soul stones
         playerSoulStones.value = response.remainingSoulStones || 0
 
-        // 상점 목록 업데이트 (구매한 아이템 제거)
+        // Update shop list (mark purchased item as owned)
         if (cosmeticType === 'DICE_SKIN') {
           diceSkins.value = diceSkins.value.map(skin => ({
             ...skin,
@@ -110,7 +110,7 @@ export const useShopStore = defineStore('shop', () => {
           }))
         }
 
-        // 코스메틱 스토어도 업데이트
+        // Also update cosmetic store
         const cosmeticStore = useCosmeticStore()
         await cosmeticStore.loadCollection(playerId)
       }
@@ -125,7 +125,7 @@ export const useShopStore = defineStore('shop', () => {
   }
 
   /**
-   * 플레이어 지갑 로드 (영혼석, ELO)
+   * Load player wallet (soul stones, ELO)
    */
   async function loadPlayerWallet(playerId: number) {
     loading.value = true
@@ -144,14 +144,14 @@ export const useShopStore = defineStore('shop', () => {
   }
 
   /**
-   * 영혼석 추가 (PvP 보상 등)
+   * Add soul stones (PvP rewards, etc.)
    */
   function addSoulStones(amount: number) {
     playerSoulStones.value += amount
   }
 
   /**
-   * 영혼석 차감 (구매 시 자동 호출됨)
+   * Deduct soul stones (auto-called on purchase)
    */
   function deductSoulStones(amount: number) {
     if (playerSoulStones.value < amount) {
@@ -161,7 +161,7 @@ export const useShopStore = defineStore('shop', () => {
   }
 
   /**
-   * 특정 아이템을 구매할 수 있는지 확인
+   * Check if a specific item can be purchased
    */
   function canPurchase(cosmeticType: CosmeticType, cosmeticId: number): boolean {
     const items = cosmeticType === 'DICE_SKIN' ? diceSkins.value : avatars.value
@@ -175,7 +175,7 @@ export const useShopStore = defineStore('shop', () => {
   }
 
   /**
-   * 마지막 구매 결과 초기화
+   * Clear last purchase result
    */
   function clearLastPurchase() {
     lastPurchase.value = null

@@ -79,7 +79,7 @@ async function handleLogin() {
       password: password.value
     })
 
-    // 로그인 성공 시 홈으로 이동
+    // Navigate to home on successful login
     router.push('/')
   } catch {
     error(t('auth.errors.invalidCredentials'))
@@ -220,14 +220,35 @@ async function handleLogin() {
   text-shadow: 0 0 8px rgba(var(--color-gold-rgb), 0.5);
 }
 
-/* 모바일 최적화 */
+/* Tablet optimization */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 36px 28px;
+    max-width: 380px;
+  }
+
+  .game-title {
+    font-size: 30px;
+  }
+
+  .login-form {
+    gap: 20px;
+  }
+}
+
+/* Mobile optimization */
 @media (max-width: 480px) {
   .login-container {
     padding: 32px 24px;
+    max-width: 100%;
   }
 
   .game-title {
     font-size: 28px;
+  }
+
+  .login-form {
+    gap: 18px;
   }
 }
 </style>

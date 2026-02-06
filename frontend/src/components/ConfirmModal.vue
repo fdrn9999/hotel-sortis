@@ -50,13 +50,13 @@ export interface ConfirmModalOptions {
 const isOpen = ref(false)
 const currentModal = ref<ConfirmModalOptions | null>(null)
 
-// 모달 열기
+// Open modal
 const openModal = (options: ConfirmModalOptions) => {
   currentModal.value = options
   isOpen.value = true
 }
 
-// 확인 버튼 클릭
+// Confirm button click
 const handleConfirm = () => {
   if (currentModal.value?.resolver) {
     currentModal.value.resolver(true)
@@ -64,7 +64,7 @@ const handleConfirm = () => {
   closeModal()
 }
 
-// 취소 버튼 클릭
+// Cancel button click
 const handleCancel = () => {
   if (currentModal.value?.resolver) {
     currentModal.value.resolver(false)
@@ -72,23 +72,23 @@ const handleCancel = () => {
   closeModal()
 }
 
-// 오버레이 클릭 (모달 외부 클릭 시 취소)
+// Overlay click (cancel when clicking outside modal)
 const handleOverlayClick = () => {
   handleCancel()
 }
 
-// 모달 닫기
+// Close modal
 const closeModal = () => {
   isOpen.value = false
   currentModal.value = null
 }
 
-// 전역 이벤트 리스너
+// Global event listener
 const handleConfirmEvent = (event: CustomEvent) => {
   openModal(event.detail)
 }
 
-// ESC 키로 닫기
+// Close with ESC key
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.key === 'Escape' && isOpen.value) {
     handleCancel()
@@ -109,7 +109,7 @@ defineExpose({ openModal, closeModal })
 </script>
 
 <style scoped>
-/* 오버레이 */
+/* Overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -125,7 +125,7 @@ defineExpose({ openModal, closeModal })
   padding: 20px;
 }
 
-/* 모달 컨테이너 */
+/* Modal container */
 .modal-container {
   width: 100%;
   max-width: 480px;
@@ -139,7 +139,7 @@ defineExpose({ openModal, closeModal })
   overflow: hidden;
 }
 
-/* 헤더 */
+/* Header */
 .modal-header {
   padding: 24px 24px 16px;
   border-bottom: 2px solid rgba(var(--color-gold-rgb), 0.3);
@@ -156,7 +156,7 @@ defineExpose({ openModal, closeModal })
   letter-spacing: 0.5px;
 }
 
-/* 본문 */
+/* Body */
 .modal-body {
   padding: 24px;
 }
@@ -170,7 +170,7 @@ defineExpose({ openModal, closeModal })
   white-space: pre-line;
 }
 
-/* 푸터 */
+/* Footer */
 .modal-footer {
   padding: 16px 24px 24px;
   display: flex;
@@ -178,7 +178,7 @@ defineExpose({ openModal, closeModal })
   justify-content: center;
 }
 
-/* 버튼 공통 */
+/* Button common */
 .modal-btn {
   flex: 1;
   max-width: 160px;
@@ -199,7 +199,7 @@ defineExpose({ openModal, closeModal })
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* 취소 버튼 */
+/* Cancel button */
 .cancel-btn {
   background: rgba(100, 100, 100, 0.3);
   border-color: rgba(255, 255, 255, 0.3);
@@ -212,7 +212,7 @@ defineExpose({ openModal, closeModal })
   color: #ffffff;
 }
 
-/* 확인 버튼 */
+/* Confirm button */
 .confirm-btn {
   background: linear-gradient(135deg, rgba(var(--color-gold-rgb), 0.3), rgba(var(--color-gold-rgb), 0.2));
   border-color: var(--color-gold);
@@ -226,7 +226,7 @@ defineExpose({ openModal, closeModal })
   box-shadow: 0 4px 16px rgba(var(--color-gold-rgb), 0.4);
 }
 
-/* 애니메이션 */
+/* Animation */
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.3s ease;
@@ -252,7 +252,7 @@ defineExpose({ openModal, closeModal })
   opacity: 0;
 }
 
-/* 모바일 최적화 */
+/* Mobile optimization */
 @media (max-width: 480px) {
   .modal-container {
     max-width: 100%;

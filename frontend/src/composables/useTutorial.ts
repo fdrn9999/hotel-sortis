@@ -3,7 +3,7 @@ import { ref, computed, readonly } from 'vue'
 /**
  * useTutorial - Tutorial Manager (Floor 0: The Lobby)
  *
- * PROJECTPLAN.md 16.1.1 규격 준수:
+ * PROJECTPLAN.md 16.1.1 spec compliance:
  * - Step-based tutorial with dialogue
  * - Forced skill usage
  * - Guaranteed player victory

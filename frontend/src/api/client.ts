@@ -33,7 +33,7 @@ class ApiClient {
   ): Promise<ApiResponse<T>> {
     const url = this.buildUrl(endpoint, params)
 
-    // JWT 토큰 가져오기
+    // Get JWT token
     const token = localStorage.getItem('auth_token')
 
     const config: RequestInit = {

@@ -1,11 +1,11 @@
 <!--
-  스킬 효과 시각화 컴포넌트
-  CLAUDE.md 스킬 시스템 - 전투 중 스킬 발동 표시
+  Skill effect visualization component
+  CLAUDE.md Skill System - Display skill activation during battle
 -->
 <template>
   <Transition name="skill-effect">
     <div v-if="visible" class="skill-effect-notification" :class="rarityClass">
-      <!-- 스킬 아이콘 -->
+      <!-- Skill icon -->
       <div class="skill-icon">
         <img v-if="skill.iconUrl" :src="skill.iconUrl" :alt="skill.name" />
         <div v-else class="icon-placeholder">
@@ -13,14 +13,14 @@
         </div>
       </div>
 
-      <!-- 스킬 정보 -->
+      <!-- Skill info -->
       <div class="skill-info">
         <h3 class="skill-name">{{ skill.name }}</h3>
         <p class="skill-trigger">{{ $t(`skillEffects.trigger.${skill.triggerType}`) }}</p>
         <p class="skill-effect-desc">{{ effectDescription }}</p>
       </div>
 
-      <!-- 희귀도 배지 -->
+      <!-- Rarity badge -->
       <div class="rarity-badge" :class="rarityClass">
         {{ $t(`rarity.${skill.rarity.toLowerCase()}`) }}
       </div>
@@ -41,7 +41,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   effectDescription: '',
-  duration: 3000  // 3초 기본
+  duration: 3000  // 3 seconds default
 })
 
 const emit = defineEmits<{
@@ -65,7 +65,7 @@ watch(() => props.show, (newVal) => {
 function showNotification() {
   visible.value = true
 
-  // 자동 숨김 (duration 후)
+  // Auto-hide after duration
   setTimeout(() => {
     hideNotification()
   }, props.duration)

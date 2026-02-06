@@ -2,16 +2,18 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useShopStore } from '@/stores/shop'
+import { useAuthStore } from '@/stores/auth'
 import AppNavigation from '@/components/AppNavigation.vue'
-import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
 
 const { t } = useI18n()
 const shopStore = useShopStore()
+const authStore = useAuthStore()
 
 const activeTab = ref<'diceSkins' | 'avatars'>('diceSkins')
 
-// TODO: get from auth store
-const playerId = ref(1)
+// Player ID from auth store (fallback to 1 for offline mode)
+const playerId = computed(() => authStore.playerId ?? 1)
 
 const displayItems = computed(() => {
   return activeTab.value === 'diceSkins' ? shopStore.diceSkins : shopStore.avatars
@@ -46,8 +48,15 @@ onMounted(() => {
     />
 
     <div class="main-content">
-      <!-- Loading -->
-      <LoadingSpinner v-if="shopStore.loading" :message="t('shop.loading')" />
+      <!-- Loading Skeleton -->
+      <div v-if="shopStore.loading" class="loading-skeleton">
+        <div class="skeleton-balance skeleton-shimmer"></div>
+        <div class="skeleton-tabs">
+          <div class="skeleton-tab skeleton-shimmer"></div>
+          <div class="skeleton-tab skeleton-shimmer"></div>
+        </div>
+        <SkeletonLoader variant="card" :count="6" />
+      </div>
 
       <!-- Error -->
       <div v-else-if="shopStore.error" class="error-state">
@@ -352,10 +361,112 @@ onMounted(() => {
   color: var(--color-gold);
 }
 
-/* Responsive */
+/* Skeleton Loading */
+.loading-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.skeleton-balance {
+  height: 60px;
+  border-radius: 12px;
+}
+
+.skeleton-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.skeleton-tab {
+  flex: 1;
+  height: 44px;
+  border-radius: 8px;
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--color-gold-rgb), 0.08) 0%,
+    rgba(var(--color-gold-rgb), 0.15) 50%,
+    rgba(var(--color-gold-rgb), 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Responsive - Tablet */
 @media (max-width: 768px) {
+  .main-content {
+    padding: 70px 16px 16px;
+  }
+
+  .item-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .balance-panel {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .balance-value {
+    font-size: 20px;
+  }
+
+  .tab-filter {
+    margin-bottom: 16px;
+  }
+
+  .tab-btn {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .item-card {
+    padding: 12px;
+  }
+
+  .item-name {
+    font-size: 15px;
+  }
+
+  .item-description {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+  .main-content {
+    padding: 66px 12px 12px;
+  }
+
   .item-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .balance-panel {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .tab-filter {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tab-btn {
+    width: 100%;
   }
 }
 </style>

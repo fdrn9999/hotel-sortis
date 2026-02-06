@@ -104,24 +104,24 @@ const router = createRouter({
   ]
 })
 
-// 네비게이션 가드
+// Navigation guard
 router.beforeEach(async (to, _from, next) => {
   const authStore = useAuthStore()
 
-  // 인증이 필요한 라우트
+  // Routes requiring authentication
   if (to.meta.requiresAuth) {
     if (!authStore.isAuthenticated) {
-      // 로그인되지 않았으면 로그인 페이지로
+      // Not logged in - redirect to login page
       next({ name: 'login', query: { redirect: to.fullPath } })
       return
     }
 
-    // 프로필 정보가 없으면 가져오기
+    // Fetch profile if not available
     if (!authStore.user) {
       try {
         await authStore.fetchProfile()
       } catch (error) {
-        // 프로필 조회 실패 시 로그아웃 및 로그인 페이지로
+        // Profile fetch failed - logout and redirect to login
         authStore.logout()
         next({ name: 'login', query: { redirect: to.fullPath } })
         return
@@ -129,9 +129,9 @@ router.beforeEach(async (to, _from, next) => {
     }
   }
 
-  // 게스트 전용 페이지 (로그인, 회원가입)
+  // Guest-only pages (login, signup)
   if (to.meta.guestOnly && authStore.isAuthenticated) {
-    // 이미 로그인되어 있으면 홈으로
+    // Already logged in - redirect to home
     next({ name: 'home' })
     return
   }

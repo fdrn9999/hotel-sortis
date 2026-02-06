@@ -172,6 +172,7 @@ import { useI18n } from 'vue-i18n'
 import { useDraftWebSocket } from '@/composables/useDraftWebSocket'
 import { useNotification } from '@/composables/useNotification'
 import { getDraftState as fetchDraftState } from '@/api/pvp'
+import { useAuthStore } from '@/stores/auth'
 import type { DraftState, DraftCompleteMessage } from '@/types/game'
 import AppNavigation from '@/components/AppNavigation.vue'
 
@@ -179,11 +180,12 @@ const router = useRouter()
 const route = useRoute()
 const { t } = useI18n()
 const { error: showError } = useNotification()
+const authStore = useAuthStore()
 
 // Get battleId from route query
 const battleId = computed(() => Number(route.query.battleId) || 0)
-// TODO: Get from auth store in production
-const playerId = ref(1)
+// Player ID from auth store (fallback to 1 for offline mode)
+const playerId = computed(() => authStore.playerId ?? 1)
 
 // State
 const loading = ref(true)

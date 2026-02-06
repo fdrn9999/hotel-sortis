@@ -7,11 +7,11 @@ import type {
 import { apiClient } from './client'
 
 /**
- * PvP API 클라이언트
+ * PvP API client
  */
 
 /**
- * 매칭 대기열 참가
+ * Join matchmaking queue
  */
 export async function joinMatchmakingQueue(playerId: number): Promise<JoinQueueResponse> {
   const response = await apiClient.post<JoinQueueResponse>('/api/v1/pvp/matchmaking/join', {
@@ -21,7 +21,7 @@ export async function joinMatchmakingQueue(playerId: number): Promise<JoinQueueR
 }
 
 /**
- * 상대 찾기 (폴링)
+ * Find match (polling)
  */
 export async function findMatch(playerId: number): Promise<MatchFoundResponse | null> {
   try {
@@ -30,7 +30,7 @@ export async function findMatch(playerId: number): Promise<MatchFoundResponse | 
     )
     return response.data
   } catch (error: any) {
-    // 204 No Content: 아직 상대 없음
+    // 204 No Content: no opponent found yet
     if (error.response?.status === 204) {
       return null
     }
@@ -39,7 +39,7 @@ export async function findMatch(playerId: number): Promise<MatchFoundResponse | 
 }
 
 /**
- * 매칭 대기 취소
+ * Leave matchmaking queue
  */
 export async function leaveMatchmakingQueue(playerId: number): Promise<void> {
   await apiClient.post('/api/v1/pvp/matchmaking/leave', {
@@ -48,7 +48,7 @@ export async function leaveMatchmakingQueue(playerId: number): Promise<void> {
 }
 
 /**
- * 랭크 정보 조회
+ * Get rank info
  */
 export async function getRankInfo(playerId: number): Promise<RankInfoResponse> {
   const response = await apiClient.get<RankInfoResponse>(`/api/v1/pvp/rank/${playerId}`)
@@ -56,7 +56,7 @@ export async function getRankInfo(playerId: number): Promise<RankInfoResponse> {
 }
 
 /**
- * ELO 기반 티어 계산 (클라이언트 사이드)
+ * Calculate tier based on ELO (client-side)
  */
 export function calculateTier(elo: number): string {
   if (elo >= 2200) return 'MASTER'
@@ -68,7 +68,7 @@ export function calculateTier(elo: number): string {
 }
 
 /**
- * 티어별 색상
+ * Tier color
  */
 export function getTierColor(tier: string): string {
   const colors: Record<string, string> = {
@@ -83,7 +83,7 @@ export function getTierColor(tier: string): string {
 }
 
 /**
- * 티어 이름 (i18n 키)
+ * Tier name (i18n key)
  */
 export function getTierI18nKey(tier: string): string {
   return `pvp.tiers.${tier.toLowerCase()}`

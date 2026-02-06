@@ -97,15 +97,15 @@ import AppNavigation from '@/components/AppNavigation.vue'
 const router = useRouter()
 const { t } = useI18n()
 
-// 상태
+// State
 const loading = ref(true)
 const error = ref('')
 const rankInfo = ref<RankInfoResponse | null>(null)
 
-// 플레이어 ID (임시 - 실제로는 인증에서 가져와야 함)
+// Player ID (temporary - should be from auth in production)
 const playerId = ref(1)
 
-// 계산된 속성
+// Computed properties
 const tierColor = computed(() => {
   if (!rankInfo.value) return '#808080'
   return getTierColor(rankInfo.value.tier)
@@ -138,7 +138,7 @@ onMounted(() => {
 })
 
 /**
- * 랭크 정보 로드
+ * Load rank info
  */
 const loadRankInfo = async () => {
   loading.value = true
@@ -154,14 +154,14 @@ const loadRankInfo = async () => {
 }
 
 /**
- * 매칭 시작
+ * Start matchmaking
  */
 const startMatchmaking = () => {
   router.push({ name: 'pvp-matchmaking' })
 }
 
 /**
- * 랭크 상세 보기
+ * View rank details
  */
 const viewRankDetails = () => {
   router.push({ name: 'pvp-rank' })
@@ -410,7 +410,7 @@ const viewRankDetails = () => {
   margin-bottom: 12px;
 }
 
-/* 반응형 */
+/* Responsive */
 @media (max-width: 768px) {
   .stats-summary {
     grid-template-columns: repeat(2, 1fr);

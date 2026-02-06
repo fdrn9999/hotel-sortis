@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 /**
- * Settings Store - 게임 설정 관리
- * CLAUDE.md 3.3.3 규칙 준수: 사운드, 진동, 그래픽, 게임플레이 설정
+ * Settings Store - Game settings management
+ * CLAUDE.md 3.3.3 rule compliance: Sound, vibration, graphics, gameplay settings
  */
 
 export interface GameSettings {

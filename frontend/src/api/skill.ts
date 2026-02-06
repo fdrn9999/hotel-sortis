@@ -1,13 +1,13 @@
 /**
- * 스킬 API 클라이언트 (i18n 지원)
- * CLAUDE.md i18n 규칙 참조
+ * Skill API client (i18n support)
+ * See CLAUDE.md i18n rules
  */
 import { apiClient } from './client'
 import type { Skill, SkillListResponse } from '@/types/game'
 
 /**
- * 모든 스킬 조회
- * Accept-Language 헤더가 자동으로 포함됨
+ * Get all skills
+ * Accept-Language header is automatically included
  */
 export async function getAllSkills(): Promise<SkillListResponse> {
   const response = await apiClient.get<SkillListResponse>('/api/v1/skills')
@@ -15,7 +15,7 @@ export async function getAllSkills(): Promise<SkillListResponse> {
 }
 
 /**
- * 희귀도별 스킬 조회
+ * Get skills by rarity
  */
 export async function getSkillsByRarity(rarity: string): Promise<SkillListResponse> {
   const response = await apiClient.get<SkillListResponse>(`/api/v1/skills/rarity/${rarity}`)
@@ -23,7 +23,7 @@ export async function getSkillsByRarity(rarity: string): Promise<SkillListRespon
 }
 
 /**
- * 특정 스킬 조회
+ * Get specific skill
  */
 export async function getSkill(id: number): Promise<Skill> {
   const response = await apiClient.get<Skill>(`/api/v1/skills/${id}`)
@@ -31,7 +31,7 @@ export async function getSkill(id: number): Promise<Skill> {
 }
 
 /**
- * 여러 스킬 ID로 조회 (스킬 장착 시 사용)
+ * Get skills by multiple IDs (used for skill equipping)
  */
 export async function getSkillsByIds(ids: number[]): Promise<SkillListResponse> {
   const response = await apiClient.get<SkillListResponse>('/api/v1/skills/batch', {

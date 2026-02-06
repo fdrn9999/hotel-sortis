@@ -1,27 +1,27 @@
 <template>
   <div class="skill-loadout-view">
-    <!-- 네비게이션 바 (CLAUDE.md 3.3.2절) -->
+    <!-- Navigation bar (CLAUDE.md 3.3.2) -->
     <div class="app-navigation">
-      <button class="nav-btn home-btn" @click="goToHome" aria-label="홈으로">
+      <button class="nav-btn home-btn" @click="goToHome" aria-label="Home">
         <span class="icon">🏠</span>
       </button>
-      <button v-if="canGoBack" class="nav-btn back-btn" @click="goBack" aria-label="뒤로가기">
+      <button v-if="canGoBack" class="nav-btn back-btn" @click="goBack" aria-label="Back">
         <span class="icon">←</span>
       </button>
       <h1 class="nav-title">{{ $t('skills.loadout.title') }}</h1>
-      <button class="nav-btn settings-btn" @click="goToSettings" aria-label="설정">
+      <button class="nav-btn settings-btn" @click="goToSettings" aria-label="Settings">
         <span class="icon">⚙️</span>
       </button>
     </div>
 
-    <!-- 메인 컨텐츠 -->
+    <!-- Main content -->
     <div class="main-content">
-      <!-- 로딩 상태 -->
+      <!-- Loading state -->
       <div v-if="skillStore.loading" class="loading">
         <p>{{ $t('common.loading') }}</p>
       </div>
 
-      <!-- 에러 상태 -->
+      <!-- Error state -->
       <div v-else-if="skillStore.error" class="error">
         <p>{{ $t('common.error') }}: {{ skillStore.error }}</p>
         <button @click="skillStore.loadAllSkills()" class="retry-btn">
@@ -29,9 +29,9 @@
         </button>
       </div>
 
-      <!-- 스킬 장착 화면 -->
+      <!-- Skill loadout screen -->
       <div v-else class="loadout-container">
-        <!-- 스킬 슬롯 (4개 고정) -->
+        <!-- Skill slots (4 fixed) -->
         <section class="skill-slots-section">
           <h2>{{ $t('skills.loadout.equipped') }} ({{ skillStore.equippedCount }}/4)</h2>
 
@@ -43,7 +43,7 @@
               :class="{ empty: !skill, filled: skill }"
               @click="onSlotClick(index)"
             >
-              <!-- 장착된 스킬 -->
+              <!-- Equipped skill -->
               <div v-if="skill" class="skill-card">
                 <div class="skill-header">
                   <span class="skill-name">{{ skill.name }}</span>
@@ -58,7 +58,7 @@
                 </button>
               </div>
 
-              <!-- 빈 슬롯 -->
+              <!-- Empty slot -->
               <div v-else class="empty-slot">
                 <span class="slot-number">{{ index + 1 }}</span>
                 <p>{{ $t('skills.loadout.emptySlot') }}</p>
@@ -67,11 +67,11 @@
           </div>
         </section>
 
-        <!-- 보유 스킬 목록 -->
+        <!-- Owned skill list -->
         <section class="owned-skills-section">
           <h2>{{ $t('skills.loadout.available') }}</h2>
 
-          <!-- 희귀도별 필터 -->
+          <!-- Rarity filter -->
           <div class="rarity-filters">
             <button
               v-for="rarity in rarities"
@@ -84,7 +84,7 @@
             </button>
           </div>
 
-          <!-- 스킬 목록 -->
+          <!-- Skill list -->
           <div class="skill-list">
             <div
               v-for="skill in filteredSkills"
@@ -106,7 +106,7 @@
               <p class="skill-item-description">{{ skill.description }}</p>
               <span class="skill-item-trigger">{{ skill.triggerType }}</span>
 
-              <!-- 장착됨 표시 -->
+              <!-- Equipped indicator -->
               <span v-if="skillStore.isSkillEquipped(skill.id)" class="equipped-badge">
                 ✓ {{ $t('skills.loadout.equipped') }}
               </span>
@@ -114,7 +114,7 @@
           </div>
         </section>
 
-        <!-- 전투 시작 버튼 -->
+        <!-- Start battle button -->
         <div class="action-buttons">
           <button class="start-battle-btn" @click="startBattle" :disabled="!skillStore.validateLoadout()">
             {{ $t('skills.loadout.startBattle') }} ({{ skillStore.equippedCount }}{{ $t('skills.loadout.skillsEquipped') }})
@@ -131,6 +131,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useSkillStore } from '@/stores/skill'
 import { useCampaignStore } from '@/stores/campaign'
+import { useAuthStore } from '@/stores/auth'
 import { useNotification } from '@/composables/useNotification'
 import type { Skill } from '@/types/game'
 
@@ -139,7 +140,11 @@ const route = useRoute()
 const { t } = useI18n()
 const skillStore = useSkillStore()
 const campaignStore = useCampaignStore()
+const authStore = useAuthStore()
 const { info, error } = useNotification()
+
+// Player ID from auth store (fallback to 1 for offline mode)
+const playerId = computed(() => authStore.playerId ?? 1)
 
 // Campaign context from route query
 const isCampaignMode = computed(() => route.query.floor !== undefined)
@@ -175,7 +180,7 @@ function goToSettings() {
 }
 
 function equipSkill(skill: Skill) {
-  // 이미 장착되어 있으면 제거
+  // If already equipped, remove it
   if (skillStore.isSkillEquipped(skill.id)) {
     const index = skillStore.equippedSkills.findIndex(s => s?.id === skill.id)
     if (index !== -1) {
@@ -184,12 +189,12 @@ function equipSkill(skill: Skill) {
     return
   }
 
-  // 빈 슬롯에 장착
+  // Equip to empty slot
   const emptyIndex = skillStore.equippedSkills.findIndex(s => s === null)
   if (emptyIndex !== -1) {
     skillStore.equipSkill(skill, emptyIndex)
   } else {
-    // 슬롯 가득 참 (커스텀 모달 사용 - CLAUDE.md 3.3.1절)
+    // Slots full (use custom modal - CLAUDE.md 3.3.1)
     info(t('skills.loadout.slotsFull'))
   }
 }
@@ -199,7 +204,7 @@ function unequipSkill(index: number) {
 }
 
 function onSlotClick(index: number) {
-  // 빈 슬롯 클릭 시 스킬 목록으로 스크롤
+  // Scroll to skill list when clicking empty slot
   if (!skillStore.equippedSkills[index]) {
     const skillListSection = document.querySelector('.owned-skills-section')
     skillListSection?.scrollIntoView({ behavior: 'smooth' })
@@ -217,9 +222,8 @@ async function startBattle() {
   // Campaign mode: call campaign API to start floor
   if (isCampaignMode.value && campaignFloor.value) {
     try {
-      const playerId = 1 // TODO: Get from auth
       const response = await campaignStore.startFloor(
-        playerId,
+        playerId.value,
         campaignFloor.value,
         equippedSkillIds
       )
@@ -261,7 +265,7 @@ async function startBattle() {
 
 // Lifecycle
 onMounted(async () => {
-  // 스킬 목록 로드 (i18n 자동 적용)
+  // Load skill list (i18n auto-applied)
   await skillStore.loadAllSkills()
 })
 </script>
@@ -273,7 +277,7 @@ onMounted(async () => {
   color: #f5f5f5;
 }
 
-/* 네비게이션 바 */
+/* Navigation bar */
 .app-navigation {
   position: fixed;
   top: 0;
@@ -316,14 +320,14 @@ onMounted(async () => {
   margin: 0;
 }
 
-/* 메인 컨텐츠 */
+/* Main content */
 .main-content {
   margin-top: 60px;
   padding: 20px;
   padding-bottom: 80px;
 }
 
-/* 스킬 슬롯 섹션 */
+/* Skill slots section */
 .skill-slots-section {
   margin-bottom: 40px;
 }
@@ -447,7 +451,7 @@ onMounted(async () => {
   margin-bottom: 8px;
 }
 
-/* 보유 스킬 섹션 */
+/* Owned skills section */
 .owned-skills-section {
   margin-bottom: 40px;
 }
@@ -556,7 +560,7 @@ onMounted(async () => {
   font-weight: bold;
 }
 
-/* 전투 시작 버튼 */
+/* Start battle button */
 .action-buttons {
   display: flex;
   justify-content: center;
@@ -591,7 +595,7 @@ onMounted(async () => {
   transform: none;
 }
 
-/* 로딩/에러 상태 */
+/* Loading/Error state */
 .loading,
 .error {
   text-align: center;

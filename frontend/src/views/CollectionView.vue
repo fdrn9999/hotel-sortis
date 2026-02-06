@@ -3,17 +3,19 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useCosmeticStore } from '@/stores/cosmetic'
+import { useAuthStore } from '@/stores/auth'
 import AppNavigation from '@/components/AppNavigation.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 const router = useRouter()
 const { t } = useI18n()
 const cosmeticStore = useCosmeticStore()
+const authStore = useAuthStore()
 
 const activeTab = ref<'diceSkins' | 'avatars'>('diceSkins')
 
-// TODO: get from auth store
-const playerId = ref(1)
+// Player ID from auth store (fallback to 1 for offline mode)
+const playerId = computed(() => authStore.playerId ?? 1)
 
 const displayItems = computed(() => {
   return activeTab.value === 'diceSkins'

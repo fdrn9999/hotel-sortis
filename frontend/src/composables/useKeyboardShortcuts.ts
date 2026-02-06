@@ -3,8 +3,8 @@ import { useRouter } from 'vue-router'
 import { useSettingsStore } from '@/stores/settings'
 
 /**
- * useKeyboardShortcuts - PC 키보드 단축키 지원
- * CLAUDE.md 3.3.5 규칙 준수: ESC, H, Backspace, M, Space
+ * useKeyboardShortcuts - PC keyboard shortcut support
+ * CLAUDE.md 3.3.5 rule compliance: ESC, H, Backspace, M, Space
  */
 export function useKeyboardShortcuts() {
   const router = useRouter()

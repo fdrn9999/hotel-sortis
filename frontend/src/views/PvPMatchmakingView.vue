@@ -82,31 +82,31 @@ const router = useRouter()
 const { t } = useI18n()
 const { confirm } = useConfirmModal()
 
-// 플레이어 정보 (임시 - 실제로는 인증에서 가져와야 함)
+// Player info (temporary - should be from auth in production)
 const playerId = ref(1)
 const playerElo = ref(1000)
 
-// 매칭 상태
+// Matching status
 const isMatching = ref(false)
 const matchFound = ref(false)
 const loading = ref(false)
 const error = ref('')
 
-// 대기 정보
+// Queue info
 const queueSize = ref(0)
 const waitTimeSeconds = ref(0)
 const eloRange = ref(150)
 
-// 매치 정보
+// Match info
 const opponentId = ref(0)
 const opponentElo = ref(0)
 const battleId = ref(0)
 
-// 폴링 인터벌
+// Polling interval
 let pollingInterval: number | null = null
 let waitTimeInterval: number | null = null
 
-// 티어 계산
+// Tier calculation
 const tier = computed(() => calculateTier(playerElo.value))
 const tierColor = computed(() => getTierColor(tier.value))
 const tierName = computed(() => t(`pvp.tiers.${tier.value.toLowerCase()}`))
@@ -120,17 +120,17 @@ const {
 } = usePvPWebSocket(playerId.value)
 
 onMounted(() => {
-  // WebSocket 구독
+  // WebSocket subscription
   subscribePvP()
 
-  // 매치 찾기 이벤트 핸들러
+  // Match found event handler
   wsOnMatchFound.value = (match: MatchFoundResponse) => {
     handleMatchFound(match)
   }
 })
 
 onUnmounted(() => {
-  // 매칭 중이면 취소
+  // Cancel if currently matching
   if (isMatching.value) {
     cancelMatching()
   }
@@ -138,14 +138,14 @@ onUnmounted(() => {
 })
 
 /**
- * 매칭 시작
+ * Start matchmaking
  */
 const startMatching = async () => {
   loading.value = true
   error.value = ''
 
   try {
-    // 대기열 참가
+    // Join queue
     const response = await joinMatchmakingQueue(playerId.value)
     playerElo.value = response.elo
     queueSize.value = response.queueSize
@@ -153,23 +153,23 @@ const startMatching = async () => {
     isMatching.value = true
     loading.value = false
 
-    // 대기 시간 카운터 시작
+    // Start wait time counter
     waitTimeSeconds.value = 0
     waitTimeInterval = window.setInterval(() => {
       waitTimeSeconds.value++
 
-      // ELO 범위 확대 (30초마다 +50)
+      // Expand ELO range (+50 every 30 seconds)
       if (waitTimeSeconds.value % 30 === 0) {
         eloRange.value += 50
       }
 
-      // 3분 초과 시 범위 무제한
+      // Unlimited range after 3 minutes
       if (waitTimeSeconds.value >= 180) {
         eloRange.value = 9999
       }
     }, 1000)
 
-    // 폴링 시작 (2초마다 상대 찾기)
+    // Start polling (find opponent every 2 seconds)
     pollingInterval = window.setInterval(async () => {
       try {
         const match = await findMatch(playerId.value)
@@ -189,7 +189,7 @@ const startMatching = async () => {
 }
 
 /**
- * 매칭 취소
+ * Cancel matchmaking
  */
 const cancelMatching = async () => {
   try {
@@ -201,7 +201,7 @@ const cancelMatching = async () => {
 }
 
 /**
- * 매칭 중지
+ * Stop matchmaking
  */
 const stopMatching = () => {
   isMatching.value = false
@@ -221,7 +221,7 @@ const stopMatching = () => {
 }
 
 /**
- * 매치 찾음 처리 (idempotent - safe to call multiple times)
+ * Handle match found (idempotent - safe to call multiple times)
  */
 const handleMatchFound = (match: MatchFoundResponse) => {
   // Prevent double handling from both polling and WebSocket
@@ -233,9 +233,9 @@ const handleMatchFound = (match: MatchFoundResponse) => {
   opponentId.value = playerId.value === match.player1Id ? match.player2Id : match.player1Id
   opponentElo.value = playerId.value === match.player1Id ? match.player2Elo : match.player1Elo
 
-  // 2초 후 화면 이동
+  // Navigate after 2 seconds
   setTimeout(() => {
-    // Draft 모드가 활성화된 경우 드래프트 화면으로, 아니면 전투 화면으로
+    // Go to draft screen if draft mode enabled, otherwise go to battle
     if (match.hasDraft) {
       router.push({
         name: 'pvp-draft',
@@ -251,11 +251,11 @@ const handleMatchFound = (match: MatchFoundResponse) => {
 }
 
 /**
- * 홈으로
+ * Go home
  */
 const goHome = async () => {
   if (isMatching.value) {
-    // CLAUDE.md 3.3.1 규칙 준수: confirm() 대체
+    // CLAUDE.md 3.3.1 rule compliance: replaces confirm()
     const confirmed = await confirm({
       title: t('pvp.matchmaking.cancel'),
       message: t('pvp.matchmaking.confirmLeave'),

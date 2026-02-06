@@ -1,6 +1,6 @@
 /**
- * 코스메틱 Store (Pinia)
- * CLAUDE.md 규칙 참조 - Pay-to-Win 금지
+ * Cosmetic Store (Pinia)
+ * See CLAUDE.md rules - No Pay-to-Win
  */
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
@@ -63,7 +63,7 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
 
   // Actions
   /**
-   * 모든 주사위 스킨 로드 (소유 여부 포함)
+   * Load all dice skins (including ownership status)
    */
   async function loadAllDiceSkins(playerId: number) {
     loading.value = true
@@ -81,7 +81,7 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
   }
 
   /**
-   * 모든 아바타 로드 (소유 여부 포함)
+   * Load all avatars (including ownership status)
    */
   async function loadAllAvatars(playerId: number) {
     loading.value = true
@@ -99,7 +99,7 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
   }
 
   /**
-   * 플레이어 컬렉션 로드 (보유 중인 코스메틱만)
+   * Load player collection (owned cosmetics only)
    */
   async function loadCollection(playerId: number) {
     loading.value = true
@@ -120,7 +120,7 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
   }
 
   /**
-   * 코스메틱 장착
+   * Equip cosmetic
    */
   async function equipCosmetic(
     playerId: number,
@@ -133,17 +133,17 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
     try {
       const response = await apiEquipCosmetic(playerId, cosmeticType, cosmeticId)
 
-      // 로컬 상태 업데이트
+      // Update local state
       if (cosmeticType === 'DICE_SKIN') {
         equippedDiceSkinId.value = cosmeticId
-        // 주사위 스킨 목록 업데이트
+        // Update dice skin list
         diceSkins.value = diceSkins.value.map(skin => ({
           ...skin,
           isEquipped: skin.id === cosmeticId
         }))
       } else if (cosmeticType === 'AVATAR') {
         equippedAvatarId.value = cosmeticId
-        // 아바타 목록 업데이트
+        // Update avatar list
         avatars.value = avatars.value.map(avatar => ({
           ...avatar,
           isEquipped: avatar.id === cosmeticId
@@ -160,7 +160,7 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
   }
 
   /**
-   * 코스메틱 장착 해제
+   * Unequip cosmetic
    */
   async function unequipCosmetic(
     playerId: number,
@@ -172,17 +172,17 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
     try {
       const response = await apiUnequipCosmetic(playerId, cosmeticType)
 
-      // 로컬 상태 업데이트
+      // Update local state
       if (cosmeticType === 'DICE_SKIN') {
         equippedDiceSkinId.value = null
-        // 주사위 스킨 목록 업데이트
+        // Update dice skin list
         diceSkins.value = diceSkins.value.map(skin => ({
           ...skin,
           isEquipped: false
         }))
       } else if (cosmeticType === 'AVATAR') {
         equippedAvatarId.value = null
-        // 아바타 목록 업데이트
+        // Update avatar list
         avatars.value = avatars.value.map(avatar => ({
           ...avatar,
           isEquipped: false
@@ -199,7 +199,7 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
   }
 
   /**
-   * 특정 코스메틱이 소유되어 있는지 확인
+   * Check if a specific cosmetic is owned
    */
   function isCosmeticOwned(cosmeticType: CosmeticType, cosmeticId: number): boolean {
     if (cosmeticType === 'DICE_SKIN') {
@@ -211,7 +211,7 @@ export const useCosmeticStore = defineStore('cosmetic', () => {
   }
 
   /**
-   * 특정 코스메틱이 장착되어 있는지 확인
+   * Check if a specific cosmetic is equipped
    */
   function isCosmeticEquipped(cosmeticType: CosmeticType, cosmeticId: number): boolean {
     if (cosmeticType === 'DICE_SKIN') {

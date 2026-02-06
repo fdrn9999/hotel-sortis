@@ -2,8 +2,8 @@ import { onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 /**
- * useGestures - 모바일 제스처 지원
- * CLAUDE.md 3.3.6 규칙 준수: 스와이프 뒤로가기
+ * useGestures - Mobile gesture support
+ * CLAUDE.md 3.3.6 rule compliance: swipe back navigation
  */
 export function useGestures() {
   const router = useRouter()

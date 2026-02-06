@@ -1,6 +1,6 @@
 /**
- * 상점 API 클라이언트 (i18n 지원)
- * Pay-to-Win 금지 - 영혼석으로만 구매 가능
+ * Shop API client (i18n support)
+ * No Pay-to-Win - purchase with soul stones only
  */
 import { apiClient } from './client'
 import type {
@@ -12,8 +12,8 @@ import type {
 } from '@/types/game'
 
 /**
- * 상점 조회 (구매 가능한 코스메틱 목록)
- * Accept-Language 헤더가 자동으로 포함됨
+ * Get shop (list of purchasable cosmetics)
+ * Accept-Language header is automatically included
  */
 export async function getShop(playerId: number): Promise<ShopResponse> {
   const response = await apiClient.get<ShopResponse>('/api/v1/shop', {
@@ -23,7 +23,7 @@ export async function getShop(playerId: number): Promise<ShopResponse> {
 }
 
 /**
- * 코스메틱 구매
+ * Purchase cosmetic
  */
 export async function purchaseCosmetic(
   playerId: number,
@@ -40,7 +40,7 @@ export async function purchaseCosmetic(
 }
 
 /**
- * 플레이어 지갑 조회 (영혼석, ELO)
+ * Get player wallet (soul stones, ELO)
  */
 export async function getPlayerWallet(playerId: number): Promise<PlayerWallet> {
   const response = await apiClient.get<PlayerWallet>('/api/v1/shop/wallet', {

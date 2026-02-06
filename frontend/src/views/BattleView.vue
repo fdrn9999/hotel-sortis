@@ -7,6 +7,7 @@ import { useDiceRoller, type DiceResult } from '@/composables/useDiceRoller'
 import { useOfflineBattle } from '@/composables/useOfflineBattle'
 import { useCampaignStore } from '@/stores/campaign'
 import { useCosmeticStore } from '@/stores/cosmetic'
+import { useAuthStore } from '@/stores/auth'
 import { SFX, BGM } from '@/composables/useSound'
 import DiceRoller from '@/components/DiceRoller.vue'
 import SkillSelectionView from '@/views/SkillSelectionView.vue'
@@ -17,6 +18,7 @@ const router = useRouter()
 const route = useRoute()
 const campaignStore = useCampaignStore()
 const cosmeticStore = useCosmeticStore()
+const authStore = useAuthStore()
 const offlineBattle = useOfflineBattle()
 
 // Vue-based Dice Roller
@@ -40,7 +42,7 @@ const campaignMutatorIcon = computed(() => (route.query.mutatorIcon as string) |
 
 // Battle state
 const battleId = ref<number | null>(null)
-const playerId = ref(1) // TODO: Get from auth
+const playerId = computed(() => authStore.playerId ?? 1) // Fallback to 1 for offline mode
 const floor = ref(1)
 const playerHP = ref(100)
 const enemyHP = ref(100)
@@ -1089,7 +1091,104 @@ function goToSettings() {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive */
+/* Responsive - Tablet Landscape */
+@media (max-width: 1024px) {
+  .battle-header {
+    padding: 0.75rem;
+  }
+
+  .nav-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .die {
+    width: 58px;
+    height: 58px;
+    font-size: 1.6rem;
+  }
+
+  .roll-btn {
+    padding: 0.9rem 3rem;
+    font-size: 1.2rem;
+  }
+
+  .battle-arena {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .dice-area {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .battle-log {
+    padding: 0.75rem;
+    min-height: 100px;
+  }
+
+  .phase-transition-boss {
+    font-size: 40px;
+  }
+
+  .phase-transition-quote {
+    font-size: 18px;
+  }
+
+  .phase-transition-phase {
+    font-size: 20px;
+  }
+
+  .mutator-banner {
+    padding: 6px 12px;
+    gap: 8px;
+  }
+
+  .mutator-name {
+    font-size: 13px;
+  }
+
+  .mutator-desc {
+    font-size: 11px;
+  }
+}
+
+/* Responsive - Tablet Portrait */
+@media (max-width: 768px) {
+  .die {
+    width: 56px;
+    height: 56px;
+    font-size: 1.5rem;
+  }
+
+  .roll-btn {
+    padding: 0.85rem 2.5rem;
+    font-size: 1.15rem;
+  }
+
+  .floor-info {
+    font-size: 0.85rem;
+  }
+
+  .hp-bar {
+    height: 28px;
+  }
+
+  .hp-text {
+    font-size: 0.8rem;
+  }
+
+  .battle-result h2 {
+    font-size: 2rem;
+  }
+
+  .phase-transition-boss {
+    font-size: 36px;
+  }
+}
+
+/* Responsive - Mobile */
 @media (max-width: 600px) {
   .die {
     width: 52px;

@@ -1,6 +1,6 @@
 /**
- * 스킬 효과 알림 관리 Composable
- * CLAUDE.md - 스킬 효과 시각화
+ * Skill effect notification management Composable
+ * CLAUDE.md - Skill effect visualization
  */
 import { ref } from 'vue'
 import type { Skill } from '@/types/game'
@@ -17,19 +17,19 @@ const isShowing = ref(false)
 
 export function useSkillEffectNotifications() {
   /**
-   * 스킬 효과 알림 추가
+   * Add skill effect notification
    */
   function addNotification(notification: SkillEffectNotification) {
     notificationQueue.value.push(notification)
 
-    // 현재 표시 중이 아니면 바로 표시
+    // Show immediately if not currently showing
     if (!isShowing.value) {
       showNextNotification()
     }
   }
 
   /**
-   * 다음 알림 표시
+   * Show next notification
    */
   function showNextNotification() {
     if (notificationQueue.value.length === 0) {
@@ -41,7 +41,7 @@ export function useSkillEffectNotifications() {
     isShowing.value = true
     currentNotification.value = notificationQueue.value.shift() || null
 
-    // duration 후 다음 알림
+    // Show next notification after duration
     const duration = currentNotification.value?.duration || 3000
     setTimeout(() => {
       showNextNotification()
@@ -49,7 +49,7 @@ export function useSkillEffectNotifications() {
   }
 
   /**
-   * 스킬 발동 시 호출 (간편 헬퍼)
+   * Called when skill activates (convenience helper)
    */
   function notifySkillActivated(
     skill: Skill,
@@ -64,7 +64,7 @@ export function useSkillEffectNotifications() {
   }
 
   /**
-   * 모든 알림 클리어
+   * Clear all notifications
    */
   function clearNotifications() {
     notificationQueue.value = []
@@ -73,7 +73,7 @@ export function useSkillEffectNotifications() {
   }
 
   /**
-   * 알림 큐 크기
+   * Notification queue size
    */
   function getQueueSize() {
     return notificationQueue.value.length

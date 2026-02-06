@@ -1,6 +1,6 @@
 <template>
   <nav class="app-navigation">
-    <!-- 좌측: 홈 + 뒤로가기 버튼 -->
+    <!-- Left: Home + Back buttons -->
     <div class="nav-left">
       <button
         v-if="showHome"
@@ -22,11 +22,11 @@
       </button>
     </div>
 
-    <!-- 중앙: 제목 (선택) -->
+    <!-- Center: Title (optional) -->
     <h1 v-if="title" class="nav-title">{{ title }}</h1>
     <div v-else class="nav-spacer"></div>
 
-    <!-- 우측: 설정 버튼 -->
+    <!-- Right: Settings button -->
     <div class="nav-right">
       <button
         v-if="showSettings"
@@ -59,12 +59,12 @@ const props = defineProps<{
 const router = useRouter()
 useI18n()
 
-// 뒤로가기 가능 여부
+// Can go back
 const canGoBack = computed(() => {
   return window.history.length > 1
 })
 
-// 홈 버튼 클릭
+// Home button click
 const handleHome = () => {
   if (props.onHome) {
     props.onHome()
@@ -73,7 +73,7 @@ const handleHome = () => {
   }
 }
 
-// 뒤로가기 버튼 클릭
+// Back button click
 const handleBack = () => {
   if (props.onBack) {
     props.onBack()
@@ -82,7 +82,7 @@ const handleBack = () => {
   }
 }
 
-// 설정 버튼 클릭
+// Settings button click
 const handleSettings = () => {
   if (props.onSettings) {
     props.onSettings()
@@ -169,7 +169,7 @@ const handleSettings = () => {
   box-shadow: 0 2px 6px rgba(var(--color-gold-rgb), 0.2);
 }
 
-/* 버튼별 스타일 */
+/* Button-specific styles */
 .home-btn {
   font-size: 18px;
 }
@@ -183,7 +183,7 @@ const handleSettings = () => {
   font-size: 20px;
 }
 
-/* 모바일 최적화 */
+/* Mobile optimization */
 @media (max-width: 768px) {
   .app-navigation {
     padding: 0 12px;

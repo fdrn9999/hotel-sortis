@@ -174,16 +174,18 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useCampaignStore } from '@/stores/campaign'
+import { useAuthStore } from '@/stores/auth'
 import type { CampaignFloorStatus } from '@/types/game'
 
 const router = useRouter()
 const { t } = useI18n()
 const campaignStore = useCampaignStore()
+const authStore = useAuthStore()
 
 // State
 const selectedFloor = ref<number | null>(null)
 const floorTowerRef = ref<HTMLElement | null>(null)
-const playerId = 1 // TODO: Get from auth store
+const playerId = computed(() => authStore.playerId ?? 1) // Fallback to 1 for offline mode
 
 // Computed
 const canGoBack = computed(() => window.history.length > 1)
@@ -256,7 +258,7 @@ function getDifficultyLabel(aiLevel: number): string {
 }
 
 async function loadProgress() {
-  await campaignStore.loadCampaignProgress(playerId)
+  await campaignStore.loadCampaignProgress(playerId.value)
   // Auto-select the highest available floor
   if (campaignStore.floors.length > 0) {
     selectedFloor.value = campaignStore.highestAvailableFloor

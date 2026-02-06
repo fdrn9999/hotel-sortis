@@ -1,7 +1,7 @@
 /**
- * useNotification - Toast 알림 시스템
+ * useNotification - Toast notification system
  *
- * CLAUDE.md 규칙 준수: alert(), confirm(), prompt() 대체
+ * CLAUDE.md rule compliance: replaces alert(), confirm(), prompt()
  */
 
 export type ToastType = 'success' | 'error' | 'info'
@@ -13,11 +13,11 @@ export interface ToastOptions {
 }
 
 /**
- * Toast 알림을 표시하는 composable
+ * Composable for displaying toast notifications
  */
 export function useNotification() {
   const showToast = (message: string, type: ToastType = 'info', duration = 3000) => {
-    // CustomEvent를 사용해 Toast 컴포넌트로 전달
+    // Dispatch CustomEvent to Toast component
     window.dispatchEvent(
       new CustomEvent('show-toast', {
         detail: { message, type, duration }

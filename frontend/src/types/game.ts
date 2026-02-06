@@ -14,8 +14,8 @@ export type SkillTrigger = 'BATTLE_START' | 'TURN_START' | 'DICE_ROLL' | 'BEFORE
 export interface Skill {
   id: number
   skillCode: string
-  name: string          // 사용자 언어의 이름 (백엔드 API 응답)
-  description: string   // 사용자 언어의 설명 (백엔드 API 응답)
+  name: string          // Name in user's language (backend API response)
+  description: string   // Description in user's language (backend API response)
   rarity: SkillRarity
   triggerType: string   // BATTLE_START, DICE_ROLL, etc.
   iconUrl?: string
@@ -24,7 +24,7 @@ export interface Skill {
 export interface SkillListResponse {
   skills: Skill[]
   total: number
-  language: string  // 응답에 사용된 언어 (ko, en, ja, zh)
+  language: string  // Language used in response (ko, en, ja, zh)
 }
 
 export type EquippedSkills = [Skill | null, Skill | null, Skill | null, Skill | null]
@@ -179,7 +179,7 @@ export interface PvPMatch {
   winnerId?: number
 }
 
-// PvP API 응답 타입들
+// PvP API response types
 export interface JoinQueueResponse {
   playerId: number
   elo: number
@@ -213,12 +213,12 @@ export interface PvPRewardInfo {
   result: 'VICTORY' | 'DEFEAT' | 'DRAW'
 }
 
-// WebSocket 메시지 타입들
+// WebSocket message types
 export interface TurnStartMessage {
   battleId: number
   currentTurn: TurnActor
   turnNumber: number
-  timeRemaining: number  // 밀리초
+  timeRemaining: number  // milliseconds
 }
 
 export interface DiceResultMessage {
@@ -245,8 +245,8 @@ export type CosmeticRarity = SkillRarity // Common, Rare, Epic, Legendary
 export interface DiceSkin {
   id: number
   skinCode: string
-  name: string          // 사용자 언어의 이름
-  description: string   // 사용자 언어의 설명
+  name: string          // Name in user's language
+  description: string   // Description in user's language
   rarity: CosmeticRarity
   price: number
   material: string      // 'standard', 'metal', 'glass', 'cosmic'
@@ -259,23 +259,23 @@ export interface DiceSkin {
   emissiveIntensity?: number
   isDefault: boolean
   isAvailable: boolean
-  isOwned: boolean      // 플레이어 소유 여부
-  isEquipped: boolean   // 장착 여부
+  isOwned: boolean      // Whether player owns this
+  isEquipped: boolean   // Whether equipped
   previewUrl?: string
 }
 
 export interface Avatar {
   id: number
   avatarCode: string
-  name: string          // 사용자 언어의 이름
-  description: string   // 사용자 언어의 설명
+  name: string          // Name in user's language
+  description: string   // Description in user's language
   rarity: CosmeticRarity
   price: number
   avatarUrl: string
   isDefault: boolean
   isAvailable: boolean
-  isOwned: boolean      // 플레이어 소유 여부
-  isEquipped: boolean   // 장착 여부
+  isOwned: boolean      // Whether player owns this
+  isEquipped: boolean   // Whether equipped
   previewUrl?: string
 }
 
@@ -297,7 +297,7 @@ export interface ShopItem {
   price: number
   previewUrl?: string
   isOwned: boolean
-  isPurchasable: boolean  // 미소유 + 영혼석 충분
+  isPurchasable: boolean  // Not owned + enough soul stones
 }
 
 export interface ShopResponse {

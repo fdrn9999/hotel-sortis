@@ -3,12 +3,12 @@ import { Howl, Howler } from 'howler'
 import { useSettingsStore } from '@/stores/settings'
 
 /**
- * SoundManager - Howler.js 기반 사운드 시스템
- * PROJECTPLAN.md 11장 사운드 디자인 규격 준수
+ * SoundManager - Howler.js-based sound system
+ * Follows PROJECTPLAN.md Chapter 11 Sound Design specifications
  *
- * BGM: 크로스페이드 + 루핑
- * SFX: 효과음 (주사위, 족보, 전투, UI)
- * Web Audio API: 에셋 파일 없이도 합성음으로 동작
+ * BGM: Crossfade + looping
+ * SFX: Sound effects (dice, hands, combat, UI)
+ * Web Audio API: Works with synthesized sounds even without asset files
  */
 
 // --- Audio Context for synthesized sounds ---
@@ -92,7 +92,7 @@ function playNoise(duration: number, volume = 0.15) {
 // --- Sound Effect Functions (synthesized) ---
 
 export const SFX = {
-  /** 주사위 굴림 시작 - 나무 탁자 위 구르는 소리 */
+  /** Dice roll start - rolling sound on wooden table */
   diceRoll() {
     playNoise(0.8, 0.2)
     // Multiple short taps to simulate bouncing
@@ -103,13 +103,13 @@ export const SFX = {
     }
   },
 
-  /** 주사위 착지 - 멈추는 소리 */
+  /** Dice landing - stopping sound */
   diceLand() {
     playTone(350, 0.15, 'triangle', 0.2)
     playNoise(0.1, 0.15)
   },
 
-  /** 에이스 족보 완성 - 반짝이는 마법 소리 */
+  /** Ace hand complete - sparkling magic sound */
   aceComplete() {
     const notes = [1047, 1319, 1568, 2093] // C6, E6, G6, C7
     notes.forEach((freq, i) => {
@@ -117,14 +117,14 @@ export const SFX = {
     })
   },
 
-  /** 트리플 족보 완성 - 폭발적 소리 */
+  /** Triple hand complete - explosive sound */
   tripleComplete() {
     playTone(880, 0.5, 'sawtooth', 0.2)
     setTimeout(() => playTone(1100, 0.4, 'sine', 0.25), 100)
     setTimeout(() => playTone(1320, 0.3, 'sine', 0.2), 200)
   },
 
-  /** 스트레이트/스트라이크/슬래시 족보 완성 - 상승 음계 */
+  /** Straight/Strike/Slash hand complete - ascending scale */
   straightComplete() {
     const notes = [523, 659, 784] // C5, E5, G5
     notes.forEach((freq, i) => {
@@ -132,38 +132,38 @@ export const SFX = {
     })
   },
 
-  /** 스톰 족보 완성 - 바람 + 천둥 */
+  /** Storm hand complete - wind + thunder */
   stormComplete() {
     playNoise(0.8, 0.2)
     setTimeout(() => playTone(80, 0.5, 'sawtooth', 0.3), 200)
     setTimeout(() => playNoise(0.3, 0.25), 400)
   },
 
-  /** 페어 족보 완성 - 부드러운 벨 소리 */
+  /** Pair hand complete - soft bell sound */
   pairComplete() {
     playTone(659, 0.4, 'sine', 0.2) // E5
     setTimeout(() => playTone(784, 0.3, 'sine', 0.15), 100) // G5
   },
 
-  /** 노 핸드 - 실망 소리 */
+  /** No hand - disappointment sound */
   noHandComplete() {
     playTone(262, 0.3, 'sine', 0.15) // C4
     setTimeout(() => playTone(220, 0.4, 'sine', 0.12), 150) // A3 (descending)
   },
 
-  /** 데미지 처리 - 히트 사운드 */
+  /** Damage dealt - hit sound */
   damageDealt() {
     playTone(150, 0.15, 'square', 0.2)
     playNoise(0.1, 0.2)
   },
 
-  /** 피격 사운드 */
+  /** Damage taken sound */
   damageTaken() {
     playTone(100, 0.2, 'sawtooth', 0.15)
     setTimeout(() => playNoise(0.15, 0.1), 50)
   },
 
-  /** 승리 팡파르 */
+  /** Victory fanfare */
   victory() {
     const fanfare = [523, 659, 784, 1047] // C5, E5, G5, C6
     fanfare.forEach((freq, i) => {
@@ -176,7 +176,7 @@ export const SFX = {
     }, 800)
   },
 
-  /** 패배 사운드 */
+  /** Defeat sound */
   defeat() {
     const notes = [440, 392, 349, 262] // A4, G4, F4, C4 (descending)
     notes.forEach((freq, i) => {
@@ -184,7 +184,7 @@ export const SFX = {
     })
   },
 
-  /** 스킬 발동 (희귀도별) */
+  /** Skill activation (by rarity) */
   skillActivate(rarity: 'Common' | 'Rare' | 'Epic' | 'Legendary') {
     switch (rarity) {
       case 'Common':
@@ -208,28 +208,28 @@ export const SFX = {
     }
   },
 
-  /** UI 버튼 클릭 */
+  /** UI button click */
   buttonClick() {
     playTone(800, 0.06, 'sine', 0.1)
   },
 
-  /** UI 버튼 호버 */
+  /** UI button hover */
   buttonHover() {
     playTone(600, 0.04, 'sine', 0.05)
   },
 
-  /** 턴 전환 사운드 */
+  /** Turn change sound */
   turnChange() {
     playTone(440, 0.15, 'triangle', 0.12)
     setTimeout(() => playTone(550, 0.12, 'triangle', 0.1), 100)
   },
 
-  /** 타이머 경고 (10초 이하) */
+  /** Timer warning (10 seconds or less) */
   timerWarning() {
     playTone(880, 0.1, 'square', 0.15)
   },
 
-  /** 페이즈 전환 */
+  /** Phase transition */
   phaseTransition() {
     playNoise(0.5, 0.2)
     setTimeout(() => {
@@ -239,7 +239,7 @@ export const SFX = {
     setTimeout(() => playTone(800, 0.5, 'sine', 0.2), 800)
   },
 
-  /** 족보에 맞는 사운드 자동 재생 */
+  /** Auto-play sound matching the hand rank */
   handComplete(rank: string) {
     switch (rank) {
       case 'Ace':
@@ -271,7 +271,7 @@ export const SFX = {
 let currentBgm: Howl | null = null
 let currentBgmKey: string | null = null
 
-/** BGM 키에 해당하는 파일 경로 매핑 (에셋 파일 존재 시 사용) */
+/** BGM key to file path mapping (used when asset files exist) */
 const BGM_MAP: Record<string, string> = {
   menu: '/sounds/bgm/menu.mp3',
   'floor-1-5': '/sounds/bgm/floor_1_5.mp3',
@@ -282,8 +282,8 @@ const BGM_MAP: Record<string, string> = {
 
 export const BGM = {
   /**
-   * BGM 재생 (크로스페이드)
-   * 에셋 파일이 없으면 무시 (에러 없음)
+   * Play BGM (with crossfade)
+   * Silently ignored if asset file doesn't exist (no error)
    */
   play(key: string) {
     const settings = useSettingsStore()
@@ -322,7 +322,7 @@ export const BGM = {
     currentBgmKey = key
   },
 
-  /** BGM 정지 */
+  /** Stop BGM */
   stop() {
     if (currentBgm) {
       currentBgm.fade(currentBgm.volume(), 0, 800)
@@ -335,14 +335,14 @@ export const BGM = {
     }
   },
 
-  /** BGM 볼륨 업데이트 */
+  /** Update BGM volume */
   setVolume(volume: number) {
     if (currentBgm) {
       currentBgm.volume(volume / 100)
     }
   },
 
-  /** 현재 BGM 키 */
+  /** Get current BGM key */
   getCurrentKey(): string | null {
     return currentBgmKey
   }
@@ -351,8 +351,8 @@ export const BGM = {
 // --- Global Volume Sync ---
 
 /**
- * useSound - 사운드 시스템 초기화 composable
- * App.vue에서 한 번 호출하여 설정 변경 감시
+ * useSound - Sound system initialization composable
+ * Call once in App.vue to watch for settings changes
  */
 export function useSound() {
   const settings = useSettingsStore()

@@ -33,18 +33,18 @@ export interface Toast {
 const toasts = ref<Toast[]>([])
 let toastIdCounter = 0
 
-// 토스트 추가 함수
+// Add toast function
 const addToast = (message: string, type: 'success' | 'error' | 'info' = 'info', duration = 3000) => {
   const id = toastIdCounter++
   toasts.value.push({ id, message, type, duration })
 
-  // duration 후 자동 제거
+  // Auto-remove after duration
   setTimeout(() => {
     removeToast(id)
   }, duration)
 }
 
-// 토스트 제거
+// Remove toast
 const removeToast = (id: number) => {
   const index = toasts.value.findIndex((t) => t.id === id)
   if (index !== -1) {
@@ -52,7 +52,7 @@ const removeToast = (id: number) => {
   }
 }
 
-// 전역 이벤트 리스너
+// Global event listener
 const handleToastEvent = (event: CustomEvent) => {
   const { message, type, duration } = event.detail
   addToast(message, type, duration)
@@ -66,7 +66,7 @@ onUnmounted(() => {
   window.removeEventListener('show-toast', handleToastEvent as EventListener)
 })
 
-// 컴포넌트 메서드 노출 (옵션)
+// Expose component methods (optional)
 defineExpose({ addToast, removeToast })
 </script>
 
@@ -146,7 +146,7 @@ defineExpose({ addToast, removeToast })
   line-height: 1.5;
 }
 
-/* 애니메이션 */
+/* Animation */
 .toast-enter-active,
 .toast-leave-active {
   transition: all 0.3s ease;
@@ -162,7 +162,7 @@ defineExpose({ addToast, removeToast })
   transform: translateX(50%) scale(0.8);
 }
 
-/* 모바일 최적화 */
+/* Mobile optimization */
 @media (max-width: 480px) {
   .toast-container {
     top: 60px;

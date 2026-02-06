@@ -1,6 +1,6 @@
 /**
- * 코스메틱 API 클라이언트 (i18n 지원)
- * CLAUDE.md i18n 규칙 참조
+ * Cosmetic API client (i18n support)
+ * See CLAUDE.md i18n rules
  */
 import { apiClient } from './client'
 import type {
@@ -13,8 +13,8 @@ import type {
 } from '@/types/game'
 
 /**
- * 모든 주사위 스킨 조회 (소유 여부 포함)
- * Accept-Language 헤더가 자동으로 포함됨
+ * Get all dice skins (including ownership status)
+ * Accept-Language header is automatically included
  */
 export async function getAllDiceSkins(playerId: number): Promise<DiceSkin[]> {
   const response = await apiClient.get<DiceSkin[]>('/api/v1/cosmetics/dice-skins', {
@@ -24,7 +24,7 @@ export async function getAllDiceSkins(playerId: number): Promise<DiceSkin[]> {
 }
 
 /**
- * 모든 아바타 조회 (소유 여부 포함)
+ * Get all avatars (including ownership status)
  */
 export async function getAllAvatars(playerId: number): Promise<Avatar[]> {
   const response = await apiClient.get<Avatar[]>('/api/v1/cosmetics/avatars', {
@@ -34,7 +34,7 @@ export async function getAllAvatars(playerId: number): Promise<Avatar[]> {
 }
 
 /**
- * 플레이어 컬렉션 조회 (보유 중인 코스메틱만)
+ * Get player collection (owned cosmetics only)
  */
 export async function getPlayerCollection(playerId: number): Promise<CollectionResponse> {
   const response = await apiClient.get<CollectionResponse>('/api/v1/cosmetics/collection', {
@@ -44,7 +44,7 @@ export async function getPlayerCollection(playerId: number): Promise<CollectionR
 }
 
 /**
- * 코스메틱 장착
+ * Equip cosmetic
  */
 export async function equipCosmetic(
   playerId: number,
@@ -61,7 +61,7 @@ export async function equipCosmetic(
 }
 
 /**
- * 코스메틱 장착 해제
+ * Unequip cosmetic
  */
 export async function unequipCosmetic(
   playerId: number,

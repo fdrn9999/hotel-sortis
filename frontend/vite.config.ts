@@ -9,6 +9,22 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Core Vue ecosystem
+          'vendor-vue': ['vue', 'vue-router', 'pinia'],
+          // Internationalization
+          'vendor-i18n': ['vue-i18n'],
+          // Audio library (lazy-loaded with BGM)
+          'vendor-howler': ['howler'],
+          // WebSocket libraries (lazy-loaded with PvP/Draft)
+          'vendor-websocket': ['@stomp/stompjs', 'sockjs-client']
+        }
+      }
+    }
+  },
   server: {
     port: 5173,
     proxy: {

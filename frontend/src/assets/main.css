@@ -1,7 +1,7 @@
 /* HOTEL SORTIS - Global Styles */
 
 :root {
-  /* 1-5층: Art Deco */
+  /* Floors 1-5: Art Deco */
   --color-gold: #D4AF37;
   --color-gold-rgb: 212, 175, 55;
   --color-cream: #FFFDD0;
@@ -13,14 +13,14 @@
   --color-dark-navy: #1B1B27;
   --color-dark-navy-rgb: 27, 27, 39;
 
-  /* 6-10층: 균열과 불안 */
+  /* Floors 6-10: Cracks and Unease */
   --color-gray: #808080;
   --color-purple: #6A0DAD;
   --color-teal: #008B8B;
   --color-black: #0D0D0D;
   --color-black-rgb: 13, 13, 13;
 
-  /* 11-15층: 코즈믹 호러 */
+  /* Floors 11-15: Cosmic Horror */
   --color-neon-pink: #FF10F0;
   --color-electric-blue: #7DF9FF;
   --color-purple-glow: #8A2BE2;

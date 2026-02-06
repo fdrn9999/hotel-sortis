@@ -106,7 +106,7 @@ const preferredLanguage = ref('en')
 const isLoading = ref(false)
 
 async function handleSignup() {
-  // 유효성 검사
+  // Validation
   if (!email.value || !username.value || !password.value || !confirmPassword.value) {
     error(t('auth.errors.fillAllFields'))
     return
@@ -137,7 +137,7 @@ async function handleSignup() {
       preferredLanguage: preferredLanguage.value
     })
 
-    // 회원가입 성공 시 홈으로 이동
+    // Navigate to home on signup success
     router.push('/')
   } catch (err: any) {
     if (err.message?.includes('Email already exists')) {
@@ -290,10 +290,27 @@ async function handleSignup() {
   text-shadow: 0 0 8px rgba(var(--color-gold-rgb), 0.5);
 }
 
-/* 모바일 최적화 */
+/* Tablet optimization */
+@media (max-width: 768px) {
+  .signup-container {
+    padding: 36px 28px;
+    max-width: 420px;
+  }
+
+  .game-title {
+    font-size: 30px;
+  }
+
+  .signup-form {
+    gap: 18px;
+  }
+}
+
+/* Mobile optimization */
 @media (max-width: 480px) {
   .signup-container {
     padding: 32px 24px;
+    max-width: 100%;
   }
 
   .game-title {

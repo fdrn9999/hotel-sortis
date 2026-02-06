@@ -10,7 +10,7 @@ import { useSound } from '@/composables/useSound'
 useGestures()
 useKeyboardShortcuts()
 
-// Global sound system initialization (PROJECTPLAN.md 11장)
+// Global sound system initialization (PROJECTPLAN.md Ch.11)
 useSound()
 </script>
 

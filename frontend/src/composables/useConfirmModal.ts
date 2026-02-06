@@ -1,7 +1,7 @@
 /**
- * useConfirmModal - Confirm 모달 시스템
+ * useConfirmModal - Confirm modal system
  *
- * CLAUDE.md 규칙 준수: confirm() 대체
+ * CLAUDE.md rule compliance: replaces confirm()
  */
 
 export interface ConfirmModalOptions {
@@ -12,32 +12,32 @@ export interface ConfirmModalOptions {
 }
 
 /**
- * Confirm 모달을 표시하는 composable
+ * Composable for displaying confirm modals
  *
  * @example
  * const { confirm } = useConfirmModal()
  *
  * const result = await confirm({
- *   title: '로그아웃',
- *   message: '정말 로그아웃하시겠습니까?',
- *   confirmText: '로그아웃',
- *   cancelText: '취소'
+ *   title: 'Logout',
+ *   message: 'Are you sure you want to logout?',
+ *   confirmText: 'Logout',
+ *   cancelText: 'Cancel'
  * })
  *
  * if (result) {
- *   // 확인 버튼 클릭
+ *   // Confirm button clicked
  *   logout()
  * } else {
- *   // 취소 버튼 클릭
+ *   // Cancel button clicked
  * }
  */
 export function useConfirmModal() {
   /**
-   * Confirm 모달 표시 (Promise 기반)
+   * Show confirm modal (Promise-based)
    */
   const confirm = (options: ConfirmModalOptions): Promise<boolean> => {
     return new Promise((resolve) => {
-      // CustomEvent를 사용해 ConfirmModal 컴포넌트로 전달
+      // Dispatch CustomEvent to ConfirmModal component
       window.dispatchEvent(
         new CustomEvent('show-confirm', {
           detail: {

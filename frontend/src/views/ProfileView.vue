@@ -209,7 +209,7 @@ async function handleChangePassword() {
 }
 
 async function handleLogout() {
-  // CLAUDE.md 3.3.1 규칙 준수: confirm() 대체
+  // CLAUDE.md 3.3.1 rule compliance: replaces confirm()
   const confirmed = await confirm({
     title: t('auth.logout'),
     message: t('auth.confirmLogout'),
@@ -377,7 +377,7 @@ async function handleLogout() {
   margin-top: 32px;
 }
 
-/* 모바일 최적화 */
+/* Mobile optimization */
 @media (max-width: 768px) {
   .info-grid {
     grid-template-columns: 1fr;
