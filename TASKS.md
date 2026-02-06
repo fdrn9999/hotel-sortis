@@ -569,9 +569,11 @@
   - [x] `ChatService`: Global chat, Whisper, History, Read status
   - [x] `SocialController`: REST API for friends/blocks/chat (15 endpoints)
   - [x] `ChatWebSocketController`: WebSocket handlers for global/whisper/notifications
-- [ ] **Frontend: Social Store**
-  - [ ] `stores/social.ts` (friends list, online status, blocked users, unread DMs)
-  - [ ] WebSocket integration for real-time friend updates & chat
+- [x] **Frontend: Social Store** ✅ 2026-02-06
+  - [x] `types/game.ts`: Social types (FriendInfo, ChatMessage, etc.)
+  - [x] `api/social.ts`: API client for friends/blocks/chat (15 functions)
+  - [x] `stores/social.ts`: Pinia store for social state management
+  - [x] `composables/useChatWebSocket.ts`: WebSocket integration for real-time chat
 - [ ] **Frontend: Chat Interface**
   - [ ] `GlobalChatWidget.vue`: Persistent floating chat (bottom-left/right)
   - [ ] Global Channel integration

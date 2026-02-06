@@ -397,3 +397,82 @@ export interface DraftTimerUpdate {
   timeRemaining: number
   currentTurn: string
 }
+
+// ==================== Social System Types ====================
+
+// Friend types
+export type FriendStatus = 'PENDING' | 'ACCEPTED'
+
+export interface FriendInfo {
+  id: number
+  playerId: number
+  username: string
+  elo: number
+  avatarId?: number
+  status: FriendStatus
+  createdAt: string
+  acceptedAt?: string
+}
+
+export interface FriendRequest {
+  requestId: number
+  playerId: number
+  username: string
+  elo: number
+  avatarId?: number
+  requestedAt: string
+}
+
+export interface FriendListResponse {
+  friends: FriendInfo[]
+  totalCount: number
+}
+
+export interface PendingRequestsResponse {
+  requests: FriendRequest[]
+  totalCount: number
+}
+
+// Block types
+export interface BlockedPlayer {
+  id: number
+  playerId: number
+  username: string
+  avatarId?: number
+  blockedAt: string
+}
+
+export interface BlockListResponse {
+  blockedPlayers: BlockedPlayer[]
+  totalCount: number
+}
+
+// Chat types
+export type ChatMessageType = 'GLOBAL' | 'WHISPER'
+
+export interface ChatMessage {
+  id: number
+  senderId: number
+  senderUsername: string
+  receiverId?: number
+  receiverUsername?: string
+  messageType: ChatMessageType
+  content: string
+  createdAt: string
+  readAt?: string
+}
+
+export interface ChatHistoryResponse {
+  messages: ChatMessage[]
+  totalCount: number
+  hasMore: boolean
+}
+
+export interface UnreadCountResponse {
+  unreadCount: number
+}
+
+export interface SuccessResponse {
+  success: boolean
+  message: string
+}
