@@ -504,14 +504,24 @@
       "pending": "대기 중",
       "accepted": "수락됨",
       "noFriends": "친구가 없습니다",
-      "noPending": "대기 중인 요청이 없습니다"
+      "noPending": "대기 중인 요청이 없습니다",
+      "searchPlaceholder": "플레이어 검색...",
+      "searchResults": "검색 결과",
+      "alreadyFriend": "이미 친구입니다",
+      "pendingRequests": "친구 요청",
+      "removeConfirm": "{name}님을 친구 목록에서 삭제하시겠습니까?",
+      "newRequest": "새 친구 요청",
+      "wantsToBeYourFriend": "님이 친구가 되고 싶어합니다",
+      "accept": "수락",
+      "decline": "거절"
     },
     "block": {
       "blockPlayer": "차단하기",
       "unblockPlayer": "차단 해제",
       "blocked": "플레이어를 차단했습니다",
       "unblocked": "차단을 해제했습니다",
-      "noBlocked": "차단한 플레이어가 없습니다"
+      "noBlocked": "차단한 플레이어가 없습니다",
+      "blockConfirm": "{name}님을 차단하시겠습니까?"
     }
   }
 }

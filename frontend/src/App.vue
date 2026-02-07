@@ -3,6 +3,7 @@ import { RouterView } from 'vue-router'
 import Toast from '@/components/Toast.vue'
 import ConfirmModal from '@/components/ConfirmModal.vue'
 import GlobalChatWidget from '@/components/GlobalChatWidget.vue'
+import FriendRequestNotification from '@/components/FriendRequestNotification.vue'
 import { useGestures } from '@/composables/useGestures'
 import { useKeyboardShortcuts } from '@/composables/useKeyboardShortcuts'
 import { useSound } from '@/composables/useSound'
@@ -28,6 +29,7 @@ const authStore = useAuthStore()
   <Toast />
   <ConfirmModal />
   <GlobalChatWidget v-if="authStore.isAuthenticated" />
+  <FriendRequestNotification v-if="authStore.isAuthenticated" />
 </template>
 
 <style scoped>

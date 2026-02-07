@@ -504,14 +504,24 @@
       "pending": "保留中",
       "accepted": "承認済み",
       "noFriends": "フレンドがいません",
-      "noPending": "保留中の申請がありません"
+      "noPending": "保留中の申請がありません",
+      "searchPlaceholder": "プレイヤーを検索...",
+      "searchResults": "検索結果",
+      "alreadyFriend": "すでにフレンドです",
+      "pendingRequests": "フレンド申請",
+      "removeConfirm": "{name}さんをフレンドリストから削除しますか？",
+      "newRequest": "新しいフレンド申請",
+      "wantsToBeYourFriend": "さんがフレンドになりたがっています",
+      "accept": "承認",
+      "decline": "拒否"
     },
     "block": {
       "blockPlayer": "ブロック",
       "unblockPlayer": "ブロック解除",
       "blocked": "プレイヤーをブロックしました",
       "unblocked": "ブロックを解除しました",
-      "noBlocked": "ブロック中のプレイヤーがいません"
+      "noBlocked": "ブロック中のプレイヤーがいません",
+      "blockConfirm": "{name}さんをブロックしますか？"
     }
   }
 }

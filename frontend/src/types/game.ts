@@ -410,6 +410,7 @@ export interface FriendInfo {
   elo: number
   avatarId?: number
   status: FriendStatus
+  online?: boolean // TODO: Implement presence system
   createdAt: string
   acceptedAt?: string
 }
@@ -417,7 +418,9 @@ export interface FriendInfo {
 export interface FriendRequest {
   requestId: number
   playerId: number
+  senderId?: number
   username: string
+  senderUsername?: string // Alias for username in notifications
   elo: number
   avatarId?: number
   requestedAt: string

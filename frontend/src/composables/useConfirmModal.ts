@@ -9,6 +9,7 @@ export interface ConfirmModalOptions {
   message: string
   confirmText?: string
   cancelText?: string
+  variant?: 'default' | 'danger'
 }
 
 /**

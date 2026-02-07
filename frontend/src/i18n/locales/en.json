@@ -504,14 +504,24 @@
       "pending": "Pending",
       "accepted": "Accepted",
       "noFriends": "No friends yet",
-      "noPending": "No pending requests"
+      "noPending": "No pending requests",
+      "searchPlaceholder": "Search players...",
+      "searchResults": "Search Results",
+      "alreadyFriend": "Already friends",
+      "pendingRequests": "Friend Requests",
+      "removeConfirm": "Remove {name} from your friends list?",
+      "newRequest": "New Friend Request",
+      "wantsToBeYourFriend": "wants to be your friend",
+      "accept": "Accept",
+      "decline": "Decline"
     },
     "block": {
       "blockPlayer": "Block Player",
       "unblockPlayer": "Unblock Player",
       "blocked": "Player blocked",
       "unblocked": "Player unblocked",
-      "noBlocked": "No blocked players"
+      "noBlocked": "No blocked players",
+      "blockConfirm": "Block {name}?"
     }
   }
 }

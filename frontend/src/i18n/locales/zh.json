@@ -504,14 +504,24 @@
       "pending": "待处理",
       "accepted": "已接受",
       "noFriends": "暂无好友",
-      "noPending": "暂无待处理的请求"
+      "noPending": "暂无待处理的请求",
+      "searchPlaceholder": "搜索玩家...",
+      "searchResults": "搜索结果",
+      "alreadyFriend": "已是好友",
+      "pendingRequests": "好友请求",
+      "removeConfirm": "确定要从好友列表中删除 {name} 吗？",
+      "newRequest": "新好友请求",
+      "wantsToBeYourFriend": "想和你成为好友",
+      "accept": "接受",
+      "decline": "拒绝"
     },
     "block": {
       "blockPlayer": "屏蔽玩家",
       "unblockPlayer": "取消屏蔽",
       "blocked": "已屏蔽该玩家",
       "unblocked": "已取消屏蔽",
-      "noBlocked": "暂无屏蔽的玩家"
+      "noBlocked": "暂无屏蔽的玩家",
+      "blockConfirm": "确定要屏蔽 {name} 吗？"
     }
   }
 }

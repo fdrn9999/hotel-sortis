@@ -39,10 +39,25 @@
           {{ t('social.chat.whisper') }}
           <span v-if="socialStore.unreadCount > 0" class="tab-badge">{{ socialStore.unreadCount }}</span>
         </button>
+        <button
+          class="tab-btn"
+          :class="{ active: currentTab === 'friends' }"
+          @click="currentTab = 'friends'"
+        >
+          <span class="tab-icon">♥</span>
+          {{ t('social.friends.title') }}
+          <span v-if="socialStore.pendingRequestCount > 0" class="tab-badge">{{ socialStore.pendingRequestCount }}</span>
+        </button>
       </div>
 
+      <!-- Friends Tab -->
+      <FriendsPanel
+        v-if="currentTab === 'friends'"
+        @start-whisper="handleStartWhisper"
+      />
+
       <!-- Messages Area -->
-      <div class="chat-messages" ref="messagesContainer">
+      <div v-else class="chat-messages" ref="messagesContainer">
         <template v-if="currentTab === 'global'">
           <div v-if="displayMessages.length === 0" class="empty-messages">
             {{ t('social.chat.noMessages') }}
@@ -155,7 +170,8 @@ import { useSocialStore } from '@/stores/social'
 import { useAuthStore } from '@/stores/auth'
 import { useChatWebSocket } from '@/composables/useChatWebSocket'
 import { useNotification } from '@/composables/useNotification'
-import type { ChatMessage } from '@/types/game'
+import FriendsPanel from '@/components/FriendsPanel.vue'
+import type { ChatMessage, FriendRequest } from '@/types/game'
 
 const { t } = useI18n()
 const socialStore = useSocialStore()
@@ -170,7 +186,7 @@ const chatWs = useChatWebSocket(playerId.value)
 
 // UI State
 const isMinimized = ref(true)
-const currentTab = ref<'global' | 'whisper'>('global')
+const currentTab = ref<'global' | 'whisper' | 'friends'>('global')
 const inputMessage = ref('')
 const messagesContainer = ref<HTMLElement | null>(null)
 
@@ -294,6 +310,16 @@ const openWhisperConversation = (partner: { id: number; username: string }) => {
   }
 }
 
+// Handler for starting whisper from FriendsPanel
+const handleStartWhisper = (partner: { id: number; username: string }) => {
+  currentTab.value = 'whisper'
+  activeWhisperPartner.value = partner
+  // Load whisper history if not already loaded
+  if (!socialStore.whisperConversations.has(partner.id)) {
+    socialStore.loadWhisperConversation(playerId.value, partner.id)
+  }
+}
+
 // Context Menu
 const showContextMenu = (event: MouseEvent, msg: ChatMessage) => {
   if (msg.senderId === playerId.value) return // Don't show for own messages
@@ -340,6 +366,11 @@ onMounted(() => {
   // Connect to WebSocket and subscribe
   chatWs.subscribeChat()
 
+  // Wire up friend request notifications to dispatch custom event
+  chatWs.onFriendRequest.value = (request: FriendRequest) => {
+    window.dispatchEvent(new CustomEvent('friend-request-received', { detail: request }))
+  }
+
   // Load initial messages
   socialStore.loadGlobalMessages()
   socialStore.loadUnreadCount(playerId.value)
@@ -351,6 +382,7 @@ onMounted(() => {
 onUnmounted(() => {
   chatWs.unsubscribeAll()
   document.removeEventListener('click', hideContextMenu)
+  hideContextMenu() // Force close any open menu
 })
 </script>
 

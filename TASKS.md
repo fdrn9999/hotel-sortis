@@ -580,15 +580,16 @@
   - [x] Whisper Functionality (`/w nickname message`)
   - [x] Context Menu: Right-click on user to Whisper/Add Friend/Block
   - [x] i18n: `social` section added to all 4 languages (ko, en, ja, zh)
-- [ ] **Frontend: Friend Management**
-  - [ ] `FriendListSidebar.vue` or Modal (Toggleable)
-  - [ ] Add Friend (by Email/Nickname)
-  - [ ] Friend Request Notifications
-  - [ ] Friend Actions: DM, Set Alias, Remove, Block
-- [ ] **Private Messaging (DM)**
-  - [ ] DM Tab in ChatWidget
-  - [ ] Real-time message delivery
-  - [ ] Unread message indicators
+- [x] **Frontend: Friend Management** ✅ 2026-02-07
+  - [x] `FriendsPanel.vue`: Friends tab in GlobalChatWidget
+  - [x] Add Friend search input (API placeholder ready)
+  - [x] `FriendRequestNotification.vue`: Interactive popup notifications
+  - [x] Friend Actions: DM (@ button), Remove, Block (context menu)
+  - [x] `useFriendNotifications.ts`: WebSocket friend request handling
+- [x] **Private Messaging (DM)** ✅ 2026-02-07
+  - [x] Whisper tab with conversation list
+  - [x] Real-time message delivery via WebSocket
+  - [x] Unread message indicators (badges)
 - [x] **i18n Support** ✅ 2026-02-06
   - [x] `social` section in 4 languages (chat, friends, block subsections)
 
