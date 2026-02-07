@@ -300,6 +300,11 @@
       "soulStones": "영혼석"
     }
   },
+  "tier": {
+    "promotion": "티어 승급!",
+    "demotion": "티어 강등",
+    "newTier": "새 티어"
+  },
   "auth": {
     "welcome": "환영합니다",
     "login": "로그인",
@@ -346,7 +351,15 @@
     "profileUpdated": "프로필이 업데이트되었습니다.",
     "updateFailed": "프로필 업데이트에 실패했습니다.",
     "passwordChanged": "비밀번호가 변경되었습니다.",
-    "passwordChangeFailed": "비밀번호 변경에 실패했습니다. 현재 비밀번호를 확인해주세요."
+    "passwordChangeFailed": "비밀번호 변경에 실패했습니다. 현재 비밀번호를 확인해주세요.",
+    "accountInfo": "계정 정보",
+    "tierProgress": "티어 진행도",
+    "masterRank": "최고 등급 달성",
+    "pvpStats": "PvP 통계",
+    "matchHistory": "매치 기록",
+    "noMatches": "매치 기록이 없습니다.",
+    "viewProfile": "프로필 보기",
+    "loadFailed": "프로필 로드에 실패했습니다."
   },
   "shop": {
     "title": "상점",

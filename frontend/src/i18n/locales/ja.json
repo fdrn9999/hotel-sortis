@@ -300,6 +300,11 @@
       "soulStones": "魂の石"
     }
   },
+  "tier": {
+    "promotion": "ティア昇格！",
+    "demotion": "ティア降格",
+    "newTier": "新しいティア"
+  },
   "auth": {
     "welcome": "ようこそ",
     "login": "ログイン",
@@ -346,7 +351,15 @@
     "profileUpdated": "プロフィールが更新されました。",
     "updateFailed": "プロフィールの更新に失敗しました。",
     "passwordChanged": "パスワードが変更されました。",
-    "passwordChangeFailed": "パスワードの変更に失敗しました。現在のパスワードを確認してください。"
+    "passwordChangeFailed": "パスワードの変更に失敗しました。現在のパスワードを確認してください。",
+    "accountInfo": "アカウント情報",
+    "tierProgress": "ティア進捗",
+    "masterRank": "最高ランク達成",
+    "pvpStats": "PvP統計",
+    "matchHistory": "対戦履歴",
+    "noMatches": "対戦履歴がありません。",
+    "viewProfile": "プロフィールを見る",
+    "loadFailed": "プロフィールの読み込みに失敗しました。"
   },
   "shop": {
     "title": "ショップ",

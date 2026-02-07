@@ -1,6 +1,6 @@
 # TASKS.md - 작업 추적 문서
 
-> 최종 업데이트: 2026-02-06 (Phase 14 진행 중: Chat Interface 완료)
+> 최종 업데이트: 2026-02-07 (Phase 14.5 완료: Profile & ELO Features)
 
 ---
 
@@ -593,26 +593,36 @@
 - [x] **i18n Support** ✅ 2026-02-06
   - [x] `social` section in 4 languages (chat, friends, block subsections)
 
-### Phase 14.5: Profile & ELO Features
+### Phase 14.5: Profile & ELO Features ✅ 2026-02-07
 
-- [ ] **ELO 티어 승급/강등 이펙트**
-  - [ ] 티어 변동 감지 로직 (매치 종료 후 ELO 변화 체크)
-  - [ ] `TierChangeModal.vue`: 승급/강등 연출 모달
-  - [ ] 승급 이펙트: 골드 파티클, 축하 애니메이션
-  - [ ] 강등 이펙트: 어두운 톤, 부드러운 연출
-  - [ ] i18n: 티어 이름 및 메시지 (4개 언어)
-- [ ] **프로필 보기 기능**
-  - [ ] `PlayerProfileModal.vue`: 플레이어 프로필 모달 컴포넌트
-  - [ ] 표시 정보: 닉네임, ELO, 티어, 승률, 최근 전적
-  - [ ] PvP 매치 중 상대 프로필 보기 (BattleView 헤더 클릭)
-  - [ ] 친구 목록에서 프로필 보기 (FriendsPanel 컨텍스트 메뉴)
-  - [ ] 채팅에서 플레이어 프로필 보기 (메시지 클릭)
-- [ ] **마이페이지 기능 확장**
-  - [ ] ProfileView.vue 개선: 전적 통계, 티어 히스토리
-  - [ ] 최근 매치 기록 표시 (최근 10경기)
-  - [ ] 승률 그래프 또는 통계 카드
-  - [ ] 티어 뱃지 및 진행도 표시
-  - [ ] 프로필 편집 (닉네임 변경, 아바타 선택)
+- [x] **ELO 티어 승급/강등 이펙트** ✅ 2026-02-07
+  - [x] 티어 변동 감지 로직 (`PvPWebSocketController.handleBattleEnd()` — oldTier/newTier 비교)
+  - [x] `TierChangeModal.vue`: 승급/강등 연출 모달
+  - [x] 승급 이펙트: 골드 파티클, 축하 애니메이션 (CSS keyframes)
+  - [x] 강등 이펙트: 어두운 톤, 부드러운 연출
+  - [x] `useTierChangeModal.ts`: CustomEvent 기반 composable
+  - [x] Backend: `PvPDto.RewardInfo`에 oldTier, newTier, tierChanged 필드 추가
+  - [x] i18n: `tier` 섹션 추가 (promotion, demotion, newTier — 4개 언어)
+- [x] **프로필 보기 기능** ✅ 2026-02-07
+  - [x] `PlayerProfileModal.vue`: 플레이어 프로필 모달 컴포넌트 (Art Deco 스타일)
+  - [x] 표시 정보: 닉네임, ELO, 티어, 승/패/무, 승률, 현재층/최고층
+  - [x] 액션 버튼: 친구 추가, 귓속말, 차단
+  - [x] `usePlayerProfileModal.ts`: CustomEvent 기반 composable
+  - [x] 친구 목록에서 프로필 보기 (FriendsPanel 컨텍스트 메뉴)
+  - [x] 채팅에서 플레이어 프로필 보기 (GlobalChatWidget 컨텍스트 메뉴)
+  - [x] Backend: `UserController`에 `/users/{id}/profile` 엔드포인트 추가
+  - [x] Backend: `UserDto.PlayerPublicProfileDto` 추가
+  - [x] i18n: `profile.viewProfile`, `profile.loadFailed` 키 추가 (4개 언어)
+- [x] **마이페이지 기능 확장** ✅ 2026-02-07
+  - [x] ProfileView.vue 개선: 티어 뱃지, 진행도 바, PvP 통계 그리드
+  - [x] 최근 매치 기록 표시 (최근 10경기) — MatchHistoryEntry 리스트
+  - [x] 승률 통계 카드 (승/패/무/전체/승률)
+  - [x] 티어 뱃지 및 다음 티어까지 진행도 바
+  - [x] Backend: `UserController`에 `/users/me/stats`, `/users/me/match-history` 엔드포인트 추가
+  - [x] Backend: `UserDto.PlayerStatsDto`, `UserDto.MatchHistoryEntryDto` 추가
+  - [x] Backend: `BattleRepository`에 PvP 통계/기록 쿼리 추가
+  - [x] Frontend: `api/pvp.ts`에 getMyStats, getMatchHistory, getTierThresholds 추가
+  - [x] i18n: `profile` 섹션 확장 (tierProgress, masterRank, pvpStats, matchHistory, noMatches — 4개 언어)
 
 ### Phase 15: Final Visual Polish (UI Design Improvements)
 

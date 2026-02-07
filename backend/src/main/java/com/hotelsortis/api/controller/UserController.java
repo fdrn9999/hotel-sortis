@@ -10,6 +10,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -80,5 +82,41 @@ public class UserController {
                             .build()
             );
         }
+    }
+
+    /**
+     * 타 플레이어 프로필 조회
+     * GET /api/v1/users/{playerId}/profile
+     */
+    @GetMapping("/{playerId}/profile")
+    public ResponseEntity<?> getPlayerProfile(@PathVariable Long playerId) {
+        try {
+            UserDto.PlayerPublicProfileDto profile = userService.getPlayerPublicProfile(playerId);
+            return ResponseEntity.ok(profile);
+        } catch (IllegalArgumentException e) {
+            log.error("Player profile not found: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * 내 통계 조회
+     * GET /api/v1/users/me/stats
+     */
+    @GetMapping("/me/stats")
+    public ResponseEntity<UserDto.PlayerStatsDto> getMyStats() {
+        UserDto.PlayerStatsDto stats = userService.getPlayerStats();
+        return ResponseEntity.ok(stats);
+    }
+
+    /**
+     * 내 매치 히스토리 조회
+     * GET /api/v1/users/me/match-history?limit=10
+     */
+    @GetMapping("/me/match-history")
+    public ResponseEntity<List<UserDto.MatchHistoryEntryDto>> getMatchHistory(
+            @RequestParam(defaultValue = "10") int limit) {
+        List<UserDto.MatchHistoryEntryDto> history = userService.getMatchHistory(limit);
+        return ResponseEntity.ok(history);
     }
 }

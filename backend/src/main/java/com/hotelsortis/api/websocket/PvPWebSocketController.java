@@ -163,15 +163,25 @@ public class PvPWebSocketController {
             player2Score = 0.5;
         }
 
+        // ELO 변동 전 티어 저장
+        String player1OldTier = calculateTier(player1.getElo());
+        String player2OldTier = calculateTier(player2.getElo());
+
         // ELO 계산
         int player1EloChange = eloCalculator.calculateEloChange(player1.getElo(), player2.getElo(), player1Score);
         int player2EloChange = eloCalculator.calculateEloChange(player2.getElo(), player1.getElo(), player2Score);
 
         // ELO 업데이트
-        player1.setElo(player1.getElo() + player1EloChange);
-        player2.setElo(player2.getElo() + player2EloChange);
+        int player1NewElo = player1.getElo() + player1EloChange;
+        int player2NewElo = player2.getElo() + player2EloChange;
+        player1.setElo(player1NewElo);
+        player2.setElo(player2NewElo);
         playerRepository.save(player1);
         playerRepository.save(player2);
+
+        // ELO 변동 후 티어 계산
+        String player1NewTier = calculateTier(player1NewElo);
+        String player2NewTier = calculateTier(player2NewElo);
 
         // 영혼석 보상 (승리: 20, 패배: 5, 무승부: 10)
         int player1SoulStones = player1Score == 1.0 ? 20 : player1Score == 0.5 ? 10 : 5;
@@ -182,17 +192,25 @@ public class PvPWebSocketController {
         playerRepository.save(player1);
         playerRepository.save(player2);
 
-        // 보상 정보
+        // 보상 정보 (티어 변동 포함)
         PvPDto.RewardInfo player1Reward = PvPDto.RewardInfo.builder()
             .eloChange(player1EloChange)
             .soulStones(player1SoulStones)
             .result(player1Result)
+            .newElo(player1NewElo)
+            .oldTier(player1OldTier)
+            .newTier(player1NewTier)
+            .tierChanged(!player1OldTier.equals(player1NewTier))
             .build();
 
         PvPDto.RewardInfo player2Reward = PvPDto.RewardInfo.builder()
             .eloChange(player2EloChange)
             .soulStones(player2SoulStones)
             .result(player2Result)
+            .newElo(player2NewElo)
+            .oldTier(player2OldTier)
+            .newTier(player2NewTier)
+            .tierChanged(!player2OldTier.equals(player2NewTier))
             .build();
 
         // 양쪽에 전투 종료 메시지 전송
@@ -252,5 +270,17 @@ public class PvPWebSocketController {
             "/queue/pvp/turn-start",
             message
         );
+    }
+
+    /**
+     * ELO 기반 티어 계산
+     */
+    private String calculateTier(int elo) {
+        if (elo >= 2200) return "MASTER";
+        if (elo >= 1900) return "DIAMOND";
+        if (elo >= 1600) return "PLATINUM";
+        if (elo >= 1300) return "GOLD";
+        if (elo >= 1000) return "SILVER";
+        return "BRONZE";
     }
 }

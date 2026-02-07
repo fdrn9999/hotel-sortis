@@ -103,6 +103,9 @@
         :style="{ left: friendMenu.x + 'px', top: friendMenu.y + 'px' }"
         @click.stop
       >
+        <button class="menu-item" @click="handleViewProfile">
+          {{ t('profile.viewProfile') }}
+        </button>
         <button class="menu-item" @click="handleWhisper">
           {{ t('social.chat.whisperTo') }}
         </button>
@@ -124,6 +127,7 @@ import { useSocialStore } from '@/stores/social'
 import { useAuthStore } from '@/stores/auth'
 import { useNotification } from '@/composables/useNotification'
 import { useConfirmModal } from '@/composables/useConfirmModal'
+import { usePlayerProfileModal } from '@/composables/usePlayerProfileModal'
 import type { FriendInfo } from '@/types/game'
 
 const emit = defineEmits<{
@@ -135,6 +139,7 @@ const socialStore = useSocialStore()
 const authStore = useAuthStore()
 const notification = useNotification()
 const { confirm } = useConfirmModal()
+const { showProfile } = usePlayerProfileModal()
 
 const playerId = authStore.playerId ?? 1
 
@@ -221,6 +226,13 @@ const showFriendMenu = (event: MouseEvent, friend: FriendInfo) => {
 
 const hideFriendMenu = () => {
   friendMenu.value.visible = false
+}
+
+const handleViewProfile = () => {
+  if (friendMenu.value.friend) {
+    showProfile({ playerId: friendMenu.value.friend.playerId })
+  }
+  hideFriendMenu()
 }
 
 const handleWhisper = () => {

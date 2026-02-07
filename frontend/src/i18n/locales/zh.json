@@ -300,6 +300,11 @@
       "soulStones": "灵魂石"
     }
   },
+  "tier": {
+    "promotion": "段位晋升！",
+    "demotion": "段位降级",
+    "newTier": "新段位"
+  },
   "auth": {
     "welcome": "欢迎",
     "login": "登录",
@@ -346,7 +351,15 @@
     "profileUpdated": "档案已更新。",
     "updateFailed": "档案更新失败。",
     "passwordChanged": "密码已修改。",
-    "passwordChangeFailed": "密码修改失败。请检查当前密码。"
+    "passwordChangeFailed": "密码修改失败。请检查当前密码。",
+    "accountInfo": "账户信息",
+    "tierProgress": "段位进度",
+    "masterRank": "最高段位达成",
+    "pvpStats": "PvP统计",
+    "matchHistory": "对战记录",
+    "noMatches": "暂无对战记录。",
+    "viewProfile": "查看档案",
+    "loadFailed": "档案加载失败。"
   },
   "shop": {
     "title": "商店",

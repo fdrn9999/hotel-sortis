@@ -2,6 +2,8 @@
 import { RouterView } from 'vue-router'
 import Toast from '@/components/Toast.vue'
 import ConfirmModal from '@/components/ConfirmModal.vue'
+import TierChangeModal from '@/components/TierChangeModal.vue'
+import PlayerProfileModal from '@/components/PlayerProfileModal.vue'
 import GlobalChatWidget from '@/components/GlobalChatWidget.vue'
 import FriendRequestNotification from '@/components/FriendRequestNotification.vue'
 import { useGestures } from '@/composables/useGestures'
@@ -28,6 +30,8 @@ const authStore = useAuthStore()
   </RouterView>
   <Toast />
   <ConfirmModal />
+  <TierChangeModal />
+  <PlayerProfileModal />
   <GlobalChatWidget v-if="authStore.isAuthenticated" />
   <FriendRequestNotification v-if="authStore.isAuthenticated" />
 </template>

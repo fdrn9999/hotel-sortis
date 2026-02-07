@@ -207,10 +207,52 @@ export interface RankInfoResponse {
   winRate: number
 }
 
+// Player public profile (for viewing other players)
+export interface PlayerPublicProfile {
+  playerId: number
+  username: string
+  elo: number
+  tier: RankTier
+  currentFloor: number
+  highestFloorCleared: number
+  wins: number
+  losses: number
+  draws: number
+  winRate: number
+  avatarId?: string
+}
+
+// Player stats DTO
+export interface PlayerStats {
+  wins: number
+  losses: number
+  draws: number
+  winRate: number
+  totalMatches: number
+  currentWinStreak: number
+  bestWinStreak: number
+}
+
+// Match history entry
+export interface MatchHistoryEntry {
+  battleId: number
+  opponentId: number
+  opponentName: string
+  opponentElo: number
+  result: 'VICTORY' | 'DEFEAT' | 'DRAW'
+  eloChange: number
+  battleType: string
+  createdAt: string
+}
+
 export interface PvPRewardInfo {
   eloChange: number     // +25, -25, 0
   soulStones: number    // 20, 5, 10
   result: 'VICTORY' | 'DEFEAT' | 'DRAW'
+  newElo?: number       // ELO after match
+  oldTier?: RankTier    // Tier before match
+  newTier?: RankTier    // Tier after match
+  tierChanged?: boolean // Whether tier changed
 }
 
 // WebSocket message types

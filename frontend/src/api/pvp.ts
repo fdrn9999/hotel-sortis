@@ -2,7 +2,10 @@ import type {
   JoinQueueResponse,
   MatchFoundResponse,
   RankInfoResponse,
-  DraftState
+  DraftState,
+  PlayerPublicProfile,
+  PlayerStats,
+  MatchHistoryEntry
 } from '@/types/game'
 import { apiClient } from './client'
 
@@ -102,4 +105,58 @@ export async function getDraftState(battleId: number): Promise<DraftState | null
     }
     throw error
   }
+}
+
+/**
+ * Get player public profile (for viewing other players)
+ */
+export async function getPlayerProfile(playerId: number): Promise<PlayerPublicProfile> {
+  const response = await apiClient.get<PlayerPublicProfile>(`/api/v1/users/${playerId}/profile`)
+  return response.data
+}
+
+/**
+ * Get my stats
+ */
+export async function getMyStats(): Promise<PlayerStats> {
+  const response = await apiClient.get<PlayerStats>('/api/v1/users/me/stats')
+  return response.data
+}
+
+/**
+ * Get my match history
+ */
+export async function getMatchHistory(limit: number = 10): Promise<MatchHistoryEntry[]> {
+  const response = await apiClient.get<MatchHistoryEntry[]>(
+    `/api/v1/users/me/match-history?limit=${limit}`
+  )
+  return response.data
+}
+
+/**
+ * Get tier thresholds for progress calculation
+ */
+export function getTierThresholds(): Record<string, { min: number; max: number }> {
+  return {
+    BRONZE: { min: 0, max: 999 },
+    SILVER: { min: 1000, max: 1299 },
+    GOLD: { min: 1300, max: 1599 },
+    PLATINUM: { min: 1600, max: 1899 },
+    DIAMOND: { min: 1900, max: 2199 },
+    MASTER: { min: 2200, max: 9999 }
+  }
+}
+
+/**
+ * Calculate progress to next tier (0-100%)
+ */
+export function calculateTierProgress(elo: number): number {
+  const tier = calculateTier(elo)
+  const thresholds = getTierThresholds()
+  const { min, max } = thresholds[tier]
+
+  if (tier === 'MASTER') return 100
+
+  const progress = ((elo - min) / (max - min + 1)) * 100
+  return Math.min(100, Math.max(0, progress))
 }

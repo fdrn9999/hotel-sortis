@@ -141,6 +141,9 @@
         :style="{ left: contextMenu.x + 'px', top: contextMenu.y + 'px' }"
         @click.stop
       >
+        <button class="context-item" @click="handleContextViewProfile">
+          {{ t('profile.viewProfile') }}
+        </button>
         <button class="context-item" @click="handleContextWhisper">
           {{ t('social.chat.whisperTo') }}
         </button>
@@ -170,6 +173,7 @@ import { useSocialStore } from '@/stores/social'
 import { useAuthStore } from '@/stores/auth'
 import { useChatWebSocket } from '@/composables/useChatWebSocket'
 import { useNotification } from '@/composables/useNotification'
+import { usePlayerProfileModal } from '@/composables/usePlayerProfileModal'
 import FriendsPanel from '@/components/FriendsPanel.vue'
 import type { ChatMessage, FriendRequest } from '@/types/game'
 
@@ -177,6 +181,7 @@ const { t } = useI18n()
 const socialStore = useSocialStore()
 const authStore = useAuthStore()
 const notification = useNotification()
+const { showProfile } = usePlayerProfileModal()
 
 // Player ID from auth store
 const playerId = computed(() => authStore.playerId ?? 1)
@@ -355,6 +360,11 @@ const handleContextBlock = async () => {
   if (success) {
     notification.success(t('social.block.blocked'))
   }
+  hideContextMenu()
+}
+
+const handleContextViewProfile = () => {
+  showProfile({ playerId: contextMenu.value.playerId })
   hideContextMenu()
 }
 

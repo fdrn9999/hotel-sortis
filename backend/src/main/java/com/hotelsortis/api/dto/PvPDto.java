@@ -90,6 +90,10 @@ public class PvPDto {
         private Integer eloChange; // +25, -25, 0
         private Integer soulStones; // 20, 5, 10
         private String result; // "VICTORY", "DEFEAT", "DRAW"
+        private Integer newElo; // 변동 후 ELO
+        private String oldTier; // 변동 전 티어
+        private String newTier; // 변동 후 티어
+        private Boolean tierChanged; // 티어 변동 여부
     }
 
     /**

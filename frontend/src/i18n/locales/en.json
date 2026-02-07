@@ -300,6 +300,11 @@
       "soulStones": "Soul Stones"
     }
   },
+  "tier": {
+    "promotion": "Tier Promotion!",
+    "demotion": "Tier Demotion",
+    "newTier": "New Tier"
+  },
   "auth": {
     "welcome": "Welcome",
     "login": "Login",
@@ -346,7 +351,15 @@
     "profileUpdated": "Profile updated successfully.",
     "updateFailed": "Profile update failed.",
     "passwordChanged": "Password changed successfully.",
-    "passwordChangeFailed": "Password change failed. Please check your current password."
+    "passwordChangeFailed": "Password change failed. Please check your current password.",
+    "accountInfo": "Account Information",
+    "tierProgress": "Tier Progress",
+    "masterRank": "Maximum Rank Achieved",
+    "pvpStats": "PvP Statistics",
+    "matchHistory": "Match History",
+    "noMatches": "No match history yet.",
+    "viewProfile": "View Profile",
+    "loadFailed": "Failed to load profile."
   },
   "shop": {
     "title": "Shop",
