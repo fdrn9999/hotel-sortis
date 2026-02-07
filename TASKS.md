@@ -593,6 +593,27 @@
 - [x] **i18n Support** ✅ 2026-02-06
   - [x] `social` section in 4 languages (chat, friends, block subsections)
 
+### Phase 14.5: Profile & ELO Features
+
+- [ ] **ELO 티어 승급/강등 이펙트**
+  - [ ] 티어 변동 감지 로직 (매치 종료 후 ELO 변화 체크)
+  - [ ] `TierChangeModal.vue`: 승급/강등 연출 모달
+  - [ ] 승급 이펙트: 골드 파티클, 축하 애니메이션
+  - [ ] 강등 이펙트: 어두운 톤, 부드러운 연출
+  - [ ] i18n: 티어 이름 및 메시지 (4개 언어)
+- [ ] **프로필 보기 기능**
+  - [ ] `PlayerProfileModal.vue`: 플레이어 프로필 모달 컴포넌트
+  - [ ] 표시 정보: 닉네임, ELO, 티어, 승률, 최근 전적
+  - [ ] PvP 매치 중 상대 프로필 보기 (BattleView 헤더 클릭)
+  - [ ] 친구 목록에서 프로필 보기 (FriendsPanel 컨텍스트 메뉴)
+  - [ ] 채팅에서 플레이어 프로필 보기 (메시지 클릭)
+- [ ] **마이페이지 기능 확장**
+  - [ ] ProfileView.vue 개선: 전적 통계, 티어 히스토리
+  - [ ] 최근 매치 기록 표시 (최근 10경기)
+  - [ ] 승률 그래프 또는 통계 카드
+  - [ ] 티어 뱃지 및 진행도 표시
+  - [ ] 프로필 편집 (닉네임 변경, 아바타 선택)
+
 ### Phase 15: Final Visual Polish (UI Design Improvements)
 
 - [ ] **Existing UI Design Improvements**
@@ -612,6 +633,11 @@
   - [ ] **Friend List Styling**: Elegant sidebar/modal design with status indicators
   - [ ] **Context Menus**: Custom styled menus (not browser default)
   - [ ] **Notification Badges**: Gold/Red Art Deco style badges for unread messages
+- [ ] **Profile & ELO UI Polish**
+  - [ ] **TierChangeModal**: 파티클 이펙트, 티어 엠블럼 애니메이션
+  - [ ] **PlayerProfileModal**: Art Deco 프레임, 통계 차트 시각화
+  - [ ] **ProfileView (마이페이지)**: 티어 진행도 바, 전적 카드 디자인
+  - [ ] **BattleView 상대 정보**: 클릭 가능한 프로필 영역 스타일링
 - [ ] **테스트**
   - [ ] 족보 판정 단위 테스트 (`useOfflineBattle.ts` → `evaluateHand`)
   - [ ] 스킬 슬롯 검증 단위 테스트 (최대 4개, 중복 방지)
